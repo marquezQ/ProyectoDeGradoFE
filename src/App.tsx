@@ -1,10 +1,18 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import HomePage from "./Pages/HomePage";
+import MainPage from "./Pages/MainPage";
 
 function App() {
 
   return (
-    <div className="bg-blue-500 text-white p-4">
-      <h1 className="text-2xl">Hola, Tailwind está funcionando</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainPage />}>
+          <Route index element={<HomePage/>} />
+          <Route path="/workers" element={<div>aqui carpinteros</div>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
