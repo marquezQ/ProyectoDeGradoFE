@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button, Drawer, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
-
+import HardwareIcon from '@mui/icons-material/Hardware';
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -14,13 +14,13 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-amber-50 shadow-md">
+    <nav className=" shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
             <Link to="/" className="flex items-center">
-              <img className="h-8 w-auto" src="/placeholder.svg?height=32&width=32" alt="Logo de Carpinteros" />
-              <span className="ml-2 text-xl font-semibold text-amber-800">CarpinPro</span>
+              <HardwareIcon sx={{ width:"3.5rem", height:"3.5rem"}}/>
+              <span className="ml-2 text-xl font-semibold">CarpinPro</span>
             </Link>
           </div>
           <div className="hidden md:flex md:items-center md:space-x-4">
@@ -30,10 +30,19 @@ const Navbar: React.FC = () => {
             <Link to="/workers" className="text-amber-800 hover:bg-amber-100 px-3 py-2 rounded-md text-sm font-medium">
               Servicios
             </Link>
-            
+            {/* Aqui se debera mostrar el avatar en caso de estar logeado y un adropdow para cerrar o ver perfil */}
+            <Link to={'/login'}>
             <Button variant="outlined" color="primary">
               Iniciar Sesión
             </Button>
+            </Link>
+            <Link to={'/registro'}>
+            <Button variant="outlined" color="primary">
+              Registrarse
+            </Button>
+            </Link>
+            
+            
           </div>
           <div className="md:hidden">
             <IconButton onClick={toggleDrawer(true)} color="primary">
@@ -60,3 +69,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+

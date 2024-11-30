@@ -1,5 +1,15 @@
 import { axiosInstace } from "./axiosInstace";
 
+export const login = async (email: string, password: string) => {
+    try{
+        const response = await axiosInstace.post('/login', {email, password});
+        return response.data
+    }catch (error) {
+        console.log("error en login", error )
+        throw error;
+    }
+}
+
 export const getWorkers = async () => {
     try {
         const response = await axiosInstace.get('/trabajador');
