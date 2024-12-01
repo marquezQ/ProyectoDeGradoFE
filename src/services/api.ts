@@ -10,6 +10,15 @@ export const login = async (email: string, password: string) => {
     }
 }
 
+export const getUserData = async () => {
+    try {
+        const response = await axiosInstace.get('/user');
+        return response.data
+    } catch (error) {
+        console.log("error al recuperar data del usuario", error);
+    }
+}
+
 export const getWorkers = async () => {
     try {
         const response = await axiosInstace.get('/trabajador');

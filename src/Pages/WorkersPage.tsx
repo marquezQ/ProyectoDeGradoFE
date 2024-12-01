@@ -10,7 +10,6 @@ function WorkersPage() {
     });
     if (loading) return <p>Loading...</p>;
     if (error) return <p>ocurrio un error</p>;
-    console.log(workerList)
   return (
     <div className="h-screen" style={{ backgroundColor: "#f5f5f5" }}>
             {workerList && workerList.map((worker) => (

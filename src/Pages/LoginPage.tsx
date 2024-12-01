@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { login } from "../services/api";
-import { Button, TextField, InputAdornment, IconButton } from "@mui/material";
+import { Button, TextField, InputAdornment, IconButton, Box, Typography } from "@mui/material";
 import { useState } from "react";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
+import { useAuthContext } from "../hooks/useAuthContext";
 function LoginPage() {
     const navigate = useNavigate();
-    // const { setUser } = useAuthContext()
+    const { setUser } = useAuthContext()
   
     const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
@@ -22,13 +23,9 @@ function LoginPage() {
       validationSchema,
       onSubmit: async (values) => {
         const response = await login(values.email, values.password);
-        // console.log(response)
-        // const response = Users.find((u) => u.email === values.email && u.password === values.password);
-        if (!response.errors) {
-        //   localStorage.setItem("token", response.token);
-        //   localStorage.setItem("roles", JSON.stringify(response.roles));
-        //   const decode = decodeToken(response.token);
-        //   setUser({id: decode.id, email:decode.username, name:decode.username, role: response.roles});
+        if (response && response.user) {
+          localStorage.setItem("token", response.token);
+          setUser(response.user);
           navigate("/");
         } else {
         //   Swal.fire({
@@ -38,7 +35,7 @@ function LoginPage() {
         //     showConfirmButton: false,
         //     timer: 1000,
         //   });
-        alert(`error del backend ${JSON.stringify(response.errors.email[0])}`)
+          alert(`error del backend ${JSON.stringify(response.errors.email[0])}`)
         }
       },
     });
@@ -46,10 +43,18 @@ function LoginPage() {
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-80"
+        className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-80 border-2"
       >
-        <h2 className="text-center font-bold text-xl">Inicio de Sesión</h2>
+        <Box textAlign="center" mb={2}>
+          <Typography variant="h4" component="h1" fontWeight="bold" color="primary.main">
+            CarpinPro
+          </Typography>
+          <AccountCircle sx={{ fontSize: 64, color: "primary.main", mt: 1 }} />
+        </Box>
 
+        <Typography variant="h5" textAlign="center" color="primary" mb={3}>
+          Iniciar Sesión
+        </Typography>
         {/* Campo Email */}
         <TextField
           name="email"
@@ -75,14 +80,16 @@ function LoginPage() {
           onBlur={handleBlur}
           error={touched.password && Boolean(errors.password)}
           helperText={touched.password && errors.password}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={togglePasswordVisibility} edge="end">
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={togglePasswordVisibility} edge="end">
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
           }}
         />
 
