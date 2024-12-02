@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { login } from "../services/api";
@@ -28,19 +28,18 @@ function LoginPage() {
           setUser(response.user);
           navigate("/");
         } else {
-        //   Swal.fire({
-        //     position: "center",
-        //     icon: "error",
-        //     title: "Credenciales incorrectas",
-        //     showConfirmButton: false,
-        //     timer: 1000,
-        //   });
-          alert(`error del backend ${JSON.stringify(response.errors.email[0])}`)
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Credenciales incorrectas",
+            showConfirmButton: false,
+            timer: 1500,
+          });
         }
       },
     });
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-80 border-2"
@@ -114,5 +113,5 @@ const validationSchema = Yup.object({
     password: Yup.string()
       .required("La contraseña es obligatoria")
       .max(15, "La Contraseña debe contener máximo 15 caracteres")
-      .min(3, "La contraseña debe tener al menos 3 caracteres"),
+      .min(5, "La contraseña debe tener al menos 5 caracteres"),
 });

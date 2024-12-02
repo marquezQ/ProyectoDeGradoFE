@@ -4,10 +4,12 @@ import MainPage from "./Pages/MainPage";
 import WorkersPage from "./Pages/WorkersPage";
 import LoginPage from "./Pages/LoginPage";
 import { AuthContextProvider } from "./context/AuthContext";
+import RegisterPage from "./Pages/RegisterPage";
 
 function App() {
 
   return (
+    <div className="min-h-screen bg-[#f5f4f1]">
     <AuthContextProvider>
       <BrowserRouter>
         <Routes>
@@ -15,11 +17,12 @@ function App() {
             <Route index element={<HomePage/>} />
             <Route path="/workers" element={<WorkersPage/>} />
             <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/registro" element={<div>hola registro</div>}/>
+            <Route path="/registro" element={<RegisterPage/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
     </AuthContextProvider>
+    </div>
   )
 }
 

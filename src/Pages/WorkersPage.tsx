@@ -11,7 +11,7 @@ function WorkersPage() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>ocurrio un error</p>;
   return (
-    <div className="h-screen" style={{ backgroundColor: "#f5f5f5" }}>
+    <div>
             {workerList && workerList.map((worker) => (
                 <div key={worker.id}>
                     <h3>{worker.user_id}</h3>
@@ -21,7 +21,7 @@ function WorkersPage() {
             ))}
           <CarpinterCard />
           <CarpinterCard />
-          <div className="flex items-center justify-center h-screen bg-gray-100">
+          <div className="flex items-center justify-center">
               <Button variant="contained" color="primary">
                   Hola
               </Button>
