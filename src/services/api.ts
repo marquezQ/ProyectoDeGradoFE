@@ -10,6 +10,16 @@ export const login = async (email: string, password: string) => {
     }
 }
 
+export const register = async (user: object) => {
+    try {
+        const response = await axiosInstace.post('/register', user)
+        return response.data
+    } catch (error) {
+        console.log("error al registrar usuario", error);
+        throw error;
+    }
+}
+
 export const getUserData = async () => {
     try {
         const response = await axiosInstace.get('/user');

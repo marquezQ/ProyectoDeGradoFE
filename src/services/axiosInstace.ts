@@ -3,9 +3,7 @@ import axios from "axios";
 export const axiosInstace = axios.create({
     baseURL: 'http://localhost:8000/api',
     // timeout: 3000 // opcional tiempo de espera
-    headers: {
-        "Content-Type": "application/json"
-    }
+    headers: {}
 });
 
 axiosInstace.interceptors.request.use(
