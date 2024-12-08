@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
                     Iniciar Sesión
                   </Button>
                 </Link>
-                <Link to={'/registro'}>
+                <Link to={'/register'}>
                   <Button variant="outlined" color="primary">
                     Registrarse
                   </Button>
@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
                         Iniciar Sesión
                       </Button>
                     </Link>
-                    <Link to={'/registro'}>
+                    <Link to={'/register'}>
                       <Button variant="outlined" color="primary">
                         Registrarse
                       </Button>

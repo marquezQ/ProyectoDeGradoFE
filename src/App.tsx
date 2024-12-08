@@ -5,6 +5,7 @@ import WorkersPage from "./Pages/WorkersPage";
 import LoginPage from "./Pages/LoginPage";
 import { AuthContextProvider } from "./context/AuthContext";
 import RegisterPage from "./Pages/RegisterPage";
+import RegisterCarpenterPage from "./Pages/RegisterCarpenterPage";
 
 function App() {
 
@@ -17,7 +18,8 @@ function App() {
             <Route index element={<HomePage/>} />
             <Route path="/workers" element={<WorkersPage/>} />
             <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/registro" element={<RegisterPage/>}/>
+            <Route path="/register" element={<RegisterPage/>}/>
+            <Route path="/registerCarp" element={<RegisterCarpenterPage/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

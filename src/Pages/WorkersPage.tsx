@@ -11,16 +11,11 @@ function WorkersPage() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>ocurrio un error</p>;
   return (
-    <div>
+    <>
             {workerList && workerList.map((worker) => (
-                <div key={worker.id}>
-                    <h3>{worker.user_id}</h3>
-                    <p>Location: {worker.latitud}</p>
-                    {/* <p>{worker.user.name}</p> */}
-                </div>
+                <CarpinterCard worker={worker} key={worker.user_id}/>
             ))}
-          <CarpinterCard />
-          <CarpinterCard />
+
           <div className="flex items-center justify-center">
               <Button variant="contained" color="primary">
                   Hola
@@ -31,7 +26,7 @@ function WorkersPage() {
               
           </div>
 
-      </div>
+      </>
   )
 }
 

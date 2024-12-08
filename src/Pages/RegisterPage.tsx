@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from "react";
 import { TextField, Button, Box, Typography, InputAdornment, IconButton } from "@mui/material";
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import { AccountCircle, Visibility, VisibilityOff, PhotoCamera } from "@mui/icons-material";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -39,9 +40,9 @@ function RegisterPage() {
           dataSend.append("profile_picture", values.profileImage); 
         }
         try {
-            const response = await register(dataSend);
-            console.log(response)
-            Swal.fire({
+          const response = await register(dataSend);
+          console.log(response)
+          Swal.fire({
             position: "center",
             icon: "success",
             title: "Registro exitoso",
@@ -183,6 +184,7 @@ function RegisterPage() {
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" gap={2}>
           <Box
             sx={{
+              position: "relative",
               width: 100,
               height: 100,
               borderRadius: "30%",
@@ -195,11 +197,26 @@ function RegisterPage() {
             }}
           >
             {values.profileImage ? (
-              <img
-                src={URL.createObjectURL(values.profileImage)}
-                alt="Perfil"
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
+              <>
+                <img
+                  src={URL.createObjectURL(values.profileImage)}
+                  alt="Perfil"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+                <HighlightOffOutlinedIcon
+                  
+                  sx={{
+                    position: "absolute",
+                    top: 4,
+                    right: 4,
+                    backgroundColor: "transparent",
+                    color: "white",
+                    "&:hover": { color: "gray" },
+                  }}
+                  onClick={() => setFieldValue("profileImage", null)}
+                >
+                </HighlightOffOutlinedIcon>
+              </>
             ) : (
               <PhotoCamera sx={{ fontSize: 32, color: "#ccc" }} />
             )}

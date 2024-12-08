@@ -1,14 +1,17 @@
 import { Chat, LocationOn, Phone } from "@mui/icons-material"
 import { Button, Card, CardContent, Typography } from "@mui/material"
+import { Worker } from "../Interfaces/WorkerInterface";
+interface props{
+  worker: Worker;
+}
 
-
-function CarpinterCard() {
+function CarpinterCard({worker}: props) {
   return (
     <Card className="flex flex-col md:flex-row items-center bg-gray-50 shadow-md rounded-lg p-4 mx-32 my-5">
       {/* Imagen o Avatar */}
       <div className="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 mr-4">
         <img
-          src={"https://t4.ftcdn.net/jpg/03/64/21/11/360_F_364211147_1qgLVxv1Tcq0Ohz3FawUfrtONzz8nq3e.jpg"}
+          src={`http://localhost:8000/storage/${worker.user.profile_picture}`}
           className="w-full h-full rounded-md border border-gray-200"
         />
       </div>
@@ -17,12 +20,12 @@ function CarpinterCard() {
       <CardContent className="flex-grow">
         {/* Título y nombre */}
         <Typography variant="h6" className="text-gray-800 font-semibold">
-          {"juanito perez lopez"}
+          {worker.user.name+" "+worker.user.lastname}
         </Typography>
 
         {/* Subtítulo (descripción) */}
         <Typography variant="body2" className="text-gray-600">
-          {"lorem ipssum ajsjadjasjdasjdjajdjsajdasdvposd if iofiofoi ifo if f ifoi iofio fi fi oif"}
+          {worker.description}
         </Typography>
 
         {/* Rating */}
@@ -42,7 +45,7 @@ function CarpinterCard() {
           </div>
           <div className="flex items-center">
             <Phone className="text-gray-500 mr-2" />
-            {"69895623"}
+            {worker.user.phone_number}
           </div>
           <div className="flex items-center">
             <Chat className="text-gray-500 mr-2" />
