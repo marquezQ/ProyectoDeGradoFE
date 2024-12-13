@@ -1,5 +1,5 @@
 import useFetchData from "../hooks/useFetchData";
-import { getWorkers } from "../services/api";
+import { getWorkers } from "../services/workerApi";
 import { Worker } from "../Interfaces/WorkerInterface";
 import CarpinterCard from "../components/CarpinterCard";
 import { Button } from "@mui/material";

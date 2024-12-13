@@ -6,10 +6,12 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { register } from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 type ProfileImage = File | null;
 
 function RegisterPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -42,13 +44,14 @@ function RegisterPage() {
         try {
           const response = await register(dataSend);
           console.log(response)
-          Swal.fire({
+          await Swal.fire({
             position: "center",
             icon: "success",
             title: "Registro exitoso",
             showConfirmButton: false,
             timer: 1500,
           });
+          navigate('/');
         } catch (error) {
           Swal.fire({
             position: "center",
