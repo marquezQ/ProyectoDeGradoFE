@@ -1,72 +1,71 @@
-import {
-  Button,
-  Box,
-  Typography,
-  TextField,
-} from "@mui/material";
+import {Button, Box, Typography, TextField } from "@mui/material";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { AccountCircle } from "@mui/icons-material";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { register } from "../services/api";
+import MapWithLocation from "./exampleMap"; // Componente del mapa
+import { ChangeEvent } from "react";
+import { registerWorker } from "../services/workerApi";
+import { useNavigate } from "react-router-dom";
 
- 
+// Tipo para manejar las imágenes subidas
 type ProfileImages = File[];
 
 function RegisterCarpenterPage() {
-  
   const { user } = useAuthContext();
+  const navigate = useNavigate();
 
-  const { handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched } =
-    useFormik({
-      initialValues: {
-        user_id: user?user.id:"", //obtener el id de usuario
-        description: "",
-        location: "",
-        profileImages: [] as ProfileImages, // Array de imágenes
-      },
-      validationSchema,
-      onSubmit: async (values) => {
-        const dataSend = new FormData();
-        dataSend.append("user_id", values.user_id);
-        dataSend.append("description", values.description);
-        dataSend.append("latitud", "aqui la cordenada");
-        dataSend.append("longitud", "aqui la otra cordenada");
-        // Agregar imágenes al FormData
-        values.profileImages.forEach((image, index) => {
-          dataSend.append(`imagen${index+1}`, image);
+  
+  const formik = useFormik({
+    initialValues: {
+      description: "",
+      latitude: "-17.3935",
+      longitude: "-66.157",
+      profileImages: [] as ProfileImages,
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      const dataSend = new FormData();
+      dataSend.append("user_id", user? user.id.toString() : "");
+      dataSend.append("description", values.description);
+      dataSend.append("latitud", values.latitude);
+      dataSend.append("longitud", values.longitude);
+
+      values.profileImages.forEach((image, index) => {
+        dataSend.append(`imagen${index + 1}`, image);
+      });
+
+      try {
+        const response = await registerWorker(dataSend);
+        console.log(response);
+        await Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Registro exitoso",
+          showConfirmButton: false,
+          timer: 1500,
         });
+        navigate('/workers'); //añadir ruta del perfil del carpintero cuando ya se tenga
+      } catch (error) {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Ocurrió un error al registrarte",
+          showConfirmButton: true,
+        });
+        throw error;
+      }
+    },
+  });
 
-        try {
-          const response = await register(dataSend);
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Registro exitoso",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        } catch (error) {
-          Swal.fire({
-            position: "center",
-            icon: "error",
-            title: "Ocurrió un error al registrarte",
-            showConfirmButton: true,
-          });
-          throw error
-        }
-      },
-    });
-
-  // Manejar subida de imágenes
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (!files) return;
 
     const uploadedFiles = Array.from(files);
-    if (values.profileImages.length + uploadedFiles.length > 5) {
+    if (formik.values.profileImages.length + uploadedFiles.length > 5) {
       Swal.fire({
         icon: "error",
         title: "Límite de imágenes alcanzado",
@@ -75,21 +74,18 @@ function RegisterCarpenterPage() {
       return;
     }
 
-    setFieldValue("profileImages", [...values.profileImages, ...uploadedFiles]);
-    console.log(values.profileImages)
+    formik.setFieldValue("profileImages", [...formik.values.profileImages, ...uploadedFiles]);
   };
 
-  // Eliminar una imagen específica
   const handleRemoveImage = (index: number) => {
-    const updatedImages = values.profileImages.filter((_, i) => i !== index);
-    setFieldValue("profileImages", updatedImages);
-    console.log(values.profileImages)
+    const updatedImages = formik.values.profileImages.filter((_, i) => i !== index);
+    formik.setFieldValue("profileImages", updatedImages);
   };
 
   return (
     <div className="flex items-center justify-center">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={formik.handleSubmit}
         className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-auto border-2"
       >
         <Box textAlign="center" mb={2}>
@@ -99,35 +95,31 @@ function RegisterCarpenterPage() {
           <AccountCircle sx={{ fontSize: 64, color: "primary.main", mt: 1 }} />
         </Box>
 
-        {/* Otros campos omitidos para brevedad */}
-        
         <TextField
           label="Descripción"
           name="description"
           multiline
           rows={3}
           fullWidth
-          value={values.description}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.description && Boolean(errors.description)}
-          helperText={touched.description && errors.description}
-          className="mb-4"
-        />
-        <TextField
-          label="Localizacion"
-          name="location"
-          multiline
-          rows={5}
-          fullWidth
-          value={values.location}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.location && Boolean(errors.location)}
-          helperText={touched.location && errors.location}
-          className="mb-4"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
         />
 
+        {/* Mapa para seleccionar ubicación */}
+        <Box mt={2}>
+          <Typography variant="h6" color="primary">
+            Selecciona tu ubicación en el mapa:
+          </Typography>
+          <MapWithLocation
+            onLocationSelect={(lat, lng) => {
+              formik.setFieldValue("latitude", lat);
+              formik.setFieldValue("longitude", lng);
+            }}
+          />
+        </Box>
 
         {/* Subir Imágenes */}
         <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
@@ -139,14 +131,14 @@ function RegisterCarpenterPage() {
               justifyContent: "center",
             }}
           >
-            {values.profileImages.map((image, index) => (
+            {formik.values.profileImages.map((image, index) => (
               <Box
                 key={index}
                 sx={{
                   position: "relative",
                   width: 100,
                   height: 100,
-                  borderRadius: "30%",
+                  borderRadius: "10%",
                   border: "1px solid #ccc",
                   overflow: "hidden",
                 }}
@@ -174,7 +166,7 @@ function RegisterCarpenterPage() {
             variant="contained"
             component="label"
             color="primary"
-            disabled={values.profileImages.length >= 5} // Deshabilitar si hay 5 imágenes
+            disabled={formik.values.profileImages.length >= 5} // Deshabilitar si hay 5 imágenes
           >
             Subir Imágenes
             <input
@@ -194,13 +186,11 @@ function RegisterCarpenterPage() {
     </div>
   );
 }
-
 export default RegisterCarpenterPage;
 
-// Validaciones
 const validationSchema = Yup.object({
-  // Otros campos omitidos para brevedad
-  description: Yup.string().required('La descripción es requerida'),
-  location: Yup.string().required('La localizacion es requerida'),
+  description: Yup.string().required("La descripción es requerida"),
+  latitude: Yup.string().required("La latitud es requerida"),
+  longitude: Yup.string().required("La longitud es requerida"),
   profileImages: Yup.array().max(5, "Solo puedes subir un máximo de 5 imágenes."),
 });

@@ -1,11 +1,38 @@
+import { Button } from '@mui/material';
 import { useState } from 'react';
-import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 
-const DEFAULT_POSITION: [number, number] = [-17.3935, -66.157]; // Coordenadas de Cochabamba, Bolivia
+interface MapWithLocationProps {
+  onLocationSelect: (lat: number, lng: number) => void;
+}
 
-const MapWithLocation = () => {
-  const [position, setPosition] = useState<[number, number]>(DEFAULT_POSITION); // Posición inicial: Cochabamba
-  const [selectedPosition, setSelectedPosition] = useState<[number, number]>(DEFAULT_POSITION); // Posición seleccionada
+const DEFAULT_POSITION: [number, number] = [-17.3935, -66.157]; // Coordenadas de Cochabamba
+
+const MapWithLocation = ({ onLocationSelect }: MapWithLocationProps) => {
+  const [selectedPosition, setSelectedPosition] = useState<[number, number]>(DEFAULT_POSITION);
+  const [shouldMoveMap, setShouldMoveMap] = useState(false); // Controla si el mapa debe moverse
+
+  // Componente para seleccionar ubicación en el mapa
+  const LocationSelector = () => {
+    useMapEvents({
+      click(e) {
+        const newPosition: [number, number] = [e.latlng.lat, e.latlng.lng];
+        setSelectedPosition(newPosition);
+        onLocationSelect(e.latlng.lat, e.latlng.lng); // Comunicar la posición seleccionada al padre
+        setShouldMoveMap(false); // No mover el mapa cuando se selecciona manualmente
+      },
+    });
+    return <Marker position={selectedPosition} />;
+  };
+
+  // Función para mover el mapa a una nueva ubicación
+  const MoveMapToLocation = ({ position, shouldMove }: { position: [number, number]; shouldMove: boolean }) => {
+    const map = useMap();
+    if (shouldMove) {
+      map.setView(position, map.getZoom()); // Mueve la vista del mapa si está habilitado
+    }
+    return null;
+  };
 
   // Función para obtener la ubicación del usuario
   const handleGoToUserLocation = () => {
@@ -15,8 +42,9 @@ const MapWithLocation = () => {
           location.coords.latitude,
           location.coords.longitude,
         ];
-        setPosition(userPosition); // Centra el mapa en la ubicación del usuario
         setSelectedPosition(userPosition); // Actualiza la posición seleccionada
+        onLocationSelect(userPosition[0], userPosition[1]); // Comunica la posición al padre
+        setShouldMoveMap(true); // Habilita el movimiento del mapa
       },
       (error) => {
         console.error("Permiso denegado o error obteniendo la ubicación:", error);
@@ -25,68 +53,20 @@ const MapWithLocation = () => {
     );
   };
 
-  // Componente para manejar clics en el mapa
-  const LocationSelector = () => {
-    useMapEvents({
-      click(e) {
-        setSelectedPosition([e.latlng.lat, e.latlng.lng]); // Actualiza la posición seleccionada
-      },
-    });
-    return <Marker position={selectedPosition} />;
-  };
-
-  const handleSave = () => {
-    alert(
-      `Coordenadas seleccionadas: Latitud ${selectedPosition[0]}, Longitud ${selectedPosition[1]}`
-    );
-  };
-
-  const handleOpenInGoogleMaps = () => {
-    if (selectedPosition) {
-      const [lat, lng] = selectedPosition;
-      const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-      window.open(googleMapsUrl, '_blank'); // Abre en una nueva pestaña o ventana
-    } else {
-      alert("No se ha seleccionado una ubicación.");
-    }
-  };
   return (
-    <div>
-      <MapContainer center={position} zoom={13} style={{ height: '500px', width: '70%' }}>
+    <>
+      <MapContainer center={DEFAULT_POSITION} zoom={13} style={{ height: '400px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <LocationSelector />
+        {/* Mueve el mapa solo cuando `shouldMoveMap` es verdadero */}
+        <MoveMapToLocation position={selectedPosition} shouldMove={shouldMoveMap} />
       </MapContainer>
-      <div style={{ marginTop: '10px' }}>
-        <button
-          onClick={handleGoToUserLocation}
-          style={{
-            marginRight: '10px',
-            padding: '10px 20px',
-            fontSize: '16px',
-          }}
-        >
-          Ir a tu ubicación
-        </button>
-        <button
-          onClick={handleSave}
-          style={{
-            padding: '10px 20px',
-            fontSize: '16px',
-          }}
-        >
-          Guardar
-        </button>
-        <button
-          onClick={handleOpenInGoogleMaps}
-          style={{
-            padding: '10px 20px',
-            fontSize: '16px',
-          }}
-        >
-          Abrir en Google Maps
-        </button>
+      <div className='w-full flex pt-2 justify-center'>
+      <Button type="button" variant="outlined" size='small' onClick={handleGoToUserLocation}>
+        Ir a mi ubicación
+      </Button>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -187,10 +167,3 @@ export default MapWithLocation;
 // };
 
 // export default MapWithGoogleMaps;
-
-
-
-
-
-
- 
