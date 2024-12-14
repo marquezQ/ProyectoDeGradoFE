@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 type ProfileImages = File[];
 
 function RegisterCarpenterPage() {
-  const { user } = useAuthContext();
+  const { user, setWorker } = useAuthContext();
   const navigate = useNavigate();
 
   
@@ -39,8 +39,8 @@ function RegisterCarpenterPage() {
 
       try {
         const response = await registerWorker(dataSend);
-        console.log(response);
-        await Swal.fire({
+        setWorker(response.trabajador);
+          await Swal.fire({
           position: "center",
           icon: "success",
           title: "Registro exitoso",

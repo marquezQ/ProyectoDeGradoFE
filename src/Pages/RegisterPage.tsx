@@ -7,10 +7,12 @@ import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { register } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 type ProfileImage = File | null;
 
 function RegisterPage() {
+  const { setUser } = useAuthContext();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -43,7 +45,8 @@ function RegisterPage() {
         }
         try {
           const response = await register(dataSend);
-          console.log(response)
+          localStorage.setItem("token", response.token);
+          setUser(response.user);
           await Swal.fire({
             position: "center",
             icon: "success",

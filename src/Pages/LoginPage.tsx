@@ -7,9 +7,10 @@ import { Button, TextField, InputAdornment, IconButton, Box, Typography } from "
 import { useState } from "react";
 import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { isWorker } from "../services/workerApi";
 function LoginPage() {
     const navigate = useNavigate();
-    const { setUser } = useAuthContext()
+    const { setUser, setWorker } = useAuthContext()
   
     const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
@@ -26,6 +27,10 @@ function LoginPage() {
         if (response && response.user) {
           localStorage.setItem("token", response.token);
           setUser(response.user);
+          const dataCarpenter = await isWorker(response.user.id);
+          if(dataCarpenter){
+            setWorker(dataCarpenter);
+          }
           navigate("/");
         } else {
           Swal.fire({
