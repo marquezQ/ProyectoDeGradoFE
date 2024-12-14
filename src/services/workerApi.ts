@@ -20,3 +20,15 @@ export const registerWorker = async (worker: object) => {
         throw error;
     }
 }
+
+export const isWorker = async (id: number) => {
+    try {
+        const response = await axiosInstace.get(`/userTrabajador/${id}`);
+        if(!response.data.message){
+            return response.data;
+        }
+    } catch (error) {
+        console.log("no se supo si es trabajador");
+        throw error;
+    }
+}
