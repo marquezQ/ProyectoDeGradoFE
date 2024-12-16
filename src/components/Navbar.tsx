@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     setIsOpen(open);
   };
 
-  const { user, LogOut } = useAuthContext();
+  const { user, worker, LogOut } = useAuthContext();
   return (
     <nav className="shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,6 +37,13 @@ const Navbar: React.FC = () => {
             <>
               <p>{user.name + " " + user.lastname}</p>
               <Button onClick={LogOut}>Cerrar Sesion</Button>
+              {worker ?
+              null
+              :
+              <Link to={"/registerCarp"}>
+              <div> Hazte carpintero de la pagina</div>
+              </Link>
+              }
             </>
               :
               <>

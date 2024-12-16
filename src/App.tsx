@@ -7,6 +7,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import RegisterPage from "./Pages/RegisterPage";
 import RegisterCarpenterPage from "./Pages/RegisterCarpenterPage";
 import MapWithLocation from "./Pages/exampleMap";
+import CarpenterProfile from "./Pages/CarpenterProfile";
 
 function App() {
 
@@ -21,7 +22,9 @@ function App() {
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/registerCarp" element={<RegisterCarpenterPage/>}/>
-            <Route path="/example" element={<MapWithLocation/>}/>         
+            <Route path="/example" element={<MapWithLocation/>}/>
+            <Route path="/workers/workerProfile/:id" element={<CarpenterProfile/>}/>
+
           </Route>
         </Routes>
       </BrowserRouter>

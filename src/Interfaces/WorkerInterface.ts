@@ -6,7 +6,7 @@ export interface Worker {
     description: string,
     latitud: string,
     longitud: string,
-    images: object,
+    images: string,
     // created_at: string,
     // updated_at: string,
     user: User
