@@ -2,27 +2,47 @@ import React, { useState } from "react";
 import { Avatar, Tabs, Tab, Typography, Box, Button, Rating } from "@mui/material";
 import { WhatsApp, Phone } from "@mui/icons-material";
 import "tailwindcss/tailwind.css";
+import { useLocation } from "react-router-dom";
+import { getWorkerData } from "../services/workerApi";
+import useFetchData from "../hooks/useFetchData";
+import { Worker } from "../Interfaces/WorkerInterface";
+import StaticMap from "./StaticMap";
 
-const CarpenterProfile: React.FC = () => {
+const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
-
+  const location = useLocation();
+  
+  const lastSegment = location.pathname.split("/").pop() || "";
+  const { data: worker, loading, error } = useFetchData<Worker>({
+    apiFunction: () => getWorkerData(lastSegment)
+  });
+  
   // Manejador de cambio de tabs
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
-
+  if(loading){
+    return <div>Cargando...</div>
+  }
+  if(error){
+    return <div>ocurrio un error...</div>
+  }
+  if(worker){
+    const parsedImages = JSON.parse(worker.images);
+  
   return (
     <div className="h-screen bg-gray-100">
       {/* Portada */}
       <div
-        className="relative h-96 w-full bg-cover bg-center"
+        className="relative h-1/2 w-full bg-cover bg-center"
         style={{
-          backgroundImage: "url('https://img.freepik.com/foto-gratis/vista-superior-conjunto-herramientas-carpintero_23-2148428306.jpg')", // Reemplaza con tu imagen de portada
+          backgroundImage: `url(http://localhost:8000/storage/${parsedImages.image1})`,
+          objectFit:"contain"
         }}
       >
         {/* Imagen de perfil */}
         <Avatar
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR54MgOdpjUHpFqCUdHdASAyzwz7VEcGb0JQA&s" // Reemplaza con tu imagen de perfil
+          src={`http://localhost:8000/storage/${worker.user.profile_picture}`}
           alt="Profile Picture"
           sx={{
             width: 120,
@@ -37,13 +57,13 @@ const CarpenterProfile: React.FC = () => {
       </div>
 
       {/* Contenido principal */}
-      <div className="mt-16 flex flex-col items-center px-4">
+      <div className="w-full mt-16 flex flex-col items-center px-4">
         {/* Información básica */}
         <Typography variant="h5" className="font-bold text-gray-800">
-          Carlos Martínez
+          {worker.user.name +" "+worker.user.lastname}
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          Muebles Artesanales CM
+          aqui cargo o taller
         </Typography>
 
         {/* Rating */}
@@ -75,15 +95,14 @@ const CarpenterProfile: React.FC = () => {
           </div>
         </div>
         {/* Contenido de cada Tab */}
-        <div className="mx-auto max-w-screen-2xl mt-6">
+        <div className="mx-auto w-full mt-6">
           {tabValue === 0 && (
             <Box>
               <Typography variant="h6" className="font-bold mb-2">
                 Sobre mí
               </Typography>
               <Typography variant="body1" className="text-gray-600">
-                Con más de 20 años de experiencia en el arte de la carpintería, me especializo en la
-                creación de muebles rústicos y en la restauración de piezas antiguas...
+                {worker.description}
               </Typography>
               <div className="mt-4">
                 <Typography variant="h6" className="font-bold">
@@ -92,8 +111,8 @@ const CarpenterProfile: React.FC = () => {
                 <Typography variant="body1" className="text-gray-600">
                   Av. América #1234, Cochabamba
                 </Typography>
-                <div className="bg-gray-300 h-32 w-full flex items-center justify-center mt-2">
-                  <Typography color="text.secondary">Mapa de ubicación</Typography>
+                <div className="w-full flex items-center mt-2">
+                  <StaticMap lat={worker.latitud} lng={worker.longitud} />
                 </div>
               </div>
             </Box>
@@ -137,7 +156,7 @@ const CarpenterProfile: React.FC = () => {
         </div>
       </div>
     </div>
-  );
+  );}
 };
 
 export default CarpenterProfile;
