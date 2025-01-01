@@ -19,7 +19,7 @@ const StaticMap = ({ lat, lng }: StaticMapProps) => {
     
   return (
     <>
-      <MapContainer center={[latitud, longitud ]} zoom={13} style={{ height: '400px', width: '100%' }}>
+      <MapContainer center={[latitud, longitud ]} zoom={13} style={{ height: '500px', width: '100%' }}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {/* Mostrar el marcador en la posición especificada */}
         <Marker position={[latitud, longitud ]} />

@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { getWorkerData } from "../services/workerApi";
 import useFetchData from "../hooks/useFetchData";
 import { Worker } from "../Interfaces/WorkerInterface";
-import StaticMap from "./StaticMap";
+import AboutMeWorker from "../components/AboutMeWorker";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -95,27 +95,9 @@ const CarpenterProfile = () => {
           </div>
         </div>
         {/* Contenido de cada Tab */}
-        <div className="mx-auto w-full mt-6">
+        <div className="mx-auto max-w-screen-2xl w-full mt-6 h-auto">
           {tabValue === 0 && (
-            <Box>
-              <Typography variant="h6" className="font-bold mb-2">
-                Sobre mí
-              </Typography>
-              <Typography variant="body1" className="text-gray-600">
-                {worker.description}
-              </Typography>
-              <div className="mt-4">
-                <Typography variant="h6" className="font-bold">
-                  Ubicación
-                </Typography>
-                <Typography variant="body1" className="text-gray-600">
-                  Av. América #1234, Cochabamba
-                </Typography>
-                <div className="w-full flex items-center mt-2">
-                  <StaticMap lat={worker.latitud} lng={worker.longitud} />
-                </div>
-              </div>
-            </Box>
+            <AboutMeWorker worker={worker}/>
           )}
 
           {tabValue === 1 && (
