@@ -7,6 +7,7 @@ import { getWorkerData } from "../services/workerApi";
 import useFetchData from "../hooks/useFetchData";
 import { Worker } from "../Interfaces/WorkerInterface";
 import AboutMeWorker from "../components/AboutMeWorker";
+import Resenias from "../components/Resenias";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -101,9 +102,7 @@ const CarpenterProfile = () => {
           )}
 
           {tabValue === 1 && (
-            <Typography variant="body1" color="text.secondary">
-              Aquí irán las reseñas del carpintero.
-            </Typography>
+            <Resenias/> 
           )}
           {tabValue === 2 && (
             <Typography variant="body1" color="text.secondary">
