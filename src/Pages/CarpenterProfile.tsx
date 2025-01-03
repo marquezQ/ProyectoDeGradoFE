@@ -7,7 +7,7 @@ import { getWorkerData } from "../services/workerApi";
 import useFetchData from "../hooks/useFetchData";
 import { Worker } from "../Interfaces/WorkerInterface";
 import AboutMeWorker from "../components/AboutMeWorker";
-import Resenias from "../components/Resenias";
+import ReviewTab from "../components/ReviewTab";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -102,7 +102,7 @@ const CarpenterProfile = () => {
           )}
 
           {tabValue === 1 && (
-            <Resenias/> 
+            <ReviewTab/> 
           )}
           {tabValue === 2 && (
             <Typography variant="body1" color="text.secondary">
