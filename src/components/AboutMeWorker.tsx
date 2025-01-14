@@ -3,18 +3,16 @@ import { Box, Typography, Modal } from "@mui/material";
 import { Worker } from "../Interfaces/WorkerInterface";
 import StaticMap from "../Pages/StaticMap";
 
-
 interface workerProps {
   worker: Worker;
 }
 
 function AboutMeWorker({ worker }: workerProps) {
-  const parsedImages: Record<string, string> = JSON.parse(worker.images);
 
   // Estado para manejar el modal
   const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-
+  
   // Funciones para abrir y cerrar el modal
   const handleOpen = (imageUrl: string) => {
     setSelectedImage(imageUrl);
@@ -50,16 +48,16 @@ function AboutMeWorker({ worker }: workerProps) {
           Algunos de mis trabajos
         </Typography>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {Object.values(parsedImages).map((imageUrl, index) => (
+          {Object.values(worker.images).map((imageUrl, index) => (
             <div
               key={index}
-              className="w-full h-96 overflow-hidden rounded-lg border shadow-md cursor-pointer"
-              onClick={() => handleOpen(`http://localhost:8000/storage/${imageUrl}`)}
+              className="w-auto h-auto overflow-hidden rounded-lg border shadow-md cursor-pointer m-auto"
+              onClick={() => handleOpen(`${imageUrl}`)}
             >
               <img
-                src={`http://localhost:8000/storage/${imageUrl}`}
+                src={`${imageUrl}`}
                 alt={`Imagen ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="w-auto h-auto object-cover"
               />
             </div>
           ))}

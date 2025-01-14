@@ -8,6 +8,7 @@ import useFetchData from "../hooks/useFetchData";
 import { Worker } from "../Interfaces/WorkerInterface";
 import AboutMeWorker from "../components/AboutMeWorker";
 import ReviewTab from "../components/ReviewTab";
+import ProductsTab from "../components/ProductsTab";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -22,6 +23,7 @@ const CarpenterProfile = () => {
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
+  const windowWidth = window.innerWidth;
   if(loading){
     return <div>Cargando...</div>
   }
@@ -29,25 +31,23 @@ const CarpenterProfile = () => {
     return <div>ocurrio un error...</div>
   }
   if(worker){
-    const parsedImages = JSON.parse(worker.images);
-  
   return (
-    <div className="h-screen bg-gray-100">
+    <div className="h-screen">
       {/* Portada */}
       <div
         className="relative h-1/2 w-full bg-cover bg-center"
         style={{
-          backgroundImage: `url(http://localhost:8000/storage/${parsedImages.image1})`,
+          backgroundImage: `url(${worker.images.image1})`,
           objectFit:"contain"
         }}
       >
         {/* Imagen de perfil */}
         <Avatar
-          src={`http://localhost:8000/storage/${worker.user.profile_picture}`}
+          src={worker.user.profile_picture}
           alt="Profile Picture"
           sx={{
-            width: 120,
-            height: 120,
+            width: 220,
+            height: 220,
             position: "absolute",
             bottom: -60,
             left: "50%",
@@ -82,10 +82,11 @@ const CarpenterProfile = () => {
               <Tabs
                 value={tabValue}
                 onChange={handleTabChange}
-                centered
+                centered={windowWidth>500?true:false}
                 textColor="primary"
                 indicatorColor="primary"
-                variant="fullWidth"
+                variant={windowWidth>500?"fullWidth":"scrollable"}
+                // sx={{backgroundColor:"red"}}
               >
                 <Tab label="Perfil" />
                 <Tab label="Reseñas" />
@@ -105,9 +106,7 @@ const CarpenterProfile = () => {
             <ReviewTab/> 
           )}
           {tabValue === 2 && (
-            <Typography variant="body1" color="text.secondary">
-              Aquí irán los productos del carpintero.
-            </Typography>
+            <ProductsTab/> 
           )}
           {tabValue === 3 && (
             <Typography variant="body1" color="text.secondary">
