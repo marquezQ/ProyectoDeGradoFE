@@ -57,3 +57,15 @@ export const addressWorker = async (lat: string, lon: string) => {
         throw error
     }
 }
+
+export const getWorkerProducts = async (id: string) => {
+    try {
+        const response = await axiosInstace.get(`/productos/${id}`)
+        if(!response.data.error){
+            return response.data.products;
+        }
+    } catch (error) {
+        console.log("error al obtener productos")
+        throw error;
+    }
+}
