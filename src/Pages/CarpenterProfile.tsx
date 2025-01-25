@@ -103,7 +103,7 @@ const CarpenterProfile = () => {
           )}
 
           {tabValue === 1 && (
-            <ReviewTab/> 
+            <ReviewTab workerID={lastSegment}/> 
           )}
           {tabValue === 2 && (
             <ProductsTab workerID={lastSegment}/> 
