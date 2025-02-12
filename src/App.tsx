@@ -8,6 +8,7 @@ import RegisterPage from "./Pages/RegisterPage";
 import RegisterCarpenterPage from "./Pages/RegisterCarpenterPage";
 // import MapWithLocation from "./Pages/exampleMap";
 import CarpenterProfile from "./Pages/CarpenterProfile";
+import MiniForm from "./Pages/pdf";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage/>} />
             <Route path="/workers" element={<WorkersPage/>} />
+            <Route path="/minipdf" element={<MiniForm/>} />
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/registerCarp" element={<RegisterCarpenterPage/>}/>

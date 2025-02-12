@@ -71,6 +71,7 @@ function AboutMeWorker({ worker }: workerProps) {
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
         className="flex items-center justify-center"
+        sx={{backgroundColor:"red"}}
         
       >
         <Box className="bg-white p-4 rounded-lg shadow-lg max-w-screen-lg w-full h-full">

@@ -5,7 +5,7 @@ interface Props {
 }
 function ReviewCard({review}: Props) {
     return (
-        <div className='bg-white shadow-lg border p-6 flex flex-col sm:flex-row sm:justify-between items-start'>
+        <div className='bg-white shadow-lg border rounded-lg p-6 flex flex-col sm:flex-row sm:justify-between items-start'>
 
             <div className='flex sm:items-start sm:m-0 m-auto min-w-16'>
                 {/* <img

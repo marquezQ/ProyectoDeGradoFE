@@ -9,6 +9,7 @@ import { Worker } from "../Interfaces/WorkerInterface";
 import AboutMeWorker from "../components/AboutMeWorker";
 import ReviewTab from "../components/ReviewTab";
 import ProductsTab from "../components/ProductsTab";
+import ContractTab from "../components/ContractTab";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -109,9 +110,7 @@ const CarpenterProfile = () => {
             <ProductsTab workerID={lastSegment}/> 
           )}
           {tabValue === 3 && (
-            <Typography variant="body1" color="text.secondary">
-              Aquí irá la información sobre los contratos.
-            </Typography>
+            <ContractTab workerID={lastSegment}/>
           )}
         </div>
 
