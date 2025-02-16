@@ -1,6 +1,6 @@
-import useFetchData from "../hooks/useFetchData";
-import { Product } from "../Interfaces/ProductInterface";
-import { getWorkerProducts } from "../services/workerApi";
+import useFetchData from "../../hooks/useFetchData";
+import { Product } from "../../Interfaces/ProductInterface";
+import { getWorkerProducts } from "../../services/workerApi";
 import ProductCard from "./ProductCard";
 interface Props {
     workerID: string

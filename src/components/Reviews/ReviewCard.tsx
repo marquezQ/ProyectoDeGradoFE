@@ -1,5 +1,5 @@
 import { Avatar, Button, Rating } from "@mui/material"
-import { Review } from "../Interfaces/ReviewInterface"
+import { Review } from "../../Interfaces/ReviewInterface"
 interface Props {
     review: Review
 }

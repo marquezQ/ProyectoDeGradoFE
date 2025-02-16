@@ -7,9 +7,9 @@ import { getWorkerData } from "../services/workerApi";
 import useFetchData from "../hooks/useFetchData";
 import { Worker } from "../Interfaces/WorkerInterface";
 import AboutMeWorker from "../components/AboutMeWorker";
-import ReviewTab from "../components/ReviewTab";
-import ProductsTab from "../components/ProductsTab";
-import ContractTab from "../components/ContractTab";
+import ReviewTab from "../components/Reviews/ReviewTab";
+import ProductsTab from "../components/Products/ProductsTab";
+import ContractTab from "../components/Contracts/ContractTab";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);

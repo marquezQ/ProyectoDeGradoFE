@@ -1,6 +1,6 @@
-import useFetchData from '../hooks/useFetchData';
-import { Review } from '../Interfaces/ReviewInterface';
-import { getReviewsByWorkerId } from '../services/workerApi';
+import useFetchData from '../../hooks/useFetchData';
+import { Review } from '../../Interfaces/ReviewInterface';
+import { getReviewsByWorkerId } from '../../services/workerApi';
 import ReviewCard from './ReviewCard';
 
 interface Props {

@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material"
-import { Product } from "../Interfaces/ProductInterface"
+import { Product } from "../../Interfaces/ProductInterface"
 
 interface Props{
     Product: Product
