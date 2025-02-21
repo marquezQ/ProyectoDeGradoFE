@@ -1,8 +1,8 @@
 import { Button, Typography } from "@mui/material";
 import ContractCard from "./ContractCard";
 import useFetchData from "../../hooks/useFetchData";
-import { Review } from "../../Interfaces/ReviewInterface";
-import { getReviewsByWorkerId } from "../../services/workerApi";
+import { getContractsByWorkerAndClient } from "../../services/workerApi";
+import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 
 interface Props{
     workerID: string,
@@ -10,15 +10,13 @@ interface Props{
 }
 
 function ContainerClient({workerID, clientID}: Props) {
-    console.log(workerID)
-    const { data: reviewsList, loading, error } = useFetchData<Review[]>({
-        apiFunction: () => getReviewsByWorkerId(clientID)
-      });
-    
-      if (loading) return <p>Cargando...</p>;
-      if (error) return <p>ocurrio un error</p>;
-      // if (reviewsList?.length === 0) return <p>Aun no existen reseñas para este trabajador</p>
-      if (reviewsList)
+    const { data: contractsList, loading, error } = useFetchData<ContractWithClientAndWorker[]>({
+      apiFunction: () => getContractsByWorkerAndClient(workerID, clientID)
+    });
+    if (loading) return <p>Cargando...</p>;
+    if (error) return <p>ocurrio un error</p>;
+    // if (contractsList?.length === 0) return <p>Aun no tienes contratos con este carpintero</p>
+    if (contractsList)
         return (
           <div className="p-4 space-y-6">
             <div className='flex flex-col sm:flex-row justify-start sm:justify-between'>
@@ -27,10 +25,10 @@ function ContainerClient({workerID, clientID}: Props) {
               </Typography>
               <Button variant='contained' size='medium' sx={{maxWidth:"18rem"}}>Solicitar nuevo contrato</Button>
             </div>
-            {reviewsList.length>0?
-            reviewsList.map((review, index) => (
+            {contractsList.length>0?
+            contractsList.map((contract, index) => (
               <div key={index}>
-                <ContractCard />
+                <ContractCard contract={contract}/>
               </div>
             )):
             <p>No existen contratos realizados con este carpintero</p>}

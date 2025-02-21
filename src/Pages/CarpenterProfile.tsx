@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Avatar, Tabs, Tab, Typography, Box, Button, Rating } from "@mui/material";
 import { WhatsApp, Phone } from "@mui/icons-material";
-import "tailwindcss/tailwind.css";
 import { useLocation } from "react-router-dom";
 import { getWorkerData } from "../services/workerApi";
 import useFetchData from "../hooks/useFetchData";

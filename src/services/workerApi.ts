@@ -81,3 +81,27 @@ export const getReviewsByWorkerId = async (id: string) => {
         throw error
     }
 }
+
+export const getContractsByWorkerId = async (id: string) => {
+    try {
+        const response = await axiosInstace.get(`/contrato/${id}`)
+        if(!response.data.message){
+            return response.data.contratos;
+        }
+    } catch (error) {
+        console.log("error al obtener contratos del carpintero: "+id)
+        throw error
+    }
+}
+
+export const getContractsByWorkerAndClient = async (workerID: string, clientID: string) => {
+    try {
+        const response = await axiosInstace.get(`/contrato/${workerID}/${clientID}`)
+        if(!response.data.message){
+            return response.data.contratos;
+        }
+    } catch (error) {
+        console.log("error al obtener contratos del carpintero y cliente")
+        throw error
+    }
+}
