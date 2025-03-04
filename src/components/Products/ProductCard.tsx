@@ -11,7 +11,7 @@ function ProductCard({Product}: Props) {
             <img
                 src={Product.image}
                 alt=""
-                className="w-full h-72 object-cover"
+                className="w-full h-60 object-cover"
             />
             <div className="flex flex-col pl-5">
                 <div className="flex flex-col lg:flex-row justify-between pr-2">

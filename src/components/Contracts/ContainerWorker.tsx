@@ -1,6 +1,8 @@
+import { Button, Typography } from "@mui/material";
 import useFetchData from "../../hooks/useFetchData";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { getContractsByWorkerId } from "../../services/workerApi";
+import TableContracts from "./TableContracts";
 
 interface Props{
     workerID: string
@@ -9,13 +11,25 @@ function ContainerWorker({workerID}: Props) {
   const { data: contractsList, loading, error } = useFetchData<ContractWithClientAndWorker[]>({
     apiFunction: () => getContractsByWorkerId(workerID)
   });
-  console.log(contractsList)
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>ocurrio un error</p>;
-  if (contractsList?.length === 0) return <p>Aun no tienes ningun contrato</p>
   if (contractsList)
   return (
-    <div>aqui debera mostrarse TODOS los contratos del worker con ID: {workerID}</div>
+    <div>
+      <div className='flex flex-col sm:flex-row justify-start sm:justify-between mb-4'>
+        <Typography variant="h6" className="font-bold">
+          Contratos
+        </Typography>
+        <Button variant='contained' size='medium' sx={{ maxWidth: "10rem" }}>Nuevo contrato</Button>
+      </div>
+      {contractsList.length>0?
+        <TableContracts contracts={contractsList}/>
+        :
+        <p>
+          Aun no tienes ningun contrato
+        </p>
+    }
+    </div>
   )
 }
 
