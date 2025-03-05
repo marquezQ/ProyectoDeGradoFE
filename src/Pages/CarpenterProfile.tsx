@@ -64,7 +64,7 @@ const CarpenterProfile = () => {
           {worker.user.name +" "+worker.user.lastname}
         </Typography>
         <Typography variant="subtitle1" color="text.secondary">
-          aqui cargo o taller
+          {worker.workshop}
         </Typography>
 
         {/* Rating */}

@@ -21,7 +21,6 @@ const getChipColor = (estado: string) => {
 };
 
 const TablaTrabajos = ({contracts}: Props) => {
-  console.log(contracts)
   return (
     <TableContainer component={Paper} className="p-4 overflow-x-auto w-full">
       <Table>

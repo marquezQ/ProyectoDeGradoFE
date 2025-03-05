@@ -36,7 +36,7 @@ function AboutMeWorker({ worker }: workerProps) {
           Ubicación
         </Typography>
         <Typography variant="body1" className="text-gray-600">
-          Av. América #1234, Cochabamba
+          {worker.address}
         </Typography>
         <div className="w-full flex items-center mt-2">
           <StaticMap lat={worker.latitud} lng={worker.longitud} />

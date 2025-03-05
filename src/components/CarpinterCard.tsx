@@ -24,7 +24,7 @@ function CarpinterCard({worker}: props) {
         <div className="flex flex-col md:flex-row md:justify-between md:text-start text-center">
           <div className="mb-3 md:mb-0">
             <Typography variant="h5" className="font-bold text-gray-800">
-              Carpintero Ebanista
+              {worker.workshop}
             </Typography>
             <Typography variant="h6" className=" text-gray-600">
               {worker.user.name + " " + worker.user.lastname}
@@ -59,7 +59,7 @@ function CarpinterCard({worker}: props) {
             <div className="flex items-center justify-center">  
               <LocationOn fontSize="small" color="error" />
               <Typography variant="body2" className="ml-1">
-                Aqui la direccion largaaaaa
+                {worker.address}
               </Typography>
             </div>
     

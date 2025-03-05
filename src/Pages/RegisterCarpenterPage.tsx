@@ -1,4 +1,4 @@
-import {Button, Box, Typography, TextField } from "@mui/material";
+import { Button, Box, Typography, TextField } from "@mui/material";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { AccountCircle } from "@mui/icons-material";
 import * as Yup from "yup";
@@ -17,22 +17,24 @@ function RegisterCarpenterPage() {
   const { user, setWorker } = useAuthContext();
   const navigate = useNavigate();
 
-  
   const formik = useFormik({
     initialValues: {
       description: "",
+      workshop: "",
       latitude: "-17.3935",
       longitude: "-66.157",
+      address: "",
       profileImages: [] as ProfileImages,
     },
     validationSchema,
     onSubmit: async (values) => {
       const dataSend = new FormData();
-      dataSend.append("user_id", user? user.id.toString() : "");
+      dataSend.append("user_id", user ? user.id.toString() : "");
       dataSend.append("description", values.description);
+      dataSend.append("workshop", values.workshop);
       dataSend.append("latitud", values.latitude);
       dataSend.append("longitud", values.longitude);
-
+      dataSend.append("address", values.address || "");
       values.profileImages.forEach((image, index) => {
         dataSend.append(`imagen${index + 1}`, image);
       });
@@ -40,7 +42,7 @@ function RegisterCarpenterPage() {
       try {
         const response = await registerWorker(dataSend);
         setWorker(response.trabajador);
-          await Swal.fire({
+        await Swal.fire({
           position: "center",
           icon: "success",
           title: "Registro exitoso",
@@ -107,6 +109,21 @@ function RegisterCarpenterPage() {
           error={formik.touched.description && Boolean(formik.errors.description)}
           helperText={formik.touched.description && formik.errors.description}
         />
+        <TextField
+          label="Cargo o especialidad"
+          name="workshop"
+          placeholder="Carpintero Ebanista, Taller de carpintería ABC..."
+          fullWidth
+          value={formik.values.workshop}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.workshop && Boolean(formik.errors.workshop)}
+          helperText={
+            formik.touched.workshop && formik.errors.workshop
+              ? formik.errors.workshop // Si hay error, muestra el mensaje en rojo
+              : "Escribe tu especialidad o el nombre de tu negocio"
+          }
+        />
 
         {/* Mapa para seleccionar ubicación */}
         <Box mt={2}>
@@ -120,6 +137,16 @@ function RegisterCarpenterPage() {
             }}
           />
         </Box>
+        <TextField
+          label="Descripción de la dirección (Opcional)"
+          name="address"
+          fullWidth
+          value={formik.values.address}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.address && Boolean(formik.errors.address)}
+          helperText={formik.touched.address && formik.errors.address}
+        />
 
         {/* Subir Imágenes */}
         <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
@@ -162,6 +189,15 @@ function RegisterCarpenterPage() {
               </Box>
             ))}
           </Box>
+          {/* Mensaje de error si no hay imágenes */}
+          <Typography color="error">
+            {typeof formik.errors.profileImages === "string"
+              ? formik.errors.profileImages
+              : Array.isArray(formik.errors.profileImages)
+                ? formik.errors.profileImages.join(", ") // Convierte el array en un string separado por comas
+                : ""}
+          </Typography>
+
           <Button
             variant="contained"
             component="label"
@@ -189,8 +225,19 @@ function RegisterCarpenterPage() {
 export default RegisterCarpenterPage;
 
 const validationSchema = Yup.object({
-  description: Yup.string().required("La descripción es requerida"),
+  description: Yup.string().required("La descripción es requerida")
+    .min(50, "La descripción debe tener al menos 50 caracteres"),
+  workshop: Yup.string()
+    .required("Este campo es obligatorio")
+    .min(10, "Debe tener al menos 10 caracteres"),
   latitude: Yup.string().required("La latitud es requerida"),
   longitude: Yup.string().required("La longitud es requerida"),
-  profileImages: Yup.array().max(5, "Solo puedes subir un máximo de 5 imágenes."),
+  address: Yup.string()
+    .notRequired()
+    .test("min-length", "La dirección debe tener al menos 10 caracteres.", (value) => {
+      return !value || value.length >= 10;
+    }),
+  profileImages: Yup.array()
+    .min(1, "Debes subir al menos una imagen.")
+    .max(5, "Solo puedes subir un máximo de 5 imágenes."),
 });
