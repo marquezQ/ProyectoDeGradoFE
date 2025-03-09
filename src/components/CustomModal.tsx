@@ -1,5 +1,5 @@
 
-import { Dialog, DialogTitle, DialogContent, IconButton } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, IconButton, DialogActions, Button } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 interface CustomModalProps {
@@ -11,21 +11,31 @@ interface CustomModalProps {
 
 const CustomModal = ({ open, onClose, title, children }: CustomModalProps) => {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="lg" 
-            fullWidth  
-            disableEnforceFocus 
-            disableAutoFocus 
-            disablePortal={true} 
-            container={document.body}>
-      <DialogTitle className="flex justify-between items-center">
+    <Dialog
+        maxWidth="lg"
+        open={open}
+        onClose={onClose}
+      >
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
         {title}
-        <IconButton onClick={onClose} size="small">
+        <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{maxHeight:"100vh"}}>{children}</DialogContent>
-    </Dialog>
+        <DialogContent>
+          {children}
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={onClose} autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
   );
 };
 
 export default CustomModal;
+

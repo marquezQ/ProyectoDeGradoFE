@@ -12,7 +12,7 @@ function HomePage() {
       </Button>
 
       <CustomModal open={open} onClose={() => setOpen(false)} title="Mi Modal">
-        <p>Este es el contenido del modal.</p>
+        <p>Este es el contenido del modal cincuenta y siete + texto para ver como se muestra y probar los diferentes tamaño que este modal puede llegar a tener </p>
       </CustomModal>
     </div>
   );

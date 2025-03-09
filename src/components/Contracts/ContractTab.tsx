@@ -8,21 +8,15 @@ interface Props {
 
 const ContractTab = ({ workerID }: Props) => {
   const { user, worker } = useAuthContext();
-  if(worker){
-    if(worker.id.toString() === workerID){
-      return(
-        <ContainerWorker workerID={workerID}/>
-      );
-    }else{
-      if(user)
-      return(
-        <ContainerClient workerID={workerID} clientID={user.id.toString()}/>
-      );
-    }
+  if (worker?.id.toString() === workerID) {
+    return <ContainerWorker workerID={workerID} />;
   }
-  return(
-    <div>logeate</div>
-  )
+
+  if (user) {
+    return <ContainerClient workerID={workerID} clientID={user.id.toString()} />;
+  }
+
+  return <div>Inicia sesión</div>;
 
 };
 

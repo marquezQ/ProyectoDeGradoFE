@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstace = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: import.meta.env.VITE_API_URL,    
     // timeout: 3000 // opcional tiempo de espera
     headers: {}
 });
