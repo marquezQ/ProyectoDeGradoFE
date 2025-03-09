@@ -70,6 +70,18 @@ export const getWorkerProducts = async (id: string) => {
     }
 }
 
+export const createProduct = async (product: object) => {
+    try {
+        const response = await axiosInstace.post(`/productos`, product)
+        if(response.data.product){
+            return response.data.product
+        }
+    } catch (error) {
+        console.log("error al crear producto")
+        throw error
+    }
+}
+
 export const getReviewsByWorkerId = async (id: string) => {
     try {
         const response = await axiosInstace.get(`/resenia/${id}`)

@@ -1,15 +1,21 @@
-import { Button } from "@mui/material";
+import { Button, Dialog, DialogTitle, IconButton } from "@mui/material";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import useFetchData from "../../hooks/useFetchData";
 import { Product } from "../../Interfaces/ProductInterface";
 import { getWorkerProducts } from "../../services/workerApi";
 import ProductCard from "./ProductCard";
+import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import FormNewProduct from "./FormNewProduct";
 interface Props {
     workerID: string
 }
 
 function ProductsTab({ workerID }: Props) {
-    const { data: productList, loading, error } = useFetchData<Product[]>({
+    const [showNewP, setShowNewP] = useState(false);
+    const closeShowP = () => setShowNewP(false);
+
+    const { data: productList, loading, error, fetchData } = useFetchData<Product[]>({
         apiFunction: () => getWorkerProducts(workerID)
     });
     const { worker }=useAuthContext();
@@ -22,7 +28,7 @@ function ProductsTab({ workerID }: Props) {
             <div>
                 {worker?.id.toString() === workerID?
                     <div className="flex justify-end mb-4">
-                        <Button variant="contained">+ Nuevo Producto</Button>
+                        <Button variant="contained" onClick={()=>setShowNewP(true)}>+ Nuevo Producto</Button>
                     </div>
                     :
                     null
@@ -39,7 +45,17 @@ function ProductsTab({ workerID }: Props) {
                     <p className="col-span-full">No existen productos registrados por este trabajador</p>
                 }
             </div>
-            
+                <Dialog maxWidth="sm" fullWidth open={showNewP} onClose={closeShowP}>
+                    <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+                        Nuevo Producto
+                        <IconButton onClick={closeShowP}>
+                            <CloseIcon />
+                        </IconButton>
+                    </DialogTitle>
+                    
+                    <FormNewProduct workerID={workerID} fetchProducts={fetchData} closeForm={closeShowP}/>
+
+                </Dialog>
             </>
         )
 }
