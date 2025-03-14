@@ -81,6 +81,17 @@ export const createProduct = async (product: object) => {
         throw error
     }
 }
+export const updateProduct = async (product: object, id: string) => {
+    try {
+        const response = await axiosInstace.post(`/productos/${id}`, product)
+        if(response.data,product){
+            return response.data.product
+        }
+    } catch (error) {
+        console.log('error al actualizar')
+        throw error
+    }
+}
 
 export const getReviewsByWorkerId = async (id: string) => {
     try {

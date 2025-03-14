@@ -4,7 +4,7 @@ import useFetchData from "../../hooks/useFetchData";
 import { Product } from "../../Interfaces/ProductInterface";
 import { getWorkerProducts } from "../../services/workerApi";
 import ProductCard from "./ProductCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import FormNewProduct from "./FormNewProduct";
 interface Props {
@@ -20,25 +20,32 @@ function ProductsTab({ workerID }: Props) {
     });
     const { worker }=useAuthContext();
 
+    const [root, setRoot] = useState(false);
+    useEffect(() => {
+        if (worker?.id.toString() === workerID) {
+            setRoot(true);
+        } else {
+            setRoot(false);
+        }
+    }, [worker?.id, workerID]);
+
     if (loading) return <p>Cargando...</p>;
     if (error) return <p>ocurrio un error</p>;
     if (productList)
         return (
             <>
             <div>
-                {worker?.id.toString() === workerID?
+                {root &&
                     <div className="flex justify-end mb-4">
                         <Button variant="contained" onClick={()=>setShowNewP(true)}>+ Nuevo Producto</Button>
                     </div>
-                    :
-                    null
                 }
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
                 {productList.length>0?
                     productList.map((product) => (
                         <div key={product.id}>
-                            <ProductCard Product={product} />     
+                            <ProductCard Product={product} edit={root} reload={fetchData}/>     
                         </div>
             
                 )):
