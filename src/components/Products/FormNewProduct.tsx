@@ -101,7 +101,7 @@ function FormNewProduct({ workerID, fetchProducts, closeForm, productToEdit }: P
             />
             <TextField
                 name="stock"
-                label="Cantidad de productos"
+                label="Cantidad"
                 fullWidth
                 type="number"
                 value={formik.values.stock}
@@ -145,7 +145,7 @@ function FormNewProduct({ workerID, fetchProducts, closeForm, productToEdit }: P
                     <Typography color="error">{formik.errors.image}</Typography>
                 )}
             </Box>
-            <Box display="flex" justifyContent="end">
+            <Box display="flex" justifyContent="end" gap="0.5rem">
                 <Button variant="outlined" onClick={closeForm}>Cancelar</Button>
                 <Button type="submit" variant="contained" color="primary">{productToEdit ? "Actualizar" : "Guardar"}</Button>
             </Box>

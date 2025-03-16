@@ -92,6 +92,18 @@ export const updateProduct = async (product: object, id: string) => {
         throw error
     }
 }
+export const deleteProduct = async (id: string) => {
+    try {
+        const response = await axiosInstace.delete(`/productos/${id}`);
+        if (response.data.status === 200) {
+            return true;
+        }
+    } catch (error) {
+        console.log("Error al eliminar producto");
+        throw error;
+    }
+}
+
 
 export const getReviewsByWorkerId = async (id: string) => {
     try {
