@@ -69,9 +69,9 @@ const CarpenterProfile = () => {
 
         {/* Rating */}
         <div className="flex items-center mt-2">
-          <Rating value={4.8} precision={0.5} readOnly />
+          <Rating value={worker.averageRating} precision={0.5} readOnly />
           <Typography variant="body2" className="ml-2 text-gray-600">
-            4.8 (47 reseñas)
+            {worker.averageRating+" ("+worker.totalReviews+" reseñas)"}
           </Typography>
         </div>
 

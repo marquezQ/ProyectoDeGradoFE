@@ -32,9 +32,9 @@ function CarpinterCard({worker}: props) {
           </div>
           <div className="flex flex-col lg:flex-row items-center">
             <div className="flex items-center">
-              <Typography variant="h6" className="font-bold">{4.5}</Typography>
+              <Typography variant="h6" className="font-bold">{worker.averageRating}</Typography>
               <Rating
-                value={4.3}
+                value={worker.averageRating}
                 precision={0.1}
                 readOnly
                 size="medium"
@@ -42,7 +42,7 @@ function CarpinterCard({worker}: props) {
               />
             </div>
             <span className="text-sm text-gray-500 md:ml-1 mt-1 md:mt-0">
-              ({45} reseñas)
+              ({worker.totalReviews} reseñas)
             </span>
           </div>
         </div>

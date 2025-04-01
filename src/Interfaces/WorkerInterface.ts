@@ -9,6 +9,8 @@ export interface Worker {
     longitud: string,
     address: string,
     images: WorkerImages,
+    totalReviews: string,
+    averageRating: number,
     // created_at: string,
     // updated_at: string,
     user: User
