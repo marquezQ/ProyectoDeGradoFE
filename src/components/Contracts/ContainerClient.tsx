@@ -1,8 +1,13 @@
-import { Button, Typography } from "@mui/material";
+import { Button, Dialog, DialogTitle, IconButton, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import ContractCard from "./ContractCard";
 import useFetchData from "../../hooks/useFetchData";
 import { getContractsByWorkerAndClient } from "../../services/workerApi";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
+import { useState } from "react";
+import FormContract from "./FormContract";
+// import ContractForm from "./FormDeepSeek";
+// import FormNewContract from "./FormGPT";
 
 interface Props{
     workerID: string,
@@ -10,7 +15,9 @@ interface Props{
 }
 
 function ContainerClient({workerID, clientID}: Props) {
-    const { data: contractsList, loading, error } = useFetchData<ContractWithClientAndWorker[]>({
+  const [open, setOpen] = useState(false);
+  const closeForm = () => setOpen(false);
+    const { data: contractsList, loading, error, fetchData } = useFetchData<ContractWithClientAndWorker[]>({
       apiFunction: () => getContractsByWorkerAndClient(workerID, clientID)
     });
     if (loading) return <p>Cargando...</p>;
@@ -23,7 +30,10 @@ function ContainerClient({workerID, clientID}: Props) {
               <Typography variant="h6" className="font-bold">
                 Tus contratos con este carpintero
               </Typography>
-              <Button variant='contained' size='medium' sx={{maxWidth:"18rem"}}>Solicitar nuevo contrato</Button>
+              <Button variant='contained' size='medium' sx={{maxWidth:"18rem"}} 
+                      onClick={()=>setOpen(true)}>
+                        Solicitar nuevo contrato
+              </Button>
             </div>
             {contractsList.length>0?
             contractsList.map((contract, index) => (
@@ -32,7 +42,23 @@ function ContainerClient({workerID, clientID}: Props) {
               </div>
             )):
             <p>No existen contratos realizados con este carpintero</p>}
-    
+            
+            <Dialog maxWidth="lg" fullWidth open={open} onClose={closeForm}>
+              <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+                Solicitud de contrato
+                <IconButton onClick={closeForm}>
+                  <CloseIcon />
+                </IconButton>
+              </DialogTitle>
+              <FormContract closeForm={closeForm} userID={clientID} workerID={workerID} fetchContracts={fetchData}/>
+              {/* <ContractForm
+                workerID="123"
+                userID="456"
+                onSubmitSuccess={() => console.log("Éxito")}
+                onCancel={() => console.log("Cancelado")}
+              /> */}
+            {/* <FormNewContract closeForm={closeForm} trabajadorID="1" fetchContracts={()=>console.log("fetch")}/>   */}
+            </Dialog>
           </div>
         );
 }

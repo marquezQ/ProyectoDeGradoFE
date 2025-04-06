@@ -140,3 +140,15 @@ export const getContractsByWorkerAndClient = async (workerID: string, clientID: 
         throw error
     }
 }
+
+export const createContract = async (contract: object) => {
+    try {
+        const response = await axiosInstace.post(`/contrato`, contract)
+        if(response.data.message){
+            return response.data.contrato
+        }
+    } catch (error){
+        console.log("error al crear contrato")
+        throw error
+    }
+}
