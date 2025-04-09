@@ -1,6 +1,8 @@
 import { Button } from "@mui/material";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
+import { pdf } from "@react-pdf/renderer";
+import ContractPDF from "../ContractPDF";
 
 interface Props {
   contract: ContractWithClientAndWorker;
@@ -11,6 +13,28 @@ const ContractCard = ({ contract }: Props) => {
     aceptado: "text-green-500",
     pendiente: "text-yellow-500",
     rechazado: "text-red-500",
+  };
+  const handleViewContract = async () => {
+    // Crear el PDF
+    const doc = <ContractPDF contract={contract} />;
+    console.log(contract)
+    // Generar el blob del PDF
+    const blob = await pdf(doc).toBlob();
+    const url = URL.createObjectURL(blob);
+    
+    // Abrir en nueva ventana
+    const newWindow = window.open(url, '_blank');
+    
+    // Asegurarse de que la URL se revoque cuando la ventana se cierre
+    if (newWindow) {
+      newWindow.onbeforeunload = () => {
+        URL.revokeObjectURL(url);
+      };
+    } else {
+      // Si el navegador bloquea la ventana emergente, mostrar un mensaje
+      alert('Por favor permite ventanas emergentes para este sitio');
+      URL.revokeObjectURL(url);
+    }
   };
 
   return (
@@ -26,7 +50,7 @@ const ContractCard = ({ contract }: Props) => {
         </div>
       </div>
       <div className="flex flex-col space-y-2">
-        <Button variant="outlined" size="small">Ver Contrato</Button>
+        <Button variant="outlined" size="small"  onClick={handleViewContract}>Ver Contrato</Button>
         <Button variant="contained" size="small" className="bg-brown-500 hover:bg-brown-600">
           Hacer reseña
         </Button>

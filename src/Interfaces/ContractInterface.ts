@@ -1,5 +1,5 @@
 import { User } from "./UserInterface";
-
+import { Worker } from "./WorkerInterface";
 export interface Contract {
     id: string, 
     trabajador_id: string,
@@ -9,6 +9,7 @@ export interface Contract {
     start_date: string,
     end_date: string,
     details: string,
+    created_at: string
 } 
 
 export type ContractWithUser = Contract & {
@@ -16,6 +17,6 @@ export type ContractWithUser = Contract & {
 }
 
 export type ContractWithClientAndWorker = ContractWithUser & {
-    worker: Worker
+    trabajador: Worker
 }
 //revisar creo que no es necesario el &
