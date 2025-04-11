@@ -4,14 +4,17 @@ import AddIcon from "@mui/icons-material/Add";
 import * as Yup from "yup";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import Swal from "sweetalert2";
-import { createContract } from "../../services/workerApi";
+import { createContract, updateContract } from "../../services/workerApi";
+import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 
 
 interface Props {
   workerID: string;
-  fetchContracts?: () => void;
+  fetchContracts: () => void;
   closeForm: () => void;
   userID: string;
+  validate: boolean
+  contract?: ContractWithClientAndWorker
 }
 
 interface ClauseItem {
@@ -26,7 +29,7 @@ interface ContractFormValues {
   clauses: ClauseItem[];
 }
 
-function FormNewContract({ workerID, fetchContracts, closeForm, userID }: Props) {
+function FormNewContract({ workerID, fetchContracts, closeForm, userID, validate, contract }: Props) {
   // Fecha actual en formato YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
   // Fecha un mes después como predeterminada para la fecha de fin
@@ -34,6 +37,58 @@ function FormNewContract({ workerID, fetchContracts, closeForm, userID }: Props)
   nextMonth.setMonth(nextMonth.getMonth() + 1);
   const defaultEndDate = nextMonth.toISOString().split('T')[0];
   
+  const getInitialValues = (validate: boolean): ContractFormValues => {
+    if (contract) {
+      const parsedDetails: Record<string, string> = JSON.parse(contract.details);
+      // Cláusulas ya existentes en el contrato
+      const existingClauses: ClauseItem[] = Object.entries(parsedDetails).map(
+        ([key, value]) => ({ key, value })
+      );
+      // Cláusulas estándar por defecto
+      const standardClauses: ClauseItem[] = [
+        { key: "Descripcion del trabajo", value: "" },
+        { key: "Tipo de madera o material a utlizar", value: "" },
+        { key: "Costo y forma de pago", value: "" },
+      ];
+      // Unir cláusulas sin duplicar las ya existentes
+      const mergedClauses: ClauseItem[] = [...existingClauses];
+  
+      standardClauses.forEach(stdClause => {
+        const exists = existingClauses.some(c => c.key === stdClause.key);
+        if (!exists) {
+          mergedClauses.push(stdClause);
+        }
+      });
+  
+      return {
+        title: contract.title || "",
+        startDate: contract.start_date?.split(" ")[0] || today,
+        endDate: contract.end_date?.split(" ")[0] || defaultEndDate,
+        clauses: mergedClauses,
+      };
+    }
+  
+    // 🆕 Modo creación: definir según tipo de usuario
+    const defaultClauses: ClauseItem[] = validate
+      ? [
+          { key: "Descripcion del trabajo", value: "Se realizará...." },
+          { key: "Tipo de madera o material a utlizar", value: "" },
+          { key: "Costo y forma de pago", value: "" },
+        ]
+      : [
+          { key: "Descripcion del trabajo", value: "" },
+        ];
+  
+    return {
+      title: "Título del Contrato",
+      startDate: today,
+      endDate: defaultEndDate,
+      clauses: defaultClauses,
+    };
+  };
+  
+  
+
   const validationSchema = Yup.object({
     title: Yup.string().required("El título del contrato es obligatorio"),
     startDate: Yup.date().required("La fecha de inicio es obligatoria"),
@@ -50,15 +105,10 @@ function FormNewContract({ workerID, fetchContracts, closeForm, userID }: Props)
       })
     ).min(1, "Debe incluir al menos una cláusula")
   });
-
+  
   const formik = useFormik<ContractFormValues>({
-    initialValues: {
-      title: "",
-      startDate: today,
-      endDate: defaultEndDate,
-      clauses: [{ key: "Descripcion del trabajo", value: "" },{key: "Materiales", value: ""}, {key:"Formas de pago", value: ""}]
-    },
-    validationSchema,
+    initialValues: getInitialValues(validate),
+    validationSchema: validate ? validationSchema : undefined,
     onSubmit: async (values) => {
       // Construcción del objeto details
       const details: Record<string, string> = {};
@@ -79,22 +129,33 @@ function FormNewContract({ workerID, fetchContracts, closeForm, userID }: Props)
       };
 
       try {
-        await createContract(contractData);
-        Swal.fire({
+        if(contract){
+          await updateContract(contractData, contract.id)
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Contrato actualizado con éxito",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }else{
+          await createContract(contractData);
+          Swal.fire({
           position: "center",
           icon: "success",
           title: "Contrato creado con éxito",
           showConfirmButton: false,
           timer: 1500,
         });
-        if (fetchContracts) fetchContracts();
+        }
+        fetchContracts();
         closeForm();
       } catch (error) {
         console.error("Error al crear contrato:", error);
         Swal.fire({
           position: "center",
           icon: "error",
-          title: "Ocurrió un error al crear el contrato",
+          title: "Ocurrió un error al crear/editar el contrato",
           showConfirmButton: false,
           timer: 1500,
         });
