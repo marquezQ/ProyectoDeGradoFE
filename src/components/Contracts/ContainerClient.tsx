@@ -50,7 +50,7 @@ function ContainerClient({workerID, clientID}: Props) {
                   <CloseIcon />
                 </IconButton>
               </DialogTitle>
-              <FormContract closeForm={closeForm} userID={clientID} workerID={workerID} fetchContracts={fetchData}/>
+              <FormContract closeForm={closeForm} userID={clientID} workerID={workerID} fetchContracts={fetchData} validate={false}/>
               {/* <ContractForm
                 workerID="123"
                 userID="456"

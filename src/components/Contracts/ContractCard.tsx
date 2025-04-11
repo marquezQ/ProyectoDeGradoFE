@@ -17,7 +17,6 @@ const ContractCard = ({ contract }: Props) => {
   const handleViewContract = async () => {
     // Crear el PDF
     const doc = <ContractPDF contract={contract} />;
-    console.log(contract)
     // Generar el blob del PDF
     const blob = await pdf(doc).toBlob();
     const url = URL.createObjectURL(blob);

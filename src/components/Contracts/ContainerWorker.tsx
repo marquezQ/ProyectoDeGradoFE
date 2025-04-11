@@ -8,7 +8,7 @@ interface Props{
     workerID: string
 }
 function ContainerWorker({workerID}: Props) {
-  const { data: contractsList, loading, error } = useFetchData<ContractWithClientAndWorker[]>({
+  const { data: contractsList, loading, error, fetchData } = useFetchData<ContractWithClientAndWorker[]>({
     apiFunction: () => getContractsByWorkerId(workerID)
   });
   if (loading) return <p>Cargando...</p>;
@@ -23,7 +23,7 @@ function ContainerWorker({workerID}: Props) {
         <Button variant='contained' size='medium' sx={{ maxWidth: "10rem" }}>Nuevo contrato</Button>
       </div>
       {contractsList.length>0?
-        <TableContracts contracts={contractsList}/>
+        <TableContracts contracts={contractsList} fetchData={fetchData}/>
         :
         <p>
           Aun no tienes ningun contrato

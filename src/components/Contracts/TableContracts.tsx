@@ -1,10 +1,15 @@
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Chip, Box } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Chip, Box, Dialog, DialogTitle, IconButton } from "@mui/material";
 import { Visibility, CheckCircle, Cancel } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
+import FormContract from "./FormContract";
+import { useState } from "react";
+
 
 interface Props {
   contracts: ContractWithClientAndWorker[]
+  fetchData: () => void
 }
 
 const getChipColor = (estado: string) => {
@@ -20,7 +25,10 @@ const getChipColor = (estado: string) => {
   }
 };
 
-const TablaTrabajos = ({contracts}: Props) => {
+const TablaTrabajos = ({contracts, fetchData}: Props) => {
+  const [open, setOpen] = useState(false);
+  const closeForm = () => setOpen(false);
+  const [currentContract, setCurrentContract] = useState<ContractWithClientAndWorker>(contracts[0])
   return (
     <TableContainer component={Paper} className="p-4 overflow-x-auto w-full">
       <Table>
@@ -44,7 +52,7 @@ const TablaTrabajos = ({contracts}: Props) => {
               </TableCell>
               <TableCell>
                 <Box className="flex flex-wrap gap-2">
-                  <Button variant="outlined" startIcon={<Visibility />} size="small" className="!min-w-32">
+                  <Button onClick={() => {setOpen(true); setCurrentContract(contract)}} variant="outlined" startIcon={<Visibility />} size="small" className="!min-w-32">
                     Ver Contrato
                   </Button>
                   {contract.status === "pendiente" && (
@@ -63,6 +71,21 @@ const TablaTrabajos = ({contracts}: Props) => {
           ))}
         </TableBody>
       </Table>
+
+      <Dialog maxWidth="lg" fullWidth open={open} onClose={closeForm}>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+          Solicitud de contrato
+          <IconButton onClick={closeForm}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <FormContract closeForm={closeForm}
+          userID={currentContract.user_id}
+          workerID={currentContract.trabajador_id}
+          fetchContracts={fetchData}
+          validate={true}
+          contract={currentContract} />
+      </Dialog>
     </TableContainer>
   );
 };
