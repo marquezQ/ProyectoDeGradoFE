@@ -88,7 +88,7 @@ const ContractPDF: React.FC<{ contract: ContractWithClientAndWorker }> = ({ cont
   const formattedDate = new Date(contract.created_at).toLocaleDateString("es-ES");
 
   return (
-    <Document>
+    <Document title={contract.title}>
       <Page size="A4" style={styles.page}>
         {/* Encabezado */}
         <View style={styles.headerContainer}>

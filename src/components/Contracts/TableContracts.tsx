@@ -1,10 +1,12 @@
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Chip, Box, Dialog, DialogTitle, IconButton } from "@mui/material";
-import { Visibility, CheckCircle, Cancel } from "@mui/icons-material";
+import { Visibility, CheckCircle, Cancel, Edit} from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import FormContract from "./FormContract";
 import { useState } from "react";
+import ContractPDF from "../ContractPDF";
+import { pdf } from "@react-pdf/renderer";
 
 
 interface Props {
@@ -29,6 +31,28 @@ const TablaTrabajos = ({contracts, fetchData}: Props) => {
   const [open, setOpen] = useState(false);
   const closeForm = () => setOpen(false);
   const [currentContract, setCurrentContract] = useState<ContractWithClientAndWorker>(contracts[0])
+
+  const handleViewContract = async (contract: ContractWithClientAndWorker) => {
+    // Crear el PDF
+    const doc = <ContractPDF contract={contract} />;
+    // Generar el blob del PDF
+    const blob = await pdf(doc).toBlob();
+    const url = URL.createObjectURL(blob);
+    
+    // Abrir en nueva ventana
+    const newWindow = window.open(url, '_blank');
+    
+    // Asegurarse de que la URL se revoque cuando la ventana se cierre
+    if (newWindow) {
+      newWindow.onbeforeunload = () => {
+        URL.revokeObjectURL(url);
+      };
+    } else {
+      // Si el navegador bloquea la ventana emergente, mostrar un mensaje
+      alert('Por favor permite ventanas emergentes para este sitio');
+      URL.revokeObjectURL(url);
+    }
+  };
   return (
     <TableContainer component={Paper} className="p-4 overflow-x-auto w-full">
       <Table>
@@ -52,11 +76,14 @@ const TablaTrabajos = ({contracts, fetchData}: Props) => {
               </TableCell>
               <TableCell>
                 <Box className="flex flex-wrap gap-2">
-                  <Button onClick={() => {setOpen(true); setCurrentContract(contract)}} variant="outlined" startIcon={<Visibility />} size="small" className="!min-w-32">
-                    Ver Contrato
+                  <Button onClick={ () => handleViewContract(contract)} variant="outlined" startIcon={<Visibility />} size="small" className="!min-w-32">
+                    Ver PDF
                   </Button>
                   {contract.status === "pendiente" && (
                     <>
+                      <Button onClick={() => { setOpen(true); setCurrentContract(contract) }} variant="outlined" startIcon={<Edit />} size="small" className="!min-w-32">
+                        Editar
+                      </Button>
                       <Button variant="contained" color="success" startIcon={<CheckCircle />} size="small" className="!min-w-32">
                         Aceptar
                       </Button>

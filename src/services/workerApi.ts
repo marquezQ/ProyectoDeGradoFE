@@ -164,3 +164,15 @@ export const updateContract = async (contract: object, id: string) => {
         throw error
     }
 }
+
+export const updateStatuscontract = async (contract: object, id: string) => {
+    try {
+        const response = await axiosInstace.patch(`/contrato/${id}/status`, contract)
+        if(!response.data.message){
+            return response.data.contract
+        }
+    } catch (error) {
+        console.log('error al actualizar status')
+        throw error
+    }
+}
