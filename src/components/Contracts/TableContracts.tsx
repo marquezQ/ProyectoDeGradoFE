@@ -7,6 +7,7 @@ import FormContract from "./FormContract";
 import { useState } from "react";
 import ContractPDF from "../ContractPDF";
 import { pdf } from "@react-pdf/renderer";
+import ModalUpdateStatus from "./ModalUpdateStatus";
 
 
 interface Props {
@@ -20,7 +21,9 @@ const getChipColor = (estado: string) => {
       return "warning";
     case "aceptado":
       return "success";
-    case "en Progreso":
+    case "rechazado":
+      return "error";
+    case "finalizado":
       return "primary";
     default:
       return "default";
@@ -30,6 +33,12 @@ const getChipColor = (estado: string) => {
 const TablaTrabajos = ({contracts, fetchData}: Props) => {
   const [open, setOpen] = useState(false);
   const closeForm = () => setOpen(false);
+
+  const [openStatus, setOpenStatus] = useState(false);
+  const closeStatus = () => setOpenStatus(false);
+  const [status, setStatus] = useState("aceptar");
+  const handleStatus = (status: string) => setStatus(status);
+
   const [currentContract, setCurrentContract] = useState<ContractWithClientAndWorker>(contracts[0])
 
   const handleViewContract = async (contract: ContractWithClientAndWorker) => {
@@ -81,13 +90,16 @@ const TablaTrabajos = ({contracts, fetchData}: Props) => {
                   </Button>
                   {contract.status === "pendiente" && (
                     <>
-                      <Button onClick={() => { setOpen(true); setCurrentContract(contract) }} variant="outlined" startIcon={<Edit />} size="small" className="!min-w-32">
+                      <Button onClick={() => { setOpen(true); setCurrentContract(contract) }} 
+                              variant="outlined" startIcon={<Edit />} size="small" className="!min-w-32">
                         Editar
                       </Button>
-                      <Button variant="contained" color="success" startIcon={<CheckCircle />} size="small" className="!min-w-32">
+                      <Button onClick={() => {setCurrentContract(contract); handleStatus("aceptado"); setOpenStatus(true);}} 
+                              variant="contained" color="success" startIcon={<CheckCircle />} size="small" className="!min-w-32">
                         Aceptar
                       </Button>
-                      <Button variant="contained" color="error" startIcon={<Cancel />} size="small" className="!min-w-32">
+                      <Button onClick={() => {setCurrentContract(contract); handleStatus("rechazado"); setOpenStatus(true);  }} 
+                              variant="contained" color="error" startIcon={<Cancel />} size="small" className="!min-w-32">
                         Rechazar
                       </Button>
                     </>
@@ -112,6 +124,9 @@ const TablaTrabajos = ({contracts, fetchData}: Props) => {
           fetchContracts={fetchData}
           validate={true}
           contract={currentContract} />
+      </Dialog>
+      <Dialog maxWidth="sm" fullWidth open={openStatus} onClose={closeStatus}>
+          <ModalUpdateStatus contract={currentContract} status={status} closeModal={closeStatus} refreshContracts={fetchData}/>
       </Dialog>
     </TableContainer>
   );

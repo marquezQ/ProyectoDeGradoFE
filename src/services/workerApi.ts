@@ -165,9 +165,9 @@ export const updateContract = async (contract: object, id: string) => {
     }
 }
 
-export const updateStatuscontract = async (contract: object, id: string) => {
+export const updateStatuscontract = async (body: object, id: string) => {
     try {
-        const response = await axiosInstace.patch(`/contrato/${id}/status`, contract)
+        const response = await axiosInstace.patch(`/contrato/${id}/status`, body)
         if(!response.data.message){
             return response.data.contract
         }
