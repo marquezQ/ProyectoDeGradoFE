@@ -6,8 +6,6 @@ import { getContractsByWorkerAndClient } from "../../services/workerApi";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { useState } from "react";
 import FormContract from "./FormContract";
-// import ContractForm from "./FormDeepSeek";
-// import FormNewContract from "./FormGPT";
 
 interface Props{
     workerID: string,
@@ -51,13 +49,6 @@ function ContainerClient({workerID, clientID}: Props) {
                 </IconButton>
               </DialogTitle>
               <FormContract closeForm={closeForm} userID={clientID} workerID={workerID} fetchContracts={fetchData} validate={false}/>
-              {/* <ContractForm
-                workerID="123"
-                userID="456"
-                onSubmitSuccess={() => console.log("Éxito")}
-                onCancel={() => console.log("Cancelado")}
-              /> */}
-            {/* <FormNewContract closeForm={closeForm} trabajadorID="1" fetchContracts={()=>console.log("fetch")}/>   */}
             </Dialog>
           </div>
         );

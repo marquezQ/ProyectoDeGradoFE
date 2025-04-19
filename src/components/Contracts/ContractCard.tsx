@@ -3,7 +3,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { pdf } from "@react-pdf/renderer";
 import ContractPDF from "../ContractPDF";
-
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import DeleteIcon from '@mui/icons-material/Delete';
 interface Props {
   contract: ContractWithClientAndWorker;
 }
@@ -35,24 +36,66 @@ const ContractCard = ({ contract }: Props) => {
       URL.revokeObjectURL(url);
     }
   };
-
+  const canDelete =
+    ["pendiente", "rechazado"].includes(contract.status.toLowerCase());
   return (
-    <div className="flex items-center justify-between p-4 border rounded-lg shadow-md bg-white">
-      <div className="flex items-center space-x-3">
-        <PictureAsPdfIcon fontSize="large" className="text-brown-500" />
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border rounded-lg shadow-md bg-white max-w-5xl mx-auto">
+      {/* Info del contrato */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">{contract.title}</h3>
-          <p className="text-sm text-gray-600">Haz clic para ver el contrato</p>
+          <h3 className="text-lg font-semibold text-gray-800">            {contract.title}
+            </h3>
+          <p className="text-sm text-gray-500">Fecha de inicio: {new Date(contract.start_date).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-500">Fecha de finalización: {new Date(contract.end_date).toLocaleDateString()}</p>
+
           <p className={`font-medium ${statusColors[contract.status.toLowerCase()] || "text-gray-500"}`}>
             {contract.status}
           </p>
         </div>
       </div>
-      <div className="flex flex-col space-y-2">
-        <Button variant="outlined" size="small"  onClick={handleViewContract}>Ver Contrato</Button>
-        <Button variant="contained" size="small" className="bg-brown-500 hover:bg-brown-600">
-          Hacer reseña
+
+      {/* Botones */}
+      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+        <Button
+          sx={{ minWidth: 180 }}
+          variant="outlined"
+          onClick={handleViewContract}
+          startIcon={<PictureAsPdfIcon />}
+          
+        >
+          Ver Contrato
         </Button>
+        {contract.status.toLowerCase() === "aceptado" &&
+          new Date(contract.end_date) < new Date() && (
+            <Button
+              sx={{ 
+              minWidth: 180,
+              animation: 'pulse 2s ease-in-out infinite',
+              '@keyframes pulse': {
+                '0%, 100%': {
+                  transform: 'scale(1.2)',
+                },
+                '50%': {
+                  transform: 'scale(1.08)',
+                },
+              },
+               }}
+              variant="contained"
+              className="bg-brown-500 hover:bg-brown-600"
+              startIcon={<RateReviewIcon />}
+            >
+              Hacer Reseña
+            </Button>
+          )}
+          {canDelete && 
+             <Button
+             sx={{ minWidth: 180 }}
+             variant="outlined"
+             startIcon={<DeleteIcon />}
+           >
+             Eliminar
+           </Button>
+          }
       </div>
     </div>
   );
