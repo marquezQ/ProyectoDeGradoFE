@@ -1,15 +1,20 @@
-import { Button } from "@mui/material";
+import { Button, Dialog, DialogTitle, IconButton } from "@mui/material";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { pdf } from "@react-pdf/renderer";
 import ContractPDF from "../ContractPDF";
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
+import FormNewResenia from "../Resenias/FormNewResenia";
 interface Props {
   contract: ContractWithClientAndWorker;
 }
 
 const ContractCard = ({ contract }: Props) => {
+  const [open, setOpen] = useState(false);
+  const closeForm = () => setOpen(false);
   const statusColors: Record<string, string> = {
     aceptado: "text-green-500",
     pendiente: "text-yellow-500",
@@ -39,6 +44,7 @@ const ContractCard = ({ contract }: Props) => {
   const canDelete =
     ["pendiente", "rechazado"].includes(contract.status.toLowerCase());
   return (
+    <>
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border rounded-lg shadow-md bg-white max-w-5xl mx-auto">
       {/* Info del contrato */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
@@ -83,6 +89,7 @@ const ContractCard = ({ contract }: Props) => {
               variant="contained"
               className="bg-brown-500 hover:bg-brown-600"
               startIcon={<RateReviewIcon />}
+              onClick={()=>setOpen(true)}
             >
               Hacer Reseña
             </Button>
@@ -98,6 +105,16 @@ const ContractCard = ({ contract }: Props) => {
           }
       </div>
     </div>
+    <Dialog maxWidth="sm" fullWidth open={open} onClose={closeForm}>
+      <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+        Deja tu reseña
+        <IconButton onClick={closeForm}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <FormNewResenia contractID={contract.id} closeForm={closeForm}/>
+    </Dialog>
+    </>
   );
 };
 

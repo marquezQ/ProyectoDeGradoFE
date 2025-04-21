@@ -117,6 +117,18 @@ export const getReviewsByWorkerId = async (id: string) => {
     }
 }
 
+export const createReview = async (resenia: object) => {
+    try {
+        const response = await axiosInstace.post(`/resenia`, resenia);
+        if(!response.data.message){
+            return response.data.reseña
+        }
+    } catch (error) {
+        console.log("error al crear reseña")
+        throw error
+    }
+}
+
 export const getContractsByWorkerId = async (id: string) => {
     try {
         const response = await axiosInstace.get(`/contrato/${id}`)
