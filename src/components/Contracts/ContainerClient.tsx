@@ -23,7 +23,7 @@ function ContainerClient({workerID, clientID}: Props) {
     // if (contractsList?.length === 0) return <p>Aun no tienes contratos con este carpintero</p>
     if (contractsList)
         return (
-          <div className="p-4 space-y-6">
+          <div className="p-4 space-y-6 max-w-6xl mx-auto">
             <div className='flex flex-col sm:flex-row justify-start sm:justify-between'>
               <Typography variant="h6" className="font-bold">
                 Tus contratos con este carpintero
@@ -36,7 +36,7 @@ function ContainerClient({workerID, clientID}: Props) {
             {contractsList.length>0?
             contractsList.map((contract, index) => (
               <div key={index}>
-                <ContractCard contract={contract}/>
+                <ContractCard contract={contract} reload={fetchData}/>
               </div>
             )):
             <p>No existen contratos realizados con este carpintero</p>}

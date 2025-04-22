@@ -188,3 +188,15 @@ export const updateStatuscontract = async (body: object, id: string) => {
         throw error
     }
 }
+
+export const deleteContract = async (id: string) => {
+    try {
+        const response = await axiosInstace.delete(`/contrato/${id}`);
+        if(response.data.status === 200){
+            return true
+        }
+    } catch (error) {
+        console.log("error al eliminar contrato");
+        throw error
+    }
+}

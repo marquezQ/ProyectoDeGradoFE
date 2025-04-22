@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogTitle, IconButton } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { pdf } from "@react-pdf/renderer";
@@ -7,14 +7,20 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-import FormNewResenia from "../Resenias/FormNewResenia";
+import FormNewReview from "../Reviews/FormNewResenia";
+import Swal from "sweetalert2";
+import { deleteContract } from "../../services/workerApi";
 interface Props {
   contract: ContractWithClientAndWorker;
+  reload: () => void;
 }
 
-const ContractCard = ({ contract }: Props) => {
+const ContractCard = ({ contract, reload }: Props) => {
   const [open, setOpen] = useState(false);
   const closeForm = () => setOpen(false);
+
+  const [openDelete, setopenDelete] = useState(false);
+  const closeDelete = () => setopenDelete(false);
   const statusColors: Record<string, string> = {
     aceptado: "text-green-500",
     pendiente: "text-yellow-500",
@@ -41,11 +47,33 @@ const ContractCard = ({ contract }: Props) => {
       URL.revokeObjectURL(url);
     }
   };
-  const canDelete =
-    ["pendiente", "rechazado"].includes(contract.status.toLowerCase());
+  const canDelete = ["pendiente", "rechazado"].includes(contract.status.toLowerCase());
+
+  const handleDelete = async () => {
+    try {
+      await deleteContract(contract.id);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Eliminado con éxito",
+        showConfirmButton: false,
+        timer: 1500,
+    });
+    reload();
+    } catch {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Ocurrio un error:",
+        showConfirmButton: false,
+        timer: 1500,
+    });
+    }
+    closeDelete();
+  };
   return (
     <>
-    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border rounded-lg shadow-md bg-white max-w-5xl mx-auto">
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border rounded-lg shadow-md bg-white">
       {/* Info del contrato */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
         <div>
@@ -96,6 +124,7 @@ const ContractCard = ({ contract }: Props) => {
           )}
           {canDelete && 
              <Button
+             onClick={() => setopenDelete(true)}
              sx={{ minWidth: 180 }}
              variant="outlined"
              startIcon={<DeleteIcon />}
@@ -112,7 +141,27 @@ const ContractCard = ({ contract }: Props) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <FormNewResenia contractID={contract.id} closeForm={closeForm}/>
+      <FormNewReview contractID={contract.id} closeForm={closeForm}/>
+    </Dialog>
+
+    <Dialog open={openDelete} onClose={closeDelete} maxWidth="sm" fullWidth>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+          Confirmación
+          <IconButton onClick={closeDelete}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <Typography>¿Estás seguro de que quieres eliminar esta solicitud de contrato?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDelete} variant="outlined">
+            Cancelar
+          </Button>
+          <Button onClick={handleDelete} variant="contained">
+            Eliminar
+          </Button>
+        </DialogActions>
     </Dialog>
     </>
   );

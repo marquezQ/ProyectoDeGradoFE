@@ -37,7 +37,7 @@ price: Yup.number()
   .moreThan(0, 'Debes calificar el precio.'),
 });
 
-const FormNewResenia = ({contractID, closeForm}: Props) => {
+const FormNewReview = ({contractID, closeForm}: Props) => {
   const [imagen, setImagen] = useState<ReviewImages>([]);
 
   const formik = useFormik({
@@ -249,4 +249,4 @@ const FormNewResenia = ({contractID, closeForm}: Props) => {
   );
 };
 
-export default FormNewResenia;
+export default FormNewReview;
