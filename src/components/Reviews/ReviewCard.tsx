@@ -2,6 +2,7 @@ import { Avatar, Button, Dialog, DialogTitle, IconButton, Rating } from "@mui/ma
 import { Review } from "../../Interfaces/ReviewInterface"
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
+import DetailsReview from "./DetailsReview";
 interface Props {
     review: Review
 }
@@ -67,14 +68,33 @@ function ReviewCard({review}: Props) {
                     </Button>
                 </div>
             </div>
-            <Dialog maxWidth="lg" fullWidth open={openModal} onClose={closeModal}>
-                <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
-                    Detalle de reseña
-                    <IconButton onClick={closeModal}>
+            <Dialog maxWidth="md" fullWidth open={openModal} onClose={closeModal} 
+            sx={{
+                '& .MuiDialog-paper': {
+                  margin: { xs: 0, sm: '32px' }, // Sin margen en móvil, 32px en desktop
+                  maxHeight: { xs: '100vh', sm: '95vh' }, // Altura completa en móvil
+                  width: { xs: '100%', sm: 'auto' }, // Ancho completo en móvil
+                  borderRadius: { xs: 0, sm: '4px' }, // Sin bordes redondeados en móvil
+                  overflowY: 'auto'
+                }
+              }}>
+                <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom:0 }}>
+                    <div className="flex items-center gap-4 mb-4">
+                        <Avatar src={review.contrato.user.profile_picture || undefined} alt={review.contrato.user.name}
+                                sx={{width:"3.5rem", height:"3.5rem", objectFit:"cover"}}
+                        />
+                        <div>
+                            <p className="text-lg font-semibold text-gray-800">{review.contrato.user.name+" "+review.contrato.user.lastname}</p>
+                            {review.recommend && (
+                                <p className="text-sm text-green-600 font-semibold">¡Lo recomienda!</p>
+                            )}
+                        </div>
+                    </div>
+                    <IconButton onClick={closeModal} sx={{position:"absolute", top:10, right:10}}>
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
-                //aqui
+                <DetailsReview review={review}/>
             </Dialog>
         </div>
     )
