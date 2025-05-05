@@ -97,7 +97,7 @@ const CarpenterProfile = () => {
           </div>
         </div>
         {/* Contenido de cada Tab */}
-        <div className="mx-auto max-w-screen-2xl w-full mt-6 h-auto">
+        <div className="mx-auto max-w-screen-xl w-full mt-6 h-auto">
           {tabValue === 0 && (
             <AboutMeWorker worker={worker}/>
           )}

@@ -14,7 +14,6 @@ function DetailsReview({ review }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  // Auto-play configuration
   useEffect(() => {
     if (images.length <= 1 || !isAutoPlaying) return;
 
@@ -23,7 +22,7 @@ function DetailsReview({ review }: Props) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [images.length, isAutoPlaying, currentIndex]);
+  }, [images.length, isAutoPlaying]);
 
   const handlePrev = () => {
     setIsAutoPlaying(false);
@@ -43,17 +42,13 @@ function DetailsReview({ review }: Props) {
   if (images.length === 0) return null;
 
   return (
-    <div className="w-full mx-auto bg-white">
-      {/* Carrusel optimizado para móvil */}
-      <div className="relative w-full overflow-hidden mb-6">
-        {/* Contenedor del carrusel con altura dinámica */}
-        <div 
-          className="w-full"
-          style={{
-            height: isMobile ? 'calc(100vw * 0.8)' : '400px',
-            maxHeight: isMobile ? 'none' : '60vh'
-          }}
-        >
+    <div className="bg-white">
+      <div className="relative w-full" style={{ backgroundColor: '#f5f5f5' }}>
+        <div style={{
+          height: isMobile ? '300px' : '400px',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
           {images.map((image, index) => (
             <div
               key={index}
@@ -63,17 +58,11 @@ function DetailsReview({ review }: Props) {
             >
               <img
                 src={image}
-                alt={`Reseña ${index + 1}`}
+                alt={`Imagen ${index + 1}`}
                 className="w-full h-full object-contain"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.onerror = null;
                   target.src = "https://via.placeholder.com/800x600?text=Imagen+no+disponible";
-                }}
-                style={{
-                  objectFit: 'contain',
-                  width: '100%',
-                  height: '100%'
                 }}
               />
             </div>
@@ -82,31 +71,26 @@ function DetailsReview({ review }: Props) {
           {images.length > 1 && (
             <>
               <button
-                className="absolute left-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 p-2 rounded-full shadow hover:bg-opacity-100 z-10 transition-all hover:scale-110"
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-md hover:bg-white transition-all"
                 onClick={handlePrev}
-                aria-label="Imagen anterior"
               >
-                <ArrowBackIos fontSize={isMobile ? "medium" : "large"} />
+                <ArrowBackIos sx={{ fontSize: isMobile ? 20 : 24 }} />
               </button>
               <button
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 p-2 rounded-full shadow hover:bg-opacity-100 z-10 transition-all hover:scale-110"
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 p-2 rounded-full shadow-md hover:bg-white transition-all"
                 onClick={handleNext}
-                aria-label="Imagen siguiente"
               >
-                <ArrowForwardIos fontSize={isMobile ? "medium" : "large"} />
+                <ArrowForwardIos sx={{ fontSize: isMobile ? 20 : 24 }} />
               </button>
 
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                 {images.map((_, index) => (
                   <button
                     key={index}
-                    className={`w-3 h-3 rounded-full transition-all ${
-                      index === currentIndex
-                        ? "bg-gray-800 scale-125"
-                        : "bg-gray-400 hover:bg-gray-600"
-                    }`}
                     onClick={() => goToImage(index)}
-                    aria-label={`Ir a imagen ${index + 1}`}
+                    className={`w-2.5 h-2.5 rounded-full transition-all ${
+                      index === currentIndex ? "bg-[#654b43] scale-125" : "bg-gray-400 hover:bg-gray-600"
+                    }`}
                   />
                 ))}
               </div>
@@ -115,34 +99,38 @@ function DetailsReview({ review }: Props) {
         </div>
       </div>
 
-      {/* Ratings - Versión responsiva mejorada */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6 px-4 sm:px-6">
-        {[
-          { label: "Puntualidad", value: review.calificacion.time },
-          { label: "Calidad", value: review.calificacion.quality },
-          { label: "Comunicación", value: review.calificacion.communication },
-          { label: "Precio", value: review.calificacion.price },
-        ].map((item) => (
-          <div key={item.label} className="flex items-center gap-2">
-            <span className="font-medium text-sm min-w-[110px]">{item.label}:</span>
-            <Rating 
-              value={item.value} 
-              readOnly 
-              size={isMobile ? "small" : "medium"}
-              sx={{
-                '& .MuiRating-iconFilled': {
-                  color: '#fbbf24',
-                },
-              }}
-            />
-          </div>
-        ))}
-      </div>
+      <div className="p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+  {[
+    { label: "Puntualidad", value: review.calificacion.time },
+    { label: "Calidad", value: review.calificacion.quality },
+    { label: "Comunicación", value: review.calificacion.communication },
+    { label: "Precio", value: review.calificacion.price }
+  ].map((item) => (
+    <div key={item.label} className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+      <span className="text-gray-700 font-medium min-w-[100px]">{item.label}:</span>
+      <Rating
+        value={item.value}
+        readOnly
+        size={isMobile ? "small" : "medium"}
+        sx={{
+          '& .MuiRating-iconFilled': {
+            color: '#fbbf24',
+          },
+          '& .MuiRating-icon': {
+            fontSize: isMobile ? '1.25rem' : '1.5rem', // Ajuste fino del tamaño
+          },
+        }}
+      />
+    </div>
+  ))}
+</div>
 
-      {/* Comment */}
-      <div className="px-4 sm:px-6 pb-6">
-        <p className="font-semibold mb-2 text-gray-800">Comentario:</p>
-        <p className="text-gray-700 whitespace-pre-line">{review.comment}</p>
+
+        <div className="border-t pt-4">
+          <h4 className="font-semibold text-gray-800 mb-2">Comentario:</h4>
+          <p className="text-gray-600 whitespace-pre-line">{review.comment}</p>
+        </div>
       </div>
     </div>
   );

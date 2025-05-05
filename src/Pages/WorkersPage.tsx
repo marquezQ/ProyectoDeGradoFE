@@ -11,7 +11,7 @@ function WorkersPage() {
     if (error) return <p>ocurrio un error</p>;
   return (
     <>
-    <div className="mx-auto max-w-screen-2xl p-4 sm:p-14 space-y-8 sm:space-y-14">
+    <div className="mx-auto max-w-screen-xl p-4 sm:pt-14 space-y-8 sm:space-y-14">
             {workerList && workerList.map((worker) => (
                 <CarpinterCard worker={worker} key={worker.user_id}/>
             ))}

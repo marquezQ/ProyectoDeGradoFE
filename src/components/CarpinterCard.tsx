@@ -30,7 +30,7 @@ function CarpinterCard({worker}: props) {
               {worker.user.name + " " + worker.user.lastname}
             </Typography>
           </div>
-          <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex flex-col lg:flex-row items-center md:items-start">
             <div className="flex items-center">
               <Typography variant="h6" className="font-bold">{worker.averageRating}</Typography>
               <Rating
