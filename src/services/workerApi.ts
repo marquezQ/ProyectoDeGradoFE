@@ -21,6 +21,15 @@ export const registerWorker = async (worker: object) => {
         throw error;
     }
 }
+export const updateInfoWorker = async (worker: object, id: string) => {
+    try {
+        const response = await axiosInstace.patch(`/trabajador/${id}/info`, worker)
+        return response.data
+    } catch (error) {
+        console.log("error al editar info trabajador", error);
+        throw error;
+    }
+}
 
 export const isWorker = async (id: number) => {
     try {

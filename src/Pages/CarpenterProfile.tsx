@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Tabs, Tab, Typography, Box, Button, Rating } from "@mui/material";
+import { Avatar, Tabs, Tab, Typography, Box, Button, Rating, Dialog, DialogTitle, IconButton } from "@mui/material";
 import { WhatsApp, Phone } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
 import { getWorkerData } from "../services/workerApi";
@@ -9,16 +9,24 @@ import AboutMeWorker from "../components/AboutMeWorker";
 import ReviewTab from "../components/Reviews/ReviewTab";
 import ProductsTab from "../components/Products/ProductsTab";
 import ContractTab from "../components/Contracts/ContractTab";
+import { useAuthContext } from "../hooks/useAuthContext";
+import CloseIcon from "@mui/icons-material/Close";
+import EditCarpenter from "../components/Profiles/EditCarpenter";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
   const location = useLocation();
   
   const lastSegment = location.pathname.split("/").pop() || "";
-  const { data: worker, loading, error } = useFetchData<Worker>({
+  const { data: worker, loading, error, fetchData } = useFetchData<Worker>({
     apiFunction: () => getWorkerData(lastSegment)
   });
-  
+
+  const { worker: workerLogged } = useAuthContext();
+  const isOwner = workerLogged?.id.toString() == lastSegment;
+
+  const [showEdit, setShowEdit] = useState(false);
+  const closeEdit = () => setShowEdit(false);
   // Manejador de cambio de tabs
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -73,6 +81,14 @@ const CarpenterProfile = () => {
           <Typography variant="body2" className="ml-2 text-gray-600">
             {worker.averageRating+" ("+worker.totalReviews+" reseñas)"}
           </Typography>
+        </div>
+        
+        <div className="flex items-center mt-2">
+          {isOwner && 
+          <Button variant="contained" onClick={()=> setShowEdit(true)}>
+            Editar Perfil
+          </Button>
+          }
         </div>
 
         {/* Tabs */}
@@ -132,6 +148,15 @@ const CarpenterProfile = () => {
             Llamar
           </Button>
         </div>
+        <Dialog maxWidth="md" fullWidth open={showEdit} onClose={closeEdit}>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+          Editar Perfil
+          <IconButton onClick={closeEdit}>
+              <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+          <EditCarpenter worker={worker} closeModal={closeEdit} reload={fetchData}/>
+      </Dialog>
       </div>
     </div>
   );}

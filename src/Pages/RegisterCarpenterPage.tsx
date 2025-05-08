@@ -1,21 +1,20 @@
-import { Button, Box, Typography, TextField } from "@mui/material";
+import { Button, Box, Typography, TextField, useMediaQuery, Theme } from "@mui/material";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
-import { AccountCircle } from "@mui/icons-material";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { useAuthContext } from "../hooks/useAuthContext";
-import MapWithLocation from "./exampleMap"; // Componente del mapa
+import MapWithLocation from "./exampleMap";
 import { ChangeEvent } from "react";
 import { registerWorker } from "../services/workerApi";
 import { useNavigate } from "react-router-dom";
 
-// Tipo para manejar las imágenes subidas
 type ProfileImages = File[];
 
 function RegisterCarpenterPage() {
   const { user, setWorker } = useAuthContext();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
   const formik = useFormik({
     initialValues: {
@@ -49,7 +48,7 @@ function RegisterCarpenterPage() {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate('/workers'); //añadir ruta del perfil del carpintero cuando ya se tenga
+        navigate('/workers');
       } catch (error) {
         Swal.fire({
           position: "center",
@@ -85,143 +84,189 @@ function RegisterCarpenterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <form
+    <Box display="flex" justifyContent="center" className="p-3 sm:p-6">
+      <Box
+        component="form"
         onSubmit={formik.handleSubmit}
-        className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-auto border-2"
+        display="flex"
+        flexDirection="column"
+        gap={4}
+        // bgcolor="white"
+        boxShadow={3}
+        borderRadius={2}
+        className="p-3 sm:p-6"
+        width="100%"
+        maxWidth="1200px"
+        border="2px solid"
+        borderColor="divider"
       >
         <Box textAlign="center" mb={2}>
           <Typography variant="h4" component="h1" fontWeight="bold" color="primary.main">
             Registro de Carpintero
           </Typography>
-          <AccountCircle sx={{ fontSize: 64, color: "primary.main", mt: 1 }} />
         </Box>
 
-        <TextField
-          label="Descripción"
-          name="description"
-          multiline
-          rows={3}
-          fullWidth
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.description && Boolean(formik.errors.description)}
-          helperText={formik.touched.description && formik.errors.description}
-        />
-        <TextField
-          label="Cargo o especialidad"
-          name="workshop"
-          placeholder="Carpintero Ebanista, Taller de carpintería ABC..."
-          fullWidth
-          value={formik.values.workshop}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.workshop && Boolean(formik.errors.workshop)}
-          helperText={
-            formik.touched.workshop && formik.errors.workshop
-              ? formik.errors.workshop // Si hay error, muestra el mensaje en rojo
-              : "Escribe tu especialidad o el nombre de tu negocio"
-          }
-        />
-
-        {/* Mapa para seleccionar ubicación */}
-        <Box mt={2}>
-          <Typography variant="h6" color="primary">
-            Selecciona tu ubicación en el mapa:
-          </Typography>
-          <MapWithLocation
-            onLocationSelect={(lat, lng) => {
-              formik.setFieldValue("latitude", lat);
-              formik.setFieldValue("longitude", lng);
-            }}
-          />
-        </Box>
-        <TextField
-          label="Descripción de la dirección (Opcional)"
-          name="address"
-          fullWidth
-          value={formik.values.address}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.address && Boolean(formik.errors.address)}
-          helperText={formik.touched.address && formik.errors.address}
-        />
-
-        {/* Subir Imágenes */}
-        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 2,
-              justifyContent: "center",
-            }}
-          >
-            {formik.values.profileImages.map((image, index) => (
-              <Box
-                key={index}
-                sx={{
-                  position: "relative",
-                  width: 100,
-                  height: 100,
-                  borderRadius: "10%",
-                  border: "1px solid #ccc",
-                  overflow: "hidden",
-                }}
-              >
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt={`Imagen ${index + 1}`}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-                <HighlightOffOutlinedIcon
-                  sx={{
-                    position: "absolute",
-                    top: 4,
-                    right: 4,
-                    color: "white",
-                    cursor: "pointer",
-                    "&:hover": { color: "gray" },
-                  }}
-                  onClick={() => handleRemoveImage(index)}
-                />
-              </Box>
-            ))}
-          </Box>
-          {/* Mensaje de error si no hay imágenes */}
-          <Typography color="error">
-            {typeof formik.errors.profileImages === "string"
-              ? formik.errors.profileImages
-              : Array.isArray(formik.errors.profileImages)
-                ? formik.errors.profileImages.join(", ") // Convierte el array en un string separado por comas
-                : ""}
-          </Typography>
-
-          <Button
-            variant="contained"
-            component="label"
-            color="primary"
-            disabled={formik.values.profileImages.length >= 5} // Deshabilitar si hay 5 imágenes
-          >
-            Subir Imágenes
-            <input
-              type="file"
-              accept="image/*"
-              hidden
-              multiple
-              onChange={handleImageUpload}
+        {/* Contenedor de dos columnas */}
+        <Box 
+          display="flex" 
+          flexDirection={isMobile ? "column" : "row"} 
+          gap={4}
+          width="100%"
+        >
+          {/* Columna izquierda - Información */}
+          <Box flex={1}>
+            <Typography variant="h5" component="h2" color="primary" gutterBottom mb={3}>
+              Información
+            </Typography>
+            
+            <TextField
+              label="Descripción"
+              name="description"
+              multiline
+              rows={isMobile ? 3 : 6}
+              fullWidth
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.description && Boolean(formik.errors.description)}
+              helperText={formik.touched.description && formik.errors.description}
+              sx={{ mb: 3 }}
             />
-          </Button>
+
+            <TextField
+              label="Especialidad o nombre de tu taller"
+              name="workshop"
+              placeholder="Carpintero Ebanista, Taller de carpintería ABC..."
+              fullWidth
+              value={formik.values.workshop}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.workshop && Boolean(formik.errors.workshop)}
+              helperText={
+                formik.touched.workshop && formik.errors.workshop
+                  ? formik.errors.workshop
+                  : "Escribe tu especialidad o el nombre de tu negocio"
+              }
+              sx={{ mb: 3 }}
+            />
+
+            <TextField
+              label="Descripción de la dirección (Opcional)"
+              name="address"
+              fullWidth
+              value={formik.values.address}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.address && Boolean(formik.errors.address)}
+              helperText={formik.touched.address && formik.errors.address}
+            />
+          </Box>
+
+          {/* Columna derecha - Ubicación */}
+          <Box flex={1}>
+            <Typography variant="h5" component="h2" color="primary" gutterBottom mb={3}>
+              Ubicación del Taller
+            </Typography>
+            
+            <Box 
+              sx={{ 
+                height: isMobile ? '300px' : '100%',
+                minHeight: '400px',
+                width: '100%',
+                mb: 3
+              }}
+            >
+              <MapWithLocation
+                onLocationSelect={(lat, lng) => {
+                  formik.setFieldValue("latitude", lat);
+                  formik.setFieldValue("longitude", lng);
+                }}
+              />
+            </Box>
+          </Box>
         </Box>
 
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        {/* Sección de imágenes */}
+        <Box width="100%">
+          <Typography variant="h5" component="h2" color="primary" gutterBottom mb={2}>
+            Imágenes de tus trabajos
+          </Typography>
+          
+          <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 2,
+                justifyContent: "center",
+              }}
+            >
+              {formik.values.profileImages.map((image, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    position: "relative",
+                    width: 140,
+                    height: 140,
+                    borderRadius: "10%",
+                    border: "1px solid #ccc",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`Imagen ${index + 1}`}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  <HighlightOffOutlinedIcon
+                    sx={{
+                      position: "absolute",
+                      top: 4,
+                      right: 4,
+                      color: "white",
+                      cursor: "pointer",
+                      "&:hover": { color: "gray" },
+                    }}
+                    onClick={() => handleRemoveImage(index)}
+                  />
+                </Box>
+              ))}
+            </Box>
+            
+            <Typography color="error">
+              {typeof formik.errors.profileImages === "string"
+                ? formik.errors.profileImages
+                : Array.isArray(formik.errors.profileImages)
+                  ? formik.errors.profileImages.join(", ")
+                  : ""}
+            </Typography>
+
+            <Button
+              variant="contained"
+              component="label"
+              color="primary"
+              disabled={formik.values.profileImages.length >= 5}
+            >
+              Subir Imágenes
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                multiple
+                onChange={handleImageUpload}
+              />
+            </Button>
+          </Box>
+        </Box>
+
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 4 }}>
           Registrarse
         </Button>
-      </form>
-    </div>
+      </Box>
+    </Box>
   );
 }
+
 export default RegisterCarpenterPage;
 
 const validationSchema = Yup.object({

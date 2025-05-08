@@ -28,7 +28,7 @@ function AboutMeWorker({ worker }: workerProps) {
       <Typography variant="h6" className="font-bold mb-2">
         Sobre mí
       </Typography>
-      <Typography variant="body1" className="text-gray-600">
+      <Typography variant="body1" className="text-gray-600 break-words">
         {worker.description}
       </Typography>
       <div className="mt-4">
