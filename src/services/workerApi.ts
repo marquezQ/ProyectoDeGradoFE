@@ -30,6 +30,15 @@ export const updateInfoWorker = async (worker: object, id: string) => {
         throw error;
     }
 }
+export const updateImagesWorker = async (worker: object, id: string) => {
+    try {
+        const response = await axiosInstace.post(`/trabajador/${id}/images`, worker)
+        return response.data
+    } catch (error) {
+        console.log("error al editar imagenes trabajador", error);
+        throw error;
+    }
+}
 
 export const isWorker = async (id: number) => {
     try {

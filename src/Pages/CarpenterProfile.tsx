@@ -12,6 +12,7 @@ import ContractTab from "../components/Contracts/ContractTab";
 import { useAuthContext } from "../hooks/useAuthContext";
 import CloseIcon from "@mui/icons-material/Close";
 import EditCarpenter from "../components/Profiles/EditCarpenter";
+import ImageEditForm from "../components/Profiles/EditImagesCarpenter";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -27,6 +28,9 @@ const CarpenterProfile = () => {
 
   const [showEdit, setShowEdit] = useState(false);
   const closeEdit = () => setShowEdit(false);
+
+  const [showEditImages, setShowEditImages] = useState(false);
+  const closeEditImages = () => setShowEditImages(false);
   // Manejador de cambio de tabs
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -83,11 +87,16 @@ const CarpenterProfile = () => {
           </Typography>
         </div>
         
-        <div className="flex items-center mt-2">
+        <div className="flex items-center mt-2 gap-2">
           {isOwner && 
+          <>
           <Button variant="contained" onClick={()=> setShowEdit(true)}>
-            Editar Perfil
+            Editar Información
           </Button>
+          <Button variant="contained" onClick={()=> setShowEditImages(true)}>
+            Editar Imágenes
+          </Button>
+          </>
           }
         </div>
 
@@ -156,6 +165,17 @@ const CarpenterProfile = () => {
           </IconButton>
         </DialogTitle>
           <EditCarpenter worker={worker} closeModal={closeEdit} reload={fetchData}/>
+      </Dialog>
+
+      <Dialog maxWidth="md" fullWidth open={showEditImages} onClose={closeEditImages}>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+          Editar Imagenes
+          <IconButton onClick={closeEditImages}>
+              <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+          <ImageEditForm worker={worker} closeForm={closeEditImages}/>
+          {/* <EditCarpenterImages worker={worker}/> */}
       </Dialog>
       </div>
     </div>

@@ -30,7 +30,6 @@ const validationSchema = Yup.object({
 });
 
 function EditCarpenter({ worker, closeModal, reload }: EditCarpenterPageProps) {
-  // const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
