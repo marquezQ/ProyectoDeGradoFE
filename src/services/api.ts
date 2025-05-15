@@ -28,3 +28,13 @@ export const getUserData = async () => {
         console.log("error al recuperar data del usuario", error);
     }
 }
+
+export const getUser = async (id: string) => {
+    try {
+        const response = await axiosInstace.get(`/user/${id}`);
+        return response.data.datos
+    } catch (error) {
+        console.log("error al recuperar al usuario");
+        throw error
+    }
+}

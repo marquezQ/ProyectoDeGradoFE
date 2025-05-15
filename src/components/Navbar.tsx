@@ -42,7 +42,9 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <>
-                <p className="text-sm font-medium">{user.name} {user.lastname}</p>
+                <Link to={`/user/${user.id}`}>
+                  <p className="text-sm font-medium">{user.name} {user.lastname}</p>
+                </Link>
                 {!worker && (
                   <Link to="/registerCarp">
                     <Button variant="contained" color="secondary">Hazte Carpintero</Button>

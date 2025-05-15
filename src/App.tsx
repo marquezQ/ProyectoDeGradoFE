@@ -9,6 +9,7 @@ import RegisterCarpenterPage from "./Pages/RegisterCarpenterPage";
 // import MapWithLocation from "./Pages/exampleMap";
 import CarpenterProfile from "./Pages/CarpenterProfile";
 import MiniForm from "./Pages/pdf";
+import UserProfile from "./Pages/UserProfile";
 
 function App() {
 
@@ -20,13 +21,13 @@ function App() {
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage/>} />
             <Route path="/workers" element={<WorkersPage/>} />
+            <Route path="/workers/workerProfile/:id" element={<CarpenterProfile/>}/>
             <Route path="/minipdf" element={<MiniForm/>} />
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/registerCarp" element={<RegisterCarpenterPage/>}/>
             {/* <Route path="/example" element={<MapWithLocation/>}/> */}
-            <Route path="/workers/workerProfile/:id" element={<CarpenterProfile/>}/>
-
+            <Route path="/user/:id" element={<UserProfile/>} />
           </Route>
         </Routes>
       </BrowserRouter>
