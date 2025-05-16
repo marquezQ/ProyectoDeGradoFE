@@ -7,6 +7,7 @@ import { Button, Typography, Avatar } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import HandymanIcon from "@mui/icons-material/Handyman";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ContainerReviewProfile from "../components/Reviews/ContainerReviewProfile";
 
 function UserProfile() {
   const location = useLocation();
@@ -21,7 +22,7 @@ function UserProfile() {
 
   const user = data.user;
   return (
-    <div className="w-full flex justify-center p-4">
+    <div className="w-full flex flex-col justify-center items-center p-4">
       <div className="bg-white rounded-xl shadow p-6 max-w-5xl w-full">
         {/* Header */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
@@ -125,7 +126,20 @@ function UserProfile() {
           </Button>
         </div>
       </div>
+      <div className="bg-white rounded-xl shadow p-0 sm:p-4 max-w-5xl w-full mt-8">
+          <Typography
+            variant="h6"
+            className="text-primary my-6 pb-5"
+            color="primary"
+            fontWeight={900}
+          >
+            Reseñas realizadas
+          </Typography>
+        <ContainerReviewProfile userID={userId}/> 
+      </div>
     </div>
+
+    
   );
 }
 

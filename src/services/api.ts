@@ -38,3 +38,15 @@ export const getUser = async (id: string) => {
         throw error
     }
 }
+
+export const getReviewsByUserId = async (id: string) => {
+    try {
+        const response = await axiosInstace.get(`/resenia/user/${id}`)
+        if(!response.data.message){
+            return response.data.reseñas;
+        }
+    } catch (error) {
+        console.log("error en obtener reseñas")
+        throw error
+    }
+}

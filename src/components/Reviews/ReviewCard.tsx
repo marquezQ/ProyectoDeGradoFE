@@ -5,10 +5,25 @@ import { useState } from "react";
 import DetailsReview from "./DetailsReview";
 interface Props {
     review: Review
+    profile?: boolean
 }
-function ReviewCard({review}: Props) {
+
+function ReviewCard({review, profile}: Props) {
+    console.log(review)
+    //aqui tengo esto en mi review.create_at: created_at: "2025-04-29T02:45:53.000000Z"
+    //quiero que lo formatees a formato de fecha en bolivia dia/mes/año y lo coloques asi debajo del nombre del usuario que hace la reseña: Reseña realizada el 15/04/2023
     const [openModal, setOpenModal] = useState(false);
     const closeModal = () => setOpenModal(false);
+
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('es-BO', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    };
+
     return (
         <div className='bg-white shadow-lg border rounded-lg p-3 md:p-6 flex flex-col sm:flex-row sm:justify-between items-start max-w-6xl mx-auto'>
 
@@ -20,7 +35,7 @@ function ReviewCard({review}: Props) {
 
                 /> */}
                 <Avatar
-                    src={review.contrato.user.profile_picture}
+                    src={profile?review.contrato.trabajador.user.profile_picture:review.contrato.user.profile_picture}
                     alt=""
                     sx={{width:"3.5rem", height:"3.5rem", objectFit:"cover"}}
                 />
@@ -28,7 +43,13 @@ function ReviewCard({review}: Props) {
 
             <div className='flex flex-col w-full'>
                 <div className='flex sm:justify-between items-center flex-col sm:flex-row w-full'>
-                    <h3 className="text-lg font-semibold">{review.contrato.user.name+" "+review.contrato.user.lastname}</h3>
+                    <div>
+                        <h3 className="text-lg font-semibold text-center sm:text-start">
+                            {profile?review.contrato.trabajador.user.name+" "+review.contrato.trabajador.user.lastname
+                            :review.contrato.user.name + " " + review.contrato.user.lastname}
+                        </h3>
+                        <p className="text-sm text-gray-500">Reseña realizada el {formatDate(review.created_at)}</p>
+                    </div>
                     <div className="bg-[#654b43] text-white pl-2 rounded-full text-sm font-semibold flex items-center">
                         <span>{review.calificacion.final}</span>
                         <Rating
@@ -41,17 +62,6 @@ function ReviewCard({review}: Props) {
                         />
                     </div>
                 </div>
-
-                {/* <div className='flex flex-col sm:flex-row w-full'>
-                    <div className='w-full sm:w-1/2'>
-                        <p className="text-sm text-gray-700">Puntualidad: <Rating value={review.calificacion.time} readOnly size="small" /></p>
-                        <p className="text-sm text-gray-700">Comunicación: <Rating value={review.calificacion.communication} readOnly size="small" /></p>
-                    </div>
-                    <div className='w-full sm:w-1/2'>
-                        <p className="text-sm text-gray-700">Calidad: <Rating value={review.calificacion.quality} readOnly size="small" /></p>
-                        <p className="text-sm text-gray-700">Precio: <Rating value={review.calificacion.price} readOnly size="small" /></p>
-                    </div>
-                </div> */}
 
                 <div className='flex w-full justify-center sm:justify-start'>
                     <p className="text-sm text-gray-800 mt-2 line-clamp-3">{review.comment}</p>

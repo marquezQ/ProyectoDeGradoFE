@@ -102,7 +102,7 @@ const CarpenterProfile = () => {
 
         {/* Tabs */}
         <div className="w-full">
-          <div className="mx-auto max-w-screen-2xl">
+          <div className="mx-auto max-w-screen-xl">
             <Box className="w-full mt-4">
               <Tabs
                 value={tabValue}

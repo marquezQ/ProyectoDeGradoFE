@@ -1,4 +1,4 @@
-import { ContractWithUser } from "./ContractInterface";
+import { ContractWithClientAndWorker } from "./ContractInterface";
 
 export interface Review {
     id: string,
@@ -7,7 +7,8 @@ export interface Review {
     recommend: boolean,
     images: ReviewImages,
     calificacion: Calification,
-    contrato: ContractWithUser
+    contrato: ContractWithClientAndWorker
+    created_at: string
 }
 
 
