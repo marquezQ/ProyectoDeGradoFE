@@ -3,19 +3,25 @@ import { Link, useLocation } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import { Worker } from "../Interfaces/WorkerInterface";
 import { getUser } from "../services/api";
-import { Button, Typography, Avatar } from "@mui/material";
+import { Button, Typography, Avatar, Dialog, DialogTitle, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import HandymanIcon from "@mui/icons-material/Handyman";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ContainerReviewProfile from "../components/Reviews/ContainerReviewProfile";
+import { useState } from "react";
+import EditUser from "../components/User/EditUser";
 
 function UserProfile() {
   const location = useLocation();
   const userId = location.pathname.split("/").pop() || "";
 
-  const { data, loading, error } = useFetchData<Worker>({
+  const { data, loading, error, fetchData } = useFetchData<Worker>({
     apiFunction: () => getUser(userId),
   });
+
+  const [showEdit, setshowEdit] = useState(false)
+  const closeEdit = () => {setshowEdit(false);};
 
   if (loading) return <div className="text-center mt-10">Cargando...</div>;
   if (error || !data?.user) return <div className="text-center mt-10">El usuario no existe</div>;
@@ -55,6 +61,7 @@ function UserProfile() {
               startIcon={<EditIcon />}
               color="primary"
               sx={{minWidth:"12rem"}}
+              onClick={() => setshowEdit(true)}
             >
               Editar Perfil
             </Button>
@@ -137,6 +144,17 @@ function UserProfile() {
           </Typography>
         <ContainerReviewProfile userID={userId}/> 
       </div>
+      <Dialog maxWidth="sm" fullWidth open={showEdit} onClose={closeEdit}>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+          Editar Perfil
+          <IconButton onClick={closeEdit}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+
+       <EditUser user={user} onCancel={closeEdit} refresh={fetchData} />
+              
+      </Dialog>
     </div>
 
     

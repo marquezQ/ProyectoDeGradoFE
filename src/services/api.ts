@@ -50,3 +50,15 @@ export const getReviewsByUserId = async (id: string) => {
         throw error
     }
 }
+
+export const updateUser = async (user: object, id: string) => {
+    try {
+        const response = await axiosInstace.post(`/user/${id}`, user)
+        if(response.data,user){
+            return response.data.user
+        }
+    } catch (error) {
+        console.log('error al actualizar usuario')
+        throw error
+    }
+}
