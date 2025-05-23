@@ -9,9 +9,6 @@ interface Props {
 }
 
 function ReviewCard({review, profile}: Props) {
-    console.log(review)
-    //aqui tengo esto en mi review.create_at: created_at: "2025-04-29T02:45:53.000000Z"
-    //quiero que lo formatees a formato de fecha en bolivia dia/mes/año y lo coloques asi debajo del nombre del usuario que hace la reseña: Reseña realizada el 15/04/2023
     const [openModal, setOpenModal] = useState(false);
     const closeModal = () => setOpenModal(false);
 

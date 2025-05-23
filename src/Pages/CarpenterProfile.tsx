@@ -35,6 +35,16 @@ const CarpenterProfile = () => {
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
+  const tabStyles = {
+  color: "#4c3a37",
+  '&.Mui-selected': {
+    color: "#fff",
+     backgroundColor: "#4c3a37",
+    border: "5px solid #F4F4F5",
+    borderRadius: "20px",
+  },
+};
+
   const windowWidth = window.innerWidth;
   if(loading){
     return <div>Cargando...</div>
@@ -47,57 +57,63 @@ const CarpenterProfile = () => {
     <div className="h-screen">
       {/* Portada */}
       <div
-        className="relative h-1/2 w-full bg-cover bg-center"
+        className="relative w-full bg-cover bg-center h-2/6 md:h-3/5 lg:h-2/3"
         style={{
           backgroundImage: `url(${worker.images.image1})`,
-          objectFit:"contain"
+          objectFit: "cover"
         }}
       >
-        {/* Imagen de perfil */}
+        {/* Avatar superpuesto */}
         <Avatar
           src={worker.user.profile_picture}
           alt="Profile Picture"
           sx={{
-            width: 220,
-            height: 220,
-            position: "absolute",
-            bottom: -60,
-            left: "50%",
-            transform: "translateX(-50%)",
+            width: 180,
+            height: 200,
             border: "4px solid white",
+            borderRadius: "24px",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+            background: "#fff",
+            position: "absolute",
+            left: "50%",
+            bottom: "-100px", // La mitad del avatar hacia abajo
+            transform: "translateX(-50%)",
+            zIndex: 10
           }}
         />
       </div>
 
       {/* Contenido principal */}
-      <div className="w-full mt-16 flex flex-col items-center px-4">
-        {/* Información básica */}
-        <Typography variant="h5" className="font-bold text-gray-800">
-          {worker.user.name +" "+worker.user.lastname}
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          {worker.workshop}
-        </Typography>
-
-        {/* Rating */}
-        <div className="flex items-center mt-2">
-          <Rating value={worker.averageRating} precision={0.5} readOnly />
-          <Typography variant="body2" className="ml-2 text-gray-600">
-            {worker.averageRating+" ("+worker.totalReviews+" reseñas)"}
-          </Typography>
-        </div>
-        
-        <div className="flex items-center mt-2 gap-2">
-          {isOwner && 
-          <>
-          <Button variant="contained" onClick={()=> setShowEdit(true)}>
-            Editar Información
-          </Button>
-          <Button variant="contained" onClick={()=> setShowEditImages(true)}>
-            Editar Imágenes
-          </Button>
-          </>
-          }
+      <div className="w-full flex flex-col items-center px-4 mt-20">
+        {/* Card de perfil */}
+        <div className="w-full max-w-screen-xl flex flex-col md:flex-row items-center md:items-end md:gap-8">
+          
+          {/* Info */}
+          <div className="flex-1 flex flex-col items-center mt-3">
+            <Typography variant="h5" className="font-bold text-gray-800">
+              {worker.user.name + " " + worker.user.lastname}
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary">
+              {worker.workshop}
+            </Typography>
+            <div className="flex items-center mt-2">
+              <Rating value={worker.averageRating} precision={0.5} readOnly />
+              <Typography variant="body2" className="ml-2 text-gray-600">
+                {worker.averageRating + " (" + worker.totalReviews + " reseñas)"}
+              </Typography>
+            </div>
+            {/* Botones solo para el dueño */}
+            {isOwner && (
+              <div className="flex gap-2 mt-3">
+                <Button variant="contained" onClick={() => setShowEdit(true)}>
+                  Editar Información
+                </Button>
+                <Button variant="contained" onClick={() => setShowEditImages(true)}>
+                  Editar Imágenes
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Tabs */}
@@ -109,14 +125,14 @@ const CarpenterProfile = () => {
                 onChange={handleTabChange}
                 centered={windowWidth>500?true:false}
                 textColor="primary"
-                indicatorColor="primary"
+                TabIndicatorProps={{ sx: { display: "none" } }}
                 variant={windowWidth>500?"fullWidth":"scrollable"}
-                // sx={{backgroundColor:"red"}}
-              >
-                <Tab label="Perfil" />
-                <Tab label="Reseñas" />
-                <Tab label="Productos" />
-                <Tab label="Contrato" />
+                sx={{backgroundColor:"#F4F4F5", borderRadius:"8px"}}
+                >
+                <Tab label="Perfil" sx={tabStyles} />
+                <Tab label="Reseñas" sx={tabStyles} />
+                <Tab label="Productos" sx={tabStyles}/>
+                <Tab label="Contrato" sx={tabStyles} />
               </Tabs>
             </Box>
           </div>
@@ -165,7 +181,7 @@ const CarpenterProfile = () => {
           </IconButton>
         </DialogTitle>
           <EditCarpenter worker={worker} closeModal={closeEdit} reload={fetchData}/>
-      </Dialog>
+        </Dialog>
 
       <Dialog maxWidth="md" fullWidth open={showEditImages} onClose={closeEditImages}>
         <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
@@ -175,7 +191,6 @@ const CarpenterProfile = () => {
           </IconButton>
         </DialogTitle>
           <ImageEditForm worker={worker} closeForm={closeEditImages}/>
-          {/* <EditCarpenterImages worker={worker}/> */}
       </Dialog>
       </div>
     </div>

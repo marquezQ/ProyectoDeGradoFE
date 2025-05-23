@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import { TextField, Button, Box, Typography, InputAdornment, IconButton } from "@mui/material";
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
-import { AccountCircle, Visibility, VisibilityOff, PhotoCamera } from "@mui/icons-material";
+import { Visibility, VisibilityOff, PhotoCamera } from "@mui/icons-material";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
@@ -73,7 +73,7 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center pt-4">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-96 border-2"
@@ -82,7 +82,6 @@ function RegisterPage() {
           <Typography variant="h4" component="h1" fontWeight="bold" color="primary.main">
             Registro de Usuario
           </Typography>
-          <AccountCircle sx={{ fontSize: 64, color: "primary.main", mt: 1 }} />
         </Box>
 
         {/* Campo Nombre */}
