@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Box, Typography, Modal } from "@mui/material";
+import { Box, Typography, IconButton, Dialog } from "@mui/material";
 import { Worker } from "../Interfaces/WorkerInterface";
 import StaticMap from "../Pages/StaticMap";
+import { Close } from "@mui/icons-material";
 
 interface workerProps {
   worker: Worker;
@@ -51,7 +52,7 @@ function AboutMeWorker({ worker }: workerProps) {
           {Object.values(worker.images).map((imageUrl, index) => (
             <div
               key={index}
-              className="w-auto h-auto overflow-hidden rounded-lg border shadow-md cursor-pointer m-auto"
+              className="overflow-hidden rounded-lg border shadow-md cursor-pointer m-auto"
               onClick={() => handleOpen(`${imageUrl}`)}
             >
               <img
@@ -64,29 +65,72 @@ function AboutMeWorker({ worker }: workerProps) {
         </div>
       </div>
 
-      {/* Modal para mostrar la imagen ampliada */}
-      <Modal
+      {/* Modal de imagen ampliada */}
+      <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        className="flex items-center justify-center"
-        // sx={{backgroundColor:"red"}}
-        
+        maxWidth={false}
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            overflow: 'visible',
+            margin: { xs: 1, sm: 2 }, // Margen mínimo en móvil
+            maxHeight: { xs: '98vh', sm: '95vh' },
+            maxWidth: { xs: '98vw', sm: '95vw' },
+            width: { xs: '98vw', sm: 'auto' }
+          },
+          '& .MuiBackdrop-root': {
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(2px)'
+          }
+        }}
       >
-        <Box className="bg-white p-4 rounded-lg shadow-lg max-w-screen-lg w-full h-full">
+        <Box 
+          className="relative outline-none flex items-center justify-center"
+          sx={{
+            minHeight: { xs: '50vh', sm: 'auto' },
+            padding: { xs: 1, sm: 2 }
+          }}
+        >
+          {/* Botón de cerrar */}
+          <IconButton
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              top: { xs: -8, sm: -12 },
+              right: { xs: -8, sm: -12 },
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              color: '#333',
+              zIndex: 1000,
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 1)',
+              },
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+              width: { xs: 40, sm: 48 },
+              height: { xs: 40, sm: 48 }
+            }}
+          >
+            <Close sx={{ fontSize: { xs: 20, sm: 24 } }} />
+          </IconButton>
           
+          {/* Imagen */}
           {selectedImage && (
-            <div className="flex items-center justify-center h-full">
             <img
               src={selectedImage}
               alt="Imagen ampliada"
-              className="max-w-full max-h-full object-contain"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              style={{
+                maxWidth: '100%',
+                maxHeight: '85vh',
+                width: 'auto',
+                height: 'auto'
+              }}
             />
-            </div>
           )}
         </Box>
-      </Modal>
+      </Dialog>
     </Box>
   );
 }
