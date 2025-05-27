@@ -7,7 +7,9 @@ const theme = createTheme({
       contrastText: '#ffffff', // Texto blanco
     },
     secondary: {
-      main: '#3b82f6', 
+      // main: '#3b82f6', 
+      main: "#e0c1b3",
+      
     },
     // error: {
     //     main: '#dc2626', // Colores para mensajes de error

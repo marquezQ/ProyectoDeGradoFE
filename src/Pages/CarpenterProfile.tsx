@@ -84,7 +84,7 @@ const CarpenterProfile = () => {
       </div>
 
       {/* Contenido principal */}
-      <div className="w-full flex flex-col items-center px-4 mt-20">
+      <div className="w-full flex flex-col items-center px-4 mt-24">
         {/* Card de perfil */}
         <div className="w-full max-w-screen-xl flex flex-col md:flex-row items-center md:items-end md:gap-8">
           
