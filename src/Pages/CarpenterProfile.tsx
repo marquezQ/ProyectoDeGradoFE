@@ -36,10 +36,10 @@ const CarpenterProfile = () => {
     setTabValue(newValue);
   };
   const tabStyles = {
-  color: "#4c3a37",
+  color: "#2C0E06",
   '&.Mui-selected': {
     color: "#fff",
-     backgroundColor: "#4c3a37",
+     backgroundColor: "#2C0E06",
     border: "5px solid #F4F4F5",
     borderRadius: "20px",
   },
@@ -132,7 +132,7 @@ const CarpenterProfile = () => {
                 <Tab label="Perfil" sx={tabStyles} />
                 <Tab label="Reseñas" sx={tabStyles} />
                 <Tab label="Productos" sx={tabStyles}/>
-                <Tab label="Contrato" sx={tabStyles} />
+                <Tab label="Contratos" sx={tabStyles} />
               </Tabs>
             </Box>
           </div>

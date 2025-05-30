@@ -19,7 +19,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#4c3a37] text-white shadow-lg fixed w-full z-50 top-0">
+    <nav className="bg-[#2C0E06] text-white shadow-lg fixed w-full z-50 top-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -88,7 +88,7 @@ const Navbar = () => {
               <MenuIcon />
             </IconButton>
             <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
-              <div className="flex flex-col justify-between h-screen w-56 bg-[#654b43] text-white p-6">
+              <div className="flex flex-col justify-between h-screen w-56 bg-[#2C0E06] text-white p-6">
                 {/* Enlace superior */}
                 <div className="flex flex-col gap-6 pt-4" onClick={toggleDrawer(false)}>
                   <Link to="/" className="hover:text-[#e5b179] px-2 xl:px-6 py-2">

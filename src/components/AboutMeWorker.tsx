@@ -50,15 +50,15 @@ function AboutMeWorker({ worker }: workerProps) {
         </Typography>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {Object.values(worker.images).map((imageUrl, index) => (
-            <div
+           <div
               key={index}
-              className="overflow-hidden rounded-lg border shadow-md cursor-pointer m-auto"
+              className="relative overflow-hidden rounded-lg border shadow-md cursor-pointer aspect-square"
               onClick={() => handleOpen(`${imageUrl}`)}
             >
               <img
                 src={`${imageUrl}`}
                 alt={`Imagen ${index + 1}`}
-                className="w-auto h-auto object-cover"
+                className="w-full h-full object-cover"
               />
             </div>
           ))}

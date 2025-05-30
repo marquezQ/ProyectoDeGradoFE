@@ -11,6 +11,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ContainerReviewProfile from "../components/Reviews/ContainerReviewProfile";
 import { useState } from "react";
 import EditUser from "../components/User/EditUser";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 function UserProfile() {
   const location = useLocation();
@@ -19,6 +20,8 @@ function UserProfile() {
   const { data, loading, error, fetchData } = useFetchData<Worker>({
     apiFunction: () => getUser(userId),
   });
+
+  const { user: userContext } = useAuthContext()
 
   const [showEdit, setshowEdit] = useState(false)
   const closeEdit = () => {setshowEdit(false);};
@@ -56,6 +59,7 @@ function UserProfile() {
 
           {/* Botones */}
           <div className="flex flex-col gap-2 md:ml-auto">
+            {userContext && userContext.id === user.id && 
             <Button
               variant="outlined"
               startIcon={<EditIcon />}
@@ -65,6 +69,7 @@ function UserProfile() {
             >
               Editar Perfil
             </Button>
+            }
             {data.address && 
             <Link to={`/workers/workerProfile/${data.id}`}>
             <Button
@@ -72,7 +77,7 @@ function UserProfile() {
               startIcon={<HandymanIcon />}
               color="primary"
             >
-              Ver mi Perfil de Carpintero
+              Ver Perfil de Carpintero
             </Button>
             </Link>}
             

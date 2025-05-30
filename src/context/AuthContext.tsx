@@ -21,7 +21,6 @@ export const AuthContextProvider = ( {children}: PropsContextProvider ) => {
         setWorker(undefined);
         localStorage.removeItem("token");
         window.location.reload();
-        // localStorage.removeItem("roles");
     }
 
     useEffect(()=>{

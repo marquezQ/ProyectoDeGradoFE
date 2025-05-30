@@ -5,9 +5,11 @@ import { useFormik } from "formik";
 import { login } from "../services/api";
 import { Button, TextField, InputAdornment, IconButton, Box, Typography } from "@mui/material";
 import { useState } from "react";
-import { AccountCircle, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { isWorker } from "../services/workerApi";
+import image from "../assets/imageLogin.jpeg";
+
 function LoginPage() {
     const navigate = useNavigate();
     const { setUser, setWorker } = useAuthContext()
@@ -16,6 +18,7 @@ function LoginPage() {
     const togglePasswordVisibility = () => {
       setShowPassword(!showPassword);
     };
+    
     const { handleChange, handleBlur, handleSubmit, errors, touched, values } = useFormik({
       initialValues: {
         email: "",
@@ -31,7 +34,7 @@ function LoginPage() {
           if(dataCarpenter){
             setWorker(dataCarpenter);
           }
-          navigate("/");
+          navigate("/workers");
         } else {
           Swal.fire({
             position: "center",
@@ -43,70 +46,118 @@ function LoginPage() {
         }
       },
     });
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-80 border-2"
-      >
-        <Box textAlign="center" mb={2}>
-          <Typography variant="h4" component="h1" fontWeight="bold" color="primary.main">
-            CarpinPro
-          </Typography>
-          <AccountCircle sx={{ fontSize: 64, color: "primary.main", mt: 1 }} />
-        </Box>
-
-        <Typography variant="h5" textAlign="center" color="primary" mb={3}>
-          Iniciar Sesión
-        </Typography>
-        {/* Campo Email */}
-        <TextField
-          name="email"
-          label="Correo Electrónico"
-          variant="outlined"
-          fullWidth
-          value={values.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.email && Boolean(errors.email)}
-          helperText={touched.email && errors.email}
-        />
-
-        {/* Campo Contraseña */}
-        <TextField
-          name="password"
-          label="Contraseña"
-          variant="outlined"
-          type={showPassword ? "text" : "password"}
-          fullWidth
-          value={values.password}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={touched.password && Boolean(errors.password)}
-          helperText={touched.password && errors.password}
-          slotProps={{
-            input: {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={togglePasswordVisibility} edge="end">
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      {/* Card principal */}
+      <div className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-4xl flex flex-col md:flex-row min-h-[600px]">
+        
+        {/* Sección izquierda - Imagen */}
+        <div 
+          className="md:w-1/2 relative flex items-center justify-center p-8"
+          style={{
+            backgroundImage: `url(${image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
           }}
-        />
+        >
+          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+          
+          {/* Contenido central */}
+          <div className="relative z-10 text-center text-white">
+            <Typography variant="h4" component="h1" fontWeight="bold" className="mb-3">
+              CarpinPro
+            </Typography>
+            <Typography variant="body1" className="opacity-90 max-w-xs mx-auto">
+              La plataforma líder para profesionales de la carpintería
+            </Typography>
+          </div>
+        </div>
 
-        {/* Botón de Enviar */}
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Iniciar Sesión
-        </Button>
-      </form>
+        {/* Sección derecha - Formulario */}
+        <div className="md:w-1/2 p-8 flex items-center justify-center">
+          <div className="w-full max-w-sm">
+            
+            {/* Título */}
+            <Box textAlign="center" mb={4}>
+              <Typography variant="h4" component="h2" fontWeight="bold" color="primary.main" className="mb-2">
+                Iniciar Sesión
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Ingresa tus credenciales para continuar
+              </Typography>
+            </Box>
+
+            {/* Formulario */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              
+              {/* Campo Email */}
+              <TextField
+                name="email"
+                label="Correo Electrónico"
+                variant="outlined"
+                fullWidth
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.email && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                  },
+                }}
+              />
+
+              {/* Campo Contraseña */}
+              <TextField
+                name="password"
+                label="Contraseña"
+                variant="outlined"
+                type={showPassword ? "text" : "password"}
+                fullWidth
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.password && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '12px',
+                  },
+                }}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={togglePasswordVisibility} edge="end">
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+              />
+
+              {/* Botón de Enviar */}
+              <Button 
+                type="submit" 
+                variant="contained" 
+                color="primary" 
+                fullWidth
+              >
+                Iniciar Sesión
+              </Button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default LoginPage
+export default LoginPage;
 
 const validationSchema = Yup.object({
     email: Yup.string()

@@ -47,7 +47,7 @@ function ReviewCard({review, profile}: Props) {
                         </h3>
                         <p className="text-sm text-gray-500">Reseña realizada el {formatDate(review.created_at)}</p>
                     </div>
-                    <div className="bg-[#654b43] text-white pl-2 rounded-full text-sm font-semibold flex items-center">
+                    <div className="bg-[#2C0E06] text-white pl-2 rounded-full text-sm font-semibold flex items-center">
                         <span>{review.calificacion.final}</span>
                         <Rating
                             value={review.calificacion.final}
