@@ -48,9 +48,9 @@ function CarpinterCard({worker}: props) {
         </div>
   
         {/* Descripción */}
-        <p className="text-gray-700 text-sm mb-2 line-clamp-3 text-center md:text-left">
+        <Typography variant="body2" className="text-gray-700 text-sm mb-2 line-clamp-3 text-center md:text-left">
           {worker.description}
-        </p>
+        </Typography>
   
         {/* Información de Contacto */}
         <div className="flex flex-col md:flex-row items-center md:items-start gap-3">

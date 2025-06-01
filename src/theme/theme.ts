@@ -55,6 +55,17 @@ const theme = createTheme({
     //   divider: '#d1d5db', // Color de divisores entre elementos
     
   },
+  typography: {
+    fontFamily: 'Roboto',
+    h1: { fontWeight: 700, fontSize: '2.5rem' },
+    h2: { fontWeight: 600, fontSize: '2rem' },
+    h3: { fontWeight: 600, fontSize: '1.75rem' },
+    h4: { fontWeight: 500, fontSize: '1.5rem' },
+    h5: { fontWeight: 500, fontSize: '1.25rem' },
+    subtitle1: { fontWeight: 400, fontSize: '1rem', color: '#666' },
+    body1: { fontSize: '1rem' },
+    body2: { fontSize: '0.875rem', color: '#777' },
+  },
   components: {
     MuiButton: {
       styleOverrides: {

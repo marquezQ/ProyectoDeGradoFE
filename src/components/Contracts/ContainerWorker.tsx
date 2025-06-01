@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import useFetchData from "../../hooks/useFetchData";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { getContractsByWorkerId } from "../../services/workerApi";
@@ -18,9 +19,9 @@ function ContainerWorker({workerID}: Props) {
       {contractsList.length>0?
         <TableContracts contracts={contractsList} fetchData={fetchData}/>
         :
-        <p>
+        <Typography>
           Aun no tienes ningun contrato
-        </p>
+        </Typography>
     }
     </div>
   )

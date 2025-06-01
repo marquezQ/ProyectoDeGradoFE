@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogTitle, IconButton } from "@mui/material";
+import { Button, Dialog, DialogTitle, IconButton, Typography } from "@mui/material";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import useFetchData from "../../hooks/useFetchData";
 import { Product } from "../../Interfaces/ProductInterface";
@@ -49,7 +49,7 @@ function ProductsTab({ workerID }: Props) {
                         </div>
             
                 )):
-                    <p className="col-span-full">No existen productos registrados por este trabajador</p>
+                    <Typography className="col-span-full">No existen productos registrados por este trabajador</Typography>
                 }
             </div>
                 <Dialog maxWidth="sm" fullWidth open={showNewP} onClose={closeShowP}>

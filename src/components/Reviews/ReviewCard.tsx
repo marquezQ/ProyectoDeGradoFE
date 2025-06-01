@@ -1,4 +1,4 @@
-import { Avatar, Button, Dialog, DialogTitle, IconButton, Rating } from "@mui/material"
+import { Avatar, Button, Dialog, DialogTitle, IconButton, Rating, Typography } from "@mui/material"
 import { Review } from "../../Interfaces/ReviewInterface"
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
@@ -41,11 +41,13 @@ function ReviewCard({review, profile}: Props) {
             <div className='flex flex-col w-full'>
                 <div className='flex sm:justify-between items-center flex-col sm:flex-row w-full'>
                     <div>
-                        <h3 className="text-lg font-semibold text-center sm:text-start">
-                            {profile?review.contrato.trabajador.user.name+" "+review.contrato.trabajador.user.lastname
-                            :review.contrato.user.name + " " + review.contrato.user.lastname}
-                        </h3>
-                        <p className="text-sm text-gray-500">Reseña realizada el {formatDate(review.created_at)}</p>
+                        <Typography variant="h6" className="text-lg font-semibold text-center sm:text-start">
+                            {profile ? review.contrato.trabajador.user.name + " " + review.contrato.trabajador.user.lastname
+                            : review.contrato.user.name + " " + review.contrato.user.lastname}
+                        </Typography>
+                        <Typography variant="body2" className="text-sm text-gray-500">
+                            Reseña realizada el {formatDate(review.created_at)}
+                        </Typography>
                     </div>
                     <div className="bg-[#2C0E06] text-white pl-2 rounded-full text-sm font-semibold flex items-center">
                         <span>{review.calificacion.final}</span>
@@ -61,14 +63,16 @@ function ReviewCard({review, profile}: Props) {
                 </div>
 
                 <div className='flex w-full justify-center sm:justify-start'>
-                    <p className="text-sm text-gray-800 mt-2 line-clamp-3">{review.comment}</p>
+                    <Typography variant="body2" className="text-sm text-gray-800 mt-2 line-clamp-3">
+                        {review.comment}
+                    </Typography>
                 </div>
 
                 <div className='flex flex-col sm:flex-row w-full sm:justify-between items-center sm:gap-0 gap-2'>
-                    {review.recommend?
-                    <p className="text-green-600 font-semibold mt-1 ">¡Lo recomienda!</p>
+                    {review.recommend ?
+                    <Typography className="text-green-600 font-semibold mt-1 ">¡Lo recomienda!</Typography>
                     :
-                    <p className="text-red-600 font-semibold mt-1 ">No lo recomienda</p>
+                    <Typography className="text-red-600 font-semibold mt-1 ">No lo recomienda</Typography>
                     }
                     <Button onClick={()=>setOpenModal(true)} variant='contained' className='m-auto w-28'>
                         Ver detalle
@@ -91,9 +95,11 @@ function ReviewCard({review, profile}: Props) {
                                 sx={{width:"3.5rem", height:"3.5rem", objectFit:"cover"}}
                         />
                         <div>
-                            <p className="text-lg font-semibold text-gray-800">{review.contrato.user.name+" "+review.contrato.user.lastname}</p>
+                            <Typography className="text-lg font-semibold text-gray-800">
+                                {review.contrato.user.name + " " + review.contrato.user.lastname}
+                            </Typography>
                             {review.recommend && (
-                                <p className="text-sm text-green-600 font-semibold">¡Lo recomienda!</p>
+                                <Typography className="text-sm text-green-600 font-semibold">¡Lo recomienda!</Typography>
                             )}
                         </div>
                     </div>

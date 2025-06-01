@@ -77,14 +77,21 @@ const ContractCard = ({ contract, reload }: Props) => {
       {/* Info del contrato */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">            {contract.title}
-            </h3>
-          <p className="text-sm text-gray-500">Fecha de inicio: {new Date(contract.start_date).toLocaleDateString()}</p>
-          <p className="text-sm text-gray-500">Fecha de finalización: {new Date(contract.end_date).toLocaleDateString()}</p>
-
-          <p className={`font-medium ${statusColors[contract.status.toLowerCase()] || "text-gray-500"}`}>
+          <Typography variant="h6" className="text-lg font-semibold text-gray-800">
+            {contract.title}
+          </Typography>
+          <Typography variant="body2" className="text-sm text-gray-500">
+            Fecha de inicio: {new Date(contract.start_date).toLocaleDateString()}
+          </Typography>
+          <Typography variant="body2" className="text-sm text-gray-500">
+            Fecha de finalización: {new Date(contract.end_date).toLocaleDateString()}
+          </Typography>
+          <Typography
+            variant="body2"
+            className={`font-medium ${statusColors[contract.status.toLowerCase()] || "text-gray-500"}`}
+          >
             {contract.status}
-          </p>
+          </Typography>
         </div>
       </div>
 

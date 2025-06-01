@@ -39,7 +39,7 @@ function ContainerClient({workerID, clientID}: Props) {
                 <ContractCard contract={contract} reload={fetchData}/>
               </div>
             )):
-            <p>No existen contratos realizados con este carpintero</p>}
+            <Typography>No existen contratos realizados con este carpintero</Typography>}
             
             <Dialog maxWidth="lg" fullWidth open={open} onClose={closeForm}>
               <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>

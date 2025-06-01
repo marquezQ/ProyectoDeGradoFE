@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Rating, useMediaQuery, useTheme } from "@mui/material";
+import { Rating, useMediaQuery, useTheme, Typography } from "@mui/material";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Review } from "../../Interfaces/ReviewInterface";
 
@@ -128,8 +128,8 @@ function DetailsReview({ review }: Props) {
 
 
         <div className="border-t pt-4">
-          <h4 className="font-semibold text-gray-800 mb-2">Comentario:</h4>
-          <p className="text-gray-600 whitespace-pre-line">{review.comment}</p>
+          <Typography variant="subtitle1" className="font-semibold text-gray-800 mb-2">Comentario:</Typography>
+          <Typography variant="body2" className="text-gray-600 whitespace-pre-line">{review.comment}</Typography>
         </div>
       </div>
     </div>
