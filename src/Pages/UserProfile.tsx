@@ -12,6 +12,7 @@ import ContainerReviewProfile from "../components/Reviews/ContainerReviewProfile
 import { useState } from "react";
 import EditUser from "../components/User/EditUser";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { ErrorMessage, SkeletonUserProfile } from "../components/Skeleton/Skeleton";
 
 function UserProfile() {
   const location = useLocation();
@@ -26,8 +27,8 @@ function UserProfile() {
   const [showEdit, setshowEdit] = useState(false)
   const closeEdit = () => {setshowEdit(false);};
 
-  if (loading) return <div className="text-center mt-10">Cargando...</div>;
-  if (error || !data?.user) return <div className="text-center mt-10">El usuario no existe</div>;
+  if (loading) return <SkeletonUserProfile/>;
+  if (error || !data?.user) return <ErrorMessage/>;
 
   const user = data.user;
   return (

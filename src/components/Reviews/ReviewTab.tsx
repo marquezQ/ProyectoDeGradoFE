@@ -1,6 +1,7 @@
 import useFetchData from '../../hooks/useFetchData';
 import { Review } from '../../Interfaces/ReviewInterface';
 import { getReviewsByWorkerId } from '../../services/workerApi';
+import { ErrorMessage, SkeletonCardReviews } from '../Skeleton/Skeleton';
 import ReviewCard from './ReviewCard';
 
 interface Props {
@@ -12,8 +13,8 @@ const ReviewTab = ({ workerID }: Props) => {
     apiFunction: () => getReviewsByWorkerId(workerID)
   });
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>ocurrio un error</p>;
+  if (loading) return <SkeletonCardReviews/>;
+  if (error) return <ErrorMessage/>;
   if (reviewsList?.length === 0) return <p>Aun no existen reseñas para este trabajador</p>
   if (reviewsList)
     return (

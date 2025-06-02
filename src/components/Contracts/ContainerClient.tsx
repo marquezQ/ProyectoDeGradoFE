@@ -6,6 +6,7 @@ import { getContractsByWorkerAndClient } from "../../services/workerApi";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { useState } from "react";
 import FormContract from "./FormContract";
+import { ErrorMessage, SkeletonContractsClient } from "../Skeleton/Skeleton";
 
 interface Props{
     workerID: string,
@@ -18,8 +19,8 @@ function ContainerClient({workerID, clientID}: Props) {
     const { data: contractsList, loading, error, fetchData } = useFetchData<ContractWithClientAndWorker[]>({
       apiFunction: () => getContractsByWorkerAndClient(workerID, clientID)
     });
-    if (loading) return <p>Cargando...</p>;
-    if (error) return <p>ocurrio un error</p>;
+    if (loading) return <SkeletonContractsClient/>;
+    if (error) return <ErrorMessage/>;
     // if (contractsList?.length === 0) return <p>Aun no tienes contratos con este carpintero</p>
     if (contractsList)
         return (

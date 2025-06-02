@@ -13,6 +13,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import CloseIcon from "@mui/icons-material/Close";
 import EditCarpenter from "../components/Profiles/EditCarpenter";
 import ImageEditForm from "../components/Profiles/EditImagesCarpenter";
+import { ErrorMessage, SkeletonProfile } from "../components/Skeleton/Skeleton";
 
 const CarpenterProfile = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -47,10 +48,10 @@ const CarpenterProfile = () => {
 
   const windowWidth = window.innerWidth;
   if(loading){
-    return <div>Cargando...</div>
+    return <SkeletonProfile />
   }
   if(error){
-    return <div>ocurrio un error...</div>
+    return <ErrorMessage/>
   }
   if(worker){
   return (

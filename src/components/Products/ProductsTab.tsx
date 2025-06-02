@@ -7,6 +7,7 @@ import ProductCard from "./ProductCard";
 import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import FormNewProduct from "./FormNewProduct";
+import { ErrorMessage, SkeletonCardProducts } from "../Skeleton/Skeleton";
 interface Props {
     workerID: string
 }
@@ -29,8 +30,8 @@ function ProductsTab({ workerID }: Props) {
         }
     }, [worker?.id, workerID]);
 
-    if (loading) return <p>Cargando...</p>;
-    if (error) return <p>ocurrio un error</p>;
+    if (loading) return <SkeletonCardProducts />;
+    if (error) return <ErrorMessage/>;
     if (productList)
         return (
             <>

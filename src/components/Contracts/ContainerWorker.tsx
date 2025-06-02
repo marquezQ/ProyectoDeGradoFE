@@ -3,6 +3,7 @@ import useFetchData from "../../hooks/useFetchData";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
 import { getContractsByWorkerId } from "../../services/workerApi";
 import TableContracts from "./TableContracts";
+import { ErrorMessage, SkeletonTable } from "../Skeleton/Skeleton";
 
 interface Props{
     workerID: string
@@ -11,8 +12,8 @@ function ContainerWorker({workerID}: Props) {
   const { data: contractsList, loading, error, fetchData } = useFetchData<ContractWithClientAndWorker[]>({
     apiFunction: () => getContractsByWorkerId(workerID)
   });
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>ocurrio un error</p>;
+  if (loading) return <SkeletonTable/>;
+  if (error) return <ErrorMessage/>;
   if (contractsList)
   return (
     <div>
