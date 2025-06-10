@@ -1,6 +1,6 @@
 import { Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 import { ContractWithClientAndWorker } from "../Interfaces/ContractInterface";
-import logo from "../assets/logobeta.png";
+import logo from "../assets/logoPDF.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   logoContainer: {
-    width: 60,
-    height: 60,
+    width: 90,
+    height: 80,
     marginRight: 10,
   },
   companyInfo: {

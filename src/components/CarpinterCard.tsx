@@ -1,12 +1,29 @@
-import { Button, Rating, Typography } from "@mui/material"
+import { useState } from "react";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Rating, Typography } from "@mui/material"
+import CloseIcon from "@mui/icons-material/Close";
 import { Worker } from "../Interfaces/WorkerInterface";
-import { LocationOn, Phone, WhatsApp, RemoveRedEyeOutlined } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { LocationOn, Phone, RemoveRedEyeOutlined } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 interface props{
   worker: Worker;
 }
 
 function CarpinterCard({worker}: props) {
+  const { user } = useAuthContext()
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false); // Cierra el modal
+  };
+  const handleRouter = () => {
+    if (user) {
+      navigate(`/workers/workerProfile/${worker.id}`);
+    } else {
+      setOpen(true); // Abre el modal si no está logueado
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row border rounded-lg overflow-hidden shadow-lg bg-white h-auto xl:h-72">
       {/* Imagen */}
@@ -73,7 +90,7 @@ function CarpinterCard({worker}: props) {
           </div>
           {/* WhatsApp */}
           <div className="flex flex-col xl:flex-row justify-end lg:w-1/2 gap-3">
-            <div className="flex justify-center">
+            {/* <div className="flex justify-center">
               <Button
                 variant="contained"
                 sx={{ background: "green", width:"8rem" }}
@@ -81,20 +98,43 @@ function CarpinterCard({worker}: props) {
                 <WhatsApp fontSize="small" />
                 WhatsApp
               </Button>
-            </div>
+            </div> */}
     
             {/* Botón */}
             <div className="flex justify-center">
-              <Link to={`/workers/workerProfile/${worker.id}`}>
-                <Button variant="contained" sx={{width:"8rem"}}>
+              
+                <Button variant="contained" sx={{width:"8rem"}} onClick={handleRouter}>
                   <RemoveRedEyeOutlined fontSize="small" />
                   Ver Perfil
                 </Button>
-              </Link>
+              
             </div>
           </div>
         </div>
       </div>
+      <Dialog maxWidth="sm" fullWidth open={open} onClose={handleClose}>
+        <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", p: 2 }}>
+          Mensaje
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <Typography>Para ver el perfil del carpintero, por favor inicia sesión</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Link to="/login" >
+            <Button variant="contained">
+              Iniciar Sesión
+            </Button>
+          </Link>
+          <Link to="/register" >
+            <Button variant="contained">
+              Registrarse
+            </Button>
+          </Link>
+        </DialogActions>
+      </Dialog>
     </div>
   ); 
 }

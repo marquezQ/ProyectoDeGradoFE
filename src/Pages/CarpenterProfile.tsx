@@ -156,7 +156,7 @@ const CarpenterProfile = () => {
         </div>
 
         {/* Contacto */}
-        <div className="flex justify-center mt-6 space-x-4">
+        <div className="flex justify-center mt-6 space-x-4 py-10">
           <Button
             variant="contained"
             color="success"

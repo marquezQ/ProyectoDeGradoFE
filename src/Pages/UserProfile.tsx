@@ -77,6 +77,7 @@ function UserProfile() {
               variant="contained"
               startIcon={<HandymanIcon />}
               color="primary"
+              sx={{minWidth:"12rem"}}
             >
               Ver Perfil de Carpintero
             </Button>

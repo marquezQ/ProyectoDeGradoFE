@@ -10,6 +10,8 @@ import RegisterCarpenterPage from "./Pages/RegisterCarpenterPage";
 import CarpenterProfile from "./Pages/CarpenterProfile";
 import MiniForm from "./Pages/pdf";
 import UserProfile from "./Pages/UserProfile";
+import PrivateRoute from "./GuardRouter/PrivateRoute";
+import RegisterRoute from "./GuardRouter/RegisterRoute";
 
 function App() {
 
@@ -21,13 +23,18 @@ function App() {
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage/>} />
             <Route path="/workers" element={<WorkersPage/>} />
-            <Route path="/workers/workerProfile/:id" element={<CarpenterProfile/>}/>
+            <Route element={<PrivateRoute/>}>
+              <Route path="/workers/workerProfile/:id" element={<CarpenterProfile/>}/>
+              <Route path="/user/:id" element={<UserProfile/>} />
+            </Route>
             <Route path="/minipdf" element={<MiniForm/>} />
-            <Route path="/login" element={<LoginPage/>}/>
-            <Route path="/register" element={<RegisterPage/>}/>
+            <Route element={<RegisterRoute/>}>
+              <Route path="/login" element={<LoginPage/>}/>
+              <Route path="/register" element={<RegisterPage/>}/>
+            </Route> 
             <Route path="/registerCarp" element={<RegisterCarpenterPage/>}/>
             {/* <Route path="/example" element={<MapWithLocation/>}/> */}
-            <Route path="/user/:id" element={<UserProfile/>} />
+            
           </Route>
         </Routes>
       </BrowserRouter>

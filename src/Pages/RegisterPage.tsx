@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { TextField, Button, Box, Typography, InputAdornment, IconButton } from "@mui/material";
+import { TextField, Button, Box, Typography, InputAdornment, IconButton, Backdrop, CircularProgress } from "@mui/material";
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import { Visibility, VisibilityOff, PhotoCamera } from "@mui/icons-material";
 import * as Yup from "yup";
@@ -16,6 +16,7 @@ function RegisterPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
@@ -33,6 +34,7 @@ function RegisterPage() {
       },
       validationSchema,
       onSubmit: async (values) => {
+        setLoading(true);
         const dataSend = new FormData();
         dataSend.append("name", values.name);
         dataSend.append("lastname", values.lastname);
@@ -63,6 +65,8 @@ function RegisterPage() {
             showConfirmButton: true,
           });
           throw error;
+        } finally {
+          setLoading(false);
         }
       },
     });
@@ -74,6 +78,10 @@ function RegisterPage() {
 
   return (
     <div className="flex items-center justify-center pt-4">
+      {/* Loader mientras espera */}
+      <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-96 border-2"
@@ -242,8 +250,8 @@ function RegisterPage() {
         </Box>
 
         {/* Botón de Registrarse */}
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Registrarse
+        <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
+          {loading ? "Registrando..." : "Registrarse"}
         </Button>
       </form>
     </div>
