@@ -56,7 +56,7 @@ const theme = createTheme({
     
   },
   typography: {
-    fontFamily: 'Roboto',
+    fontFamily: `'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif`,
     h1: { fontWeight: 700, fontSize: '4rem' },
     h2: { fontWeight: 600, fontSize: '2rem' },
     h3: { fontWeight: 600, fontSize: '1.75rem' },
