@@ -25,13 +25,13 @@ function CarpinterCard({worker}: props) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row border rounded-lg overflow-hidden shadow-lg bg-white h-auto xl:h-72">
+    <div className="flex flex-col sm:flex-row border rounded-lg overflow-hidden shadow-lg bg-white h-auto sm:h-72">
       {/* Imagen */}
       <div className="w-full md:w-1/3 bg-gray-200 flex items-center justify-center">
         <img
           src={worker.images.image1}
           alt={"imagen"}
-          className="object-cover w-full h-48 md:h-full"
+          className="object-cover w-full h-48 sm:h-full"
         />
       </div>
   

@@ -10,6 +10,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LivingIcon from '@mui/icons-material/Living';
 import CallIcon from '@mui/icons-material/Call';
 import image from '../assets/fondo.png'
+import { Link } from 'react-router-dom';
 const Landing: React.FC = () => {
   const Hero = () => (
     <div className="relative min-h-screen w-full flex items-center">
@@ -43,15 +44,17 @@ const Landing: React.FC = () => {
         </Typography>
 
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button 
+          <Link to={"/workers"}>
+            <Button 
             variant="contained" 
             size="large"
             startIcon={<SearchIcon />}
             className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3"
-            href="/servicios"
           >
             Explorar Carpinteros
           </Button>
+          </Link>
+          
           
         </div>
       </div>
@@ -194,19 +197,21 @@ const Landing: React.FC = () => {
             size="large"
             startIcon={<PersonAddIcon />}
             className="bg-secondary-600 hover:bg-secondary-700 text-white px-6 py-3"
-            href="/registro"
+            href="/register"
           >
             Crear una cuenta
           </Button>
-          <Button
+          <Link to={"/workers"}>
+            <Button
             variant="outlined"
             size="large"
             startIcon={<SearchIcon />}
             className="border-white text-white hover:bg-white/10 px-6 py-3"
-            href="/servicios"
           >
             Explorar carpinteros
           </Button>
+          </Link>
+          
         </div>
       </div>
     </div>

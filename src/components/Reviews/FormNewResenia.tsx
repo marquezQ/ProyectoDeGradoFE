@@ -16,6 +16,7 @@ import { createReview } from '../../services/workerApi';
 interface Props {
     contractID: string;
     closeForm: () => void;
+    refreshReviews: () => void;
 }
 type ReviewImages = File[];
 
@@ -37,7 +38,7 @@ price: Yup.number()
   .moreThan(0, 'Debes calificar el precio.'),
 });
 
-const FormNewReview = ({contractID, closeForm}: Props) => {
+const FormNewReview = ({contractID, closeForm, refreshReviews}: Props) => {
   const [imagen, setImagen] = useState<ReviewImages>([]);
 
   const formik = useFormik({
@@ -74,6 +75,7 @@ const FormNewReview = ({contractID, closeForm}: Props) => {
                 showConfirmButton: false,
                 timer: 1500,
             });
+            refreshReviews();
         } catch {
             Swal.fire({
                 icon: 'error',

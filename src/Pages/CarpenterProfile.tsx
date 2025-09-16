@@ -45,6 +45,17 @@ const CarpenterProfile = () => {
     borderRadius: "20px",
   },
 };
+const handleWhatsApp = () => {
+  const phone = worker?.user.phone_number; // viene del backend
+  const message = "Hola he visto tu perfil en CarpinPro estoy interesado en adquirir tus servicios de carpintería.";
+  const url = `https://wa.me/591${phone}?text=${encodeURIComponent(message)}`;
+  window.open(url, "_blank");
+};
+const handleCall = () => {
+  const phone = worker?.user.phone_number; // viene del backend
+  window.open(`tel:${phone}`);
+};
+
 
   const windowWidth = window.innerWidth;
   if(loading){
@@ -139,7 +150,7 @@ const CarpenterProfile = () => {
           </div>
         </div>
         {/* Contenido de cada Tab */}
-        <div className="mx-auto max-w-screen-xl w-full mt-6 h-auto">
+        <div className="mx-auto max-w-screen-xl w-full mt-6 h-auto pb-32">
           {tabValue === 0 && (
             <AboutMeWorker worker={worker}/>
           )}
@@ -156,12 +167,13 @@ const CarpenterProfile = () => {
         </div>
 
         {/* Contacto */}
-        <div className="flex justify-center mt-6 space-x-4 py-10">
+        <div className="fixed bottom-2 left-1/2 transform -translate-x-1/2 flex gap-4 z-50">
           <Button
             variant="contained"
             color="success"
             startIcon={<WhatsApp />}
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", width: "140px" }}
+            onClick={() => handleWhatsApp()}
           >
             WhatsApp
           </Button>
@@ -169,7 +181,8 @@ const CarpenterProfile = () => {
             variant="contained"
             color="inherit"
             startIcon={<Phone />}
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", width: "140px" }}
+            onClick={() => handleCall()}
           >
             Llamar
           </Button>

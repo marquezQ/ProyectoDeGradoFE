@@ -21,11 +21,6 @@ const ContractCard = ({ contract, reload }: Props) => {
 
   const [openDelete, setopenDelete] = useState(false);
   const closeDelete = () => setopenDelete(false);
-  const statusColors: Record<string, string> = {
-    aceptado: "text-green-500",
-    pendiente: "text-yellow-500",
-    rechazado: "text-red-500",
-  };
   const handleViewContract = async () => {
     // Crear el PDF
     const doc = <ContractPDF contract={contract} />;
@@ -86,12 +81,22 @@ const ContractCard = ({ contract, reload }: Props) => {
           <Typography variant="body2" className="text-sm text-gray-500">
             Fecha de finalización: {new Date(contract.end_date).toLocaleDateString()}
           </Typography>
-          <Typography
-            variant="body2"
-            className={`font-medium ${statusColors[contract.status.toLowerCase()] || "text-gray-500"}`}
-          >
-            {contract.status}
-          </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: "500",
+                color:
+                  contract.status === "aceptado"
+                    ? "green"
+                    : contract.status === "pendiente"
+                      ? "orange"
+                      : contract.status === "rechazado"
+                        ? "red"
+                        : "gray",
+              }}
+            >
+              {contract.status}
+            </Typography>
         </div>
       </div>
 
@@ -148,7 +153,7 @@ const ContractCard = ({ contract, reload }: Props) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <FormNewReview contractID={contract.id} closeForm={closeForm}/>
+      <FormNewReview contractID={contract.id} closeForm={closeForm} refreshReviews={reload}/>
     </Dialog>
 
     <Dialog open={openDelete} onClose={closeDelete} maxWidth="sm" fullWidth>

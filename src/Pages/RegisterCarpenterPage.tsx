@@ -191,7 +191,10 @@ function RegisterCarpenterPage() {
           <Typography variant="h5" component="h2" color="primary" gutterBottom mb={2}>
             Imágenes de tus trabajos
           </Typography>
-          
+          {/* 👇 Mensaje informativo */}
+          <Typography variant="body2" color="text.secondary" mb={2}>
+            La primera imagen que selecciones será usada como tu portada.
+          </Typography>
           <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
             <Box
               sx={{

@@ -3,6 +3,7 @@ import { Review } from "../../Interfaces/ReviewInterface"
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import DetailsReview from "./DetailsReview";
+import { Link } from "react-router-dom";
 interface Props {
     review: Review
     profile?: boolean
@@ -42,7 +43,7 @@ function ReviewCard({review, profile}: Props) {
                 <div className='flex sm:justify-between items-center flex-col sm:flex-row w-full'>
                     <div>
                         <Typography variant="h6" className="text-lg font-semibold text-center sm:text-start">
-                            {profile ? review.contrato.trabajador.user.name + " " + review.contrato.trabajador.user.lastname
+                            {profile ?<Link to={`/workers/workerProfile/${review.contrato.trabajador.id}`}>{review.contrato.trabajador.user.name + " " + review.contrato.trabajador.user.lastname}</Link>
                             : review.contrato.user.name + " " + review.contrato.user.lastname}
                         </Typography>
                         <Typography variant="body2" className="text-sm text-gray-500">

@@ -68,7 +68,7 @@ const TablaTrabajos = ({contracts, fetchData}: Props) => {
         <TableHead>
           <TableRow className="bg-gray-200">
             <TableCell>Cliente</TableCell>
-            <TableCell>Fecha</TableCell>
+            <TableCell>Fecha de Solicitud</TableCell>
             <TableCell>Tipo de Trabajo</TableCell>
             <TableCell>Estado</TableCell>
             <TableCell>Acciones</TableCell>
@@ -78,7 +78,13 @@ const TablaTrabajos = ({contracts, fetchData}: Props) => {
           {contracts.map((contract, index) => (
             <TableRow key={index}>
               <TableCell>{contract.user.name+" "+contract.user.lastname}</TableCell>
-              <TableCell>{contract.start_date}</TableCell>
+              <TableCell>
+                {new Date(contract.created_at).toLocaleDateString("es-ES", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                })}
+              </TableCell>
               <TableCell>{contract.title}</TableCell>
               <TableCell>
                 <Chip label={contract.status} color={getChipColor(contract.status)} className="!min-w-24" />

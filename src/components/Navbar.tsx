@@ -41,7 +41,7 @@ const Navbar = () => {
             </Link>
             <Link to="/workers" className="hover:text-[#e5b179] px-2 xl:px-6 py-2">
               <Typography style={{ color: "inherit", fontWeight: "600", fontSize: "1.1rem" }}>
-                Servicios
+                Carpinteros
               </Typography>
             </Link>
           </div>
@@ -98,7 +98,7 @@ const Navbar = () => {
                   </Link>
                   <Link to="/workers" className="hover:text-[#e5b179] px-2 xl:px-6 py-2">
                     <Typography style={{ color: "inherit", fontWeight: "600", fontSize: "1.2rem" }}>
-                      Servicios
+                      Carpinteros
                     </Typography>
                   </Link>
                 </div>
