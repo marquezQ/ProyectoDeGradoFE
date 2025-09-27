@@ -80,7 +80,7 @@ function RegisterPage() {
     <div className="flex items-center justify-center pt-4">
       {/* Loader mientras espera */}
       <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
-        <CircularProgress color="inherit" />
+        <CircularProgress color="primary" />
       </Backdrop>
       <form
         onSubmit={handleSubmit}

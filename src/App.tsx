@@ -12,6 +12,7 @@ import MiniForm from "./Pages/pdf";
 import UserProfile from "./Pages/UserProfile";
 import PrivateRoute from "./GuardRouter/PrivateRoute";
 import RegisterRoute from "./GuardRouter/RegisterRoute";
+import ScrollToTop from "./components/scroll";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
     <div className="min-h-screen">
     <AuthContextProvider>
       <BrowserRouter>
+      <ScrollToTop />
         <Routes>
           <Route path="/" element={<MainPage />}>
             <Route index element={<HomePage/>} />

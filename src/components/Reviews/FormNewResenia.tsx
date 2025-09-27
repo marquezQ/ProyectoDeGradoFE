@@ -7,6 +7,8 @@ import {
   Switch,
   FormControlLabel,
   Rating,
+  Backdrop,
+  CircularProgress,
 } from '@mui/material';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import * as Yup from 'yup';
@@ -39,6 +41,8 @@ price: Yup.number()
 });
 
 const FormNewReview = ({contractID, closeForm, refreshReviews}: Props) => {
+      const [loading, setLoading] = useState(false);
+  
   const [imagen, setImagen] = useState<ReviewImages>([]);
 
   const formik = useFormik({
@@ -54,6 +58,7 @@ const FormNewReview = ({contractID, closeForm, refreshReviews}: Props) => {
     },
     validationSchema,
     onSubmit: async (values) => {
+        setLoading(true);
         const formData = new FormData();
         formData.append('comment', values.comment);
         formData.append('recommend', values.recommend ? '1' : '0');
@@ -83,6 +88,8 @@ const FormNewReview = ({contractID, closeForm, refreshReviews}: Props) => {
                 showConfirmButton: false,
                 timer: 1500,
               });
+        }finally {
+            setLoading(false);
         }
         closeForm();
     },
@@ -123,6 +130,9 @@ const FormNewReview = ({contractID, closeForm, refreshReviews}: Props) => {
         onSubmit={formik.handleSubmit}
         className="flex flex-col gap-4 bg-white shadow-lg rounded-lg p-6 w-full"
       >
+        <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
         <TextField
           label="Comentario"
           name="comment"

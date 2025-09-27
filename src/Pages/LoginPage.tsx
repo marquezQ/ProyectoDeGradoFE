@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { login } from "../services/api";
-import { Button, TextField, InputAdornment, IconButton, Box, Typography } from "@mui/material";
+import { Button, TextField, InputAdornment, IconButton, Box, Typography, Backdrop, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -14,6 +14,7 @@ function LoginPage() {
     const navigate = useNavigate();
     const { setUser, setWorker } = useAuthContext()
   
+    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const togglePasswordVisibility = () => {
       setShowPassword(!showPassword);
@@ -26,6 +27,7 @@ function LoginPage() {
       },
       validationSchema,
       onSubmit: async (values) => {
+        setLoading(true);
         const response = await login(values.email, values.password);
         if (response && response.user) {
           localStorage.setItem("token", response.token);
@@ -44,11 +46,15 @@ function LoginPage() {
             timer: 1500,
           });
         }
+        setLoading(false);
       },
     });
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+      <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+          <CircularProgress color="primary" />
+      </Backdrop>
       {/* Card principal */}
       <div className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-4xl flex flex-col md:flex-row min-h-[600px]">
         

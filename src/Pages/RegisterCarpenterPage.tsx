@@ -1,11 +1,11 @@
-import { Button, Box, Typography, TextField, useMediaQuery, Theme } from "@mui/material";
+import { Button, Box, Typography, TextField, useMediaQuery, Theme, Backdrop, CircularProgress } from "@mui/material";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import { useAuthContext } from "../hooks/useAuthContext";
 import MapWithLocation from "./exampleMap";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { registerWorker } from "../services/workerApi";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +13,7 @@ type ProfileImages = File[];
 
 function RegisterCarpenterPage() {
   const { user, setWorker } = useAuthContext();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
 
@@ -27,6 +28,7 @@ function RegisterCarpenterPage() {
     },
     validationSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       const dataSend = new FormData();
       dataSend.append("user_id", user ? user.id.toString() : "");
       dataSend.append("description", values.description);
@@ -57,6 +59,8 @@ function RegisterCarpenterPage() {
           showConfirmButton: true,
         });
         throw error;
+      }finally {
+        setLoading(false);  
       }
     },
   });
@@ -113,6 +117,9 @@ function RegisterCarpenterPage() {
           gap={4}
           width="100%"
         >
+          <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+                <CircularProgress color="primary" />
+            </Backdrop>
           {/* Columna izquierda - Información */}
           <Box flex={1}>
             <Typography variant="h5" component="h2" color="primary" gutterBottom mb={3}>

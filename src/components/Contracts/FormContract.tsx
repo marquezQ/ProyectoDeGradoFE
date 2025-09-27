@@ -1,4 +1,4 @@
-import { TextField, Button, Box, Typography, IconButton, Paper, Divider } from "@mui/material";
+import { TextField, Button, Box, Typography, IconButton, Paper, Divider, Backdrop, CircularProgress } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import * as Yup from "yup";
@@ -6,6 +6,7 @@ import { useFormik, FieldArray, FormikProvider } from "formik";
 import Swal from "sweetalert2";
 import { createContract, updateContract } from "../../services/workerApi";
 import { ContractWithClientAndWorker } from "../../Interfaces/ContractInterface";
+import { useState } from "react";
 
 
 interface Props {
@@ -30,6 +31,7 @@ interface ContractFormValues {
 }
 
 function FormNewContract({ workerID, fetchContracts, closeForm, userID, validate, contract }: Props) {
+  const [loading, setLoading] = useState(false);
   // Fecha actual en formato YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];
   // Fecha un mes después como predeterminada para la fecha de fin
@@ -76,7 +78,7 @@ function FormNewContract({ workerID, fetchContracts, closeForm, userID, validate
           { key: "Costo y forma de pago", value: "" },
         ]
       : [
-          { key: "Descripcion del trabajo", value: "" },
+          { key: "Descripcion del trabajo", value: "Se realizará..." },
         ];
   
     return {
@@ -110,6 +112,7 @@ function FormNewContract({ workerID, fetchContracts, closeForm, userID, validate
     initialValues: getInitialValues(validate),
     validationSchema: validate ? validationSchema : undefined,
     onSubmit: async (values) => {
+      setLoading(true);
       // Construcción del objeto details
       const details: Record<string, string> = {};
       values.clauses.forEach(clause => {
@@ -159,6 +162,8 @@ function FormNewContract({ workerID, fetchContracts, closeForm, userID, validate
           showConfirmButton: false,
           timer: 1500,
         });
+      }finally {
+        setLoading(false);
       }
     },
   });
@@ -187,7 +192,9 @@ function FormNewContract({ workerID, fetchContracts, closeForm, userID, validate
   return (
     <FormikProvider value={formik}>
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 p-4">
-
+        <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
         <TextField
           name="title"
           label="Título del Contrato"

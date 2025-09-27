@@ -192,15 +192,16 @@ const Landing: React.FC = () => {
         </Typography>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link to={"/register"}>
           <Button
             variant="contained"
             size="large"
             startIcon={<PersonAddIcon />}
             className="bg-secondary-600 hover:bg-secondary-700 text-white px-6 py-3"
-            href="/register"
           >
             Crear una cuenta
           </Button>
+          </Link>
           <Link to={"/workers"}>
             <Button
             variant="outlined"

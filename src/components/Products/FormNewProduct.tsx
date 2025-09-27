@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, useEffect } from "react";
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography, Backdrop, CircularProgress } from "@mui/material";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { PhotoCamera } from "@mui/icons-material";
 import * as Yup from "yup";
@@ -18,6 +18,7 @@ interface Props {
 function FormNewProduct({ workerID, fetchProducts, closeForm, productToEdit }: Props) {
     const [previewImage, setPreviewImage] = useState<string | null>(productToEdit?.image || null);
     
+    const [loading, setLoading] = useState(false);
     const formik = useFormik({
         initialValues: {
             name: productToEdit?.name || "",
@@ -27,6 +28,7 @@ function FormNewProduct({ workerID, fetchProducts, closeForm, productToEdit }: P
         },
         validationSchema: getValidationSchema(!!productToEdit),
         onSubmit: async (values) => {
+            setLoading(true);
             const dataSend = new FormData();
             dataSend.append("trabajador_id", workerID);
             dataSend.append("name", values.name);
@@ -69,6 +71,8 @@ function FormNewProduct({ workerID, fetchProducts, closeForm, productToEdit }: P
                     showConfirmButton: false,
                     timer: 1500,
                 });
+            }finally {
+                setLoading(false);
             }
         },
     });
@@ -90,6 +94,9 @@ function FormNewProduct({ workerID, fetchProducts, closeForm, productToEdit }: P
     
     return (
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 p-4">
+            <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+                <CircularProgress color="primary" />
+            </Backdrop>
             <TextField
                 name="name"
                 label="Nombre del Producto"
