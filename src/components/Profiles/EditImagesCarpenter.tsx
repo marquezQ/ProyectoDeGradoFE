@@ -9,7 +9,9 @@ import {
   TableHead, 
   TableRow, 
   Paper,
-  Avatar
+  Avatar,
+  Backdrop,
+  CircularProgress
 } from "@mui/material";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -21,13 +23,14 @@ import { updateImagesWorker } from "../../services/workerApi";
 interface ImageEditFormProps {
   worker: Worker;
   closeForm: () => void;
+  reload: ()=> void;
 }
 
 interface FormValues {
   images: Record<string, File | string>;
 }
 
-export default function ImageEditForm({ worker, closeForm }: ImageEditFormProps) {
+export default function ImageEditForm({ worker, closeForm, reload }: ImageEditFormProps) {
   // 1. Memoize initial images
   const initialImages = useMemo(() => ({
     image1: worker.images.image1 || '',
@@ -39,7 +42,7 @@ export default function ImageEditForm({ worker, closeForm }: ImageEditFormProps)
 
   // 2. State for preview URLs
   const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({});
-
+  const [loading, setLoading] = useState(false);
   const formik = useFormik<FormValues>({
     initialValues: {
       images: { ...initialImages }
@@ -52,6 +55,7 @@ export default function ImageEditForm({ worker, closeForm }: ImageEditFormProps)
       )
     }),
     onSubmit: async (values) => {
+      setLoading(true);
       const formData = new FormData();
       
       Object.entries(values.images).forEach(([key, value]) => {
@@ -76,8 +80,8 @@ export default function ImageEditForm({ worker, closeForm }: ImageEditFormProps)
             timer: 1500,
           });
         }, 0);
-        
         closeForm();
+        reload();
       } catch (error) {
         Swal.fire({
           position: "center",
@@ -86,6 +90,8 @@ export default function ImageEditForm({ worker, closeForm }: ImageEditFormProps)
           showConfirmButton: true,
         });
         console.error(error);
+      }finally {
+        setLoading(false);
       }
     },
   });
@@ -169,7 +175,9 @@ export default function ImageEditForm({ worker, closeForm }: ImageEditFormProps)
       <Typography variant="body1" className="mb-4 text-gray-600">
         Puedes reemplazar cada imagen individualmente. Máximo 5 imágenes.
       </Typography>
-      
+      <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+          <CircularProgress color="primary" />
+      </Backdrop>
 
       <TableContainer component={Paper} className="mb-6">
         <Table>

@@ -85,7 +85,7 @@ const handleCall = () => {
             border: "4px solid white",
             borderRadius: "24px",
             boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
-            background: "#fff",
+            // background: "#fff",
             position: "absolute",
             left: "50%",
             bottom: "-100px", // La mitad del avatar hacia abajo
@@ -204,7 +204,7 @@ const handleCall = () => {
               <CloseIcon />
           </IconButton>
         </DialogTitle>
-          <ImageEditForm worker={worker} closeForm={closeEditImages}/>
+          <ImageEditForm worker={worker} closeForm={closeEditImages} reload={fetchData}/>
       </Dialog>
       </div>
     </div>

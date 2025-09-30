@@ -2,6 +2,8 @@ import {
   Button,
   Box,
   TextField,
+  Backdrop,
+  CircularProgress,
 } from "@mui/material";
 
 import { useFormik } from "formik";
@@ -11,6 +13,7 @@ import { Worker } from "../../Interfaces/WorkerInterface";
 // import { useNavigate } from "react-router-dom";
 import MapWithLocationEdit from "../maps/editMap";
 import { updateInfoWorker } from "../../services/workerApi";
+import { useState } from "react";
 
 
 // Define props
@@ -30,7 +33,7 @@ const validationSchema = Yup.object({
 });
 
 function EditCarpenter({ worker, closeModal, reload }: EditCarpenterPageProps) {
-
+  const [loading, setLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       description: worker.description,
@@ -41,6 +44,7 @@ function EditCarpenter({ worker, closeModal, reload }: EditCarpenterPageProps) {
     },
     validationSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       try {
         await updateInfoWorker(values, worker.id);
         closeModal();
@@ -60,12 +64,17 @@ function EditCarpenter({ worker, closeModal, reload }: EditCarpenterPageProps) {
           showConfirmButton: true,
         });
         console.log(error)
+      }finally {
+        setLoading(false);
       }
     },
   });
 
   return (
     <Box p={3}>
+      <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+        <CircularProgress color="primary" />
+      </Backdrop>
       <form onSubmit={formik.handleSubmit}>
         <TextField
           fullWidth

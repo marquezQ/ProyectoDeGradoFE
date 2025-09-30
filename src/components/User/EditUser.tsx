@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { TextField, Button, Box } from "@mui/material";
+import { TextField, Button, Box, Backdrop, CircularProgress } from "@mui/material";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { PhotoCamera } from "@mui/icons-material";
 import * as Yup from "yup";
@@ -18,6 +18,7 @@ function EditUser({ user,  onCancel, refresh }: Props) {
   const [previewImage, setPreviewImage] = useState<string | null>(user.profile_picture || null);
   const [removeImage, setRemoveImage] = useState(false); // Nuevo estado
 
+  const [loading, setLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       name: user.name || "",
@@ -35,6 +36,7 @@ function EditUser({ user,  onCancel, refresh }: Props) {
       // profileImage: Yup.mixed().notRequired(),
     }),
     onSubmit: async (values) => {
+      setLoading(true);
       const dataSend = new FormData();
       dataSend.append("name", values.name);
       dataSend.append("lastname", values.lastname);
@@ -64,6 +66,8 @@ function EditUser({ user,  onCancel, refresh }: Props) {
           title: "Ocurrió un error al actualizar",
           showConfirmButton: true,
         });
+      }finally {
+        setLoading(false);
       }
     },
   });
@@ -85,6 +89,9 @@ function EditUser({ user,  onCancel, refresh }: Props) {
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4 p-4">
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+        <Backdrop open={loading} sx={{ color: "#fff", zIndex: 1301 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
         <Box
           sx={{
             position: "relative",
