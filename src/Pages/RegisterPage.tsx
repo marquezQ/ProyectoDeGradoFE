@@ -270,7 +270,7 @@ const validationSchema = Yup.object({
     .email("Debes ingresar un correo válido"),
   phone: Yup.string()
     .required("El número de celular es obligatorio")
-    .matches(/^\d{8,15}$/, "El número debe tener entre 8 y 15 dígitos"),
+    .matches(/^\d{8}$/, "El número debe tener 8 dígitos"),
   password: Yup.string()
     .required("La contraseña es obligatoria")
     .max(15, "La contraseña debe contener máximo 15 caracteres")

@@ -3,7 +3,6 @@ import { Typography, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DescriptionIcon from '@mui/icons-material/Description';
-import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import StarIcon from '@mui/icons-material/Star';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
@@ -11,6 +10,7 @@ import LivingIcon from '@mui/icons-material/Living';
 import CallIcon from '@mui/icons-material/Call';
 import image from '../assets/fondo.png'
 import { Link } from 'react-router-dom';
+import FakeReview from '../components/Reviews/FakeReview';
 const Landing: React.FC = () => {
   const Hero = () => (
     <div className="relative min-h-screen w-full flex items-center">
@@ -138,38 +138,16 @@ const Landing: React.FC = () => {
       </div>
     );
   };
-/**asddddddddddddddd */
+
   const Testimonials = () => {
-    const testimonial = {
-      content: "Encontré al carpintero perfecto para mi proyecto. El proceso fue muy profesional y el resultado superó mis expectativas.",
-      author: "María Rodríguez",
-      role: "Cliente",
-      rating: 5,
-    };
 
     return (
+      
       <div className="py-16 md:py-20 bg-primary-50 px-4">
-        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-8">
-          <FormatQuoteIcon className="text-primary-300 text-4xl sm:text-6xl mb-4" />
-          <Typography variant="body1" className="text-gray-700 italic mb-6">
-            {testimonial.content}
-          </Typography>
-          <div className="flex items-center">
-            <div className="flex-1">
-              <Typography variant="h6" className="text-primary-900">
-                {testimonial.author}
-              </Typography>
-              <Typography variant="body2" className="text-gray-500">
-                {testimonial.role}
-              </Typography>
-            </div>
-            <div className="flex text-primary-400">
-              {[...Array(testimonial.rating)].map((_, i) => (
-                <StarIcon key={i} />
-              ))}
-            </div>
-          </div>
-        </div>
+        <Typography 
+          variant="h3" 
+          className="font-bold mb-6 text-2xl sm:text-3xl md:text-4xl pb-5">Únete, explora perfiles y comparte tus reseñas con otros usuarios</Typography>
+        <FakeReview/>
       </div>
     );
   };
@@ -179,14 +157,14 @@ const Landing: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         <Typography 
           variant="h3" 
-          className="text-white font-bold mb-6 text-2xl sm:text-3xl md:text-4xl"
+          className="font-bold mb-6 text-2xl sm:text-3xl md:text-4xl"
         >
           ¿Listo para transformar tus proyectos de carpintería?
         </Typography>
 
         <Typography 
           variant="body1"
-          className="text-white/80 mb-10"
+          className="pb-6"
         >
           Únete a la comunidad de CarpinPro y conecta con los mejores profesionales.
         </Typography>

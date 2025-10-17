@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderBottom: "1px solid #eee",
   },
   label: {
-    color: "#555",
+    color: "#000",
     fontWeight: "bold",
     marginBottom: 5,
   },
@@ -142,7 +142,7 @@ const ContractPDF: React.FC<{ contract: ContractWithClientAndWorker }> = ({ cont
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.label}>DETALLES DEL CONTRATO</Text>
+          <Text style={styles.label }>CLÁUSULAS DEL CONTRATO</Text>
           {Object.entries(details).map(([key, value]) => (
             <View key={key}>
               <Text style={styles.label}>{key.charAt(0).toUpperCase() + key.slice(1)}:</Text>
@@ -156,7 +156,7 @@ const ContractPDF: React.FC<{ contract: ContractWithClientAndWorker }> = ({ cont
             <View style={styles.column}>
               <Text>________________________</Text>
               <Text>{contract.user.name} {contract.user.lastname}</Text>
-              <Text>Cliente</Text>
+              <Text >Cliente</Text>
             </View>
             <View style={styles.column}>
               <Text>________________________</Text>

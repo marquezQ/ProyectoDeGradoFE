@@ -125,7 +125,7 @@ export const deleteProduct = async (id: string) => {
 
 export const getReviewsByWorkerId = async (id: string) => {
     try {
-        const response = await axiosInstace.get(`/resenia/${id}`)
+        const response = await axiosInstace.get(`/resenia/trabajador/${id}`)
         if(!response.data.message){
             return response.data.reseñas;
         }
