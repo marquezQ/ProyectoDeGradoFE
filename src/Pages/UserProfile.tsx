@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import useFetchData from "../hooks/useFetchData";
 import { Worker } from "../Interfaces/WorkerInterface";
 import { getUser } from "../services/api";
-import { Button, Typography, Avatar, Dialog, DialogTitle, IconButton } from "@mui/material";
+import { Button, Typography, Avatar, Dialog, DialogTitle, IconButton, DialogContent, DialogActions } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import HandymanIcon from "@mui/icons-material/Handyman";
@@ -27,6 +27,9 @@ function UserProfile() {
   const [showEdit, setshowEdit] = useState(false)
   const closeEdit = () => {setshowEdit(false);};
 
+  const [showLogOut, setshowLogOut] = useState(false);
+  const closeShowLogOut = () => setshowLogOut(false);
+  const { LogOut } = useAuthContext();
   if (loading) return <SkeletonUserProfile/>;
   if (error || !data?.user) return <ErrorMessage/>;
 
@@ -135,6 +138,7 @@ function UserProfile() {
             variant="text"
             startIcon={<LogoutIcon />}
             color="error"
+            onClick={()=>setshowLogOut(true)}
           >
             Cerrar Sesión
           </Button>
@@ -161,6 +165,20 @@ function UserProfile() {
 
        <EditUser user={user} onCancel={closeEdit} refresh={fetchData} />
               
+      </Dialog>
+      <Dialog open={showLogOut} onClose={closeShowLogOut} maxWidth="xs" fullWidth>
+        <DialogTitle>Confirmación</DialogTitle>
+        <DialogContent>
+          <Typography>¿Estás seguro de que quieres cerrar sesión?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeShowLogOut} variant="outlined">
+            Cancelar
+          </Button>
+          <Button onClick={LogOut} variant="contained">
+            Cerrar Sesión
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
 
