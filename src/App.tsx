@@ -19,7 +19,7 @@ function App() {
   return (
     <div className="min-h-screen">
     <AuthContextProvider>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ScrollToTop />
         <Routes>
           <Route path="/" element={<MainPage />}>

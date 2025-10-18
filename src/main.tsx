@@ -6,6 +6,9 @@ import theme from './theme/theme.ts'
 import { ThemeProvider } from '@mui/material'
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
+import { Buffer } from 'buffer';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).Buffer = Buffer;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 delete (L.Icon.Default.prototype as any)._getIconUrl;
