@@ -4,4 +4,8 @@ import react from '@vitejs/plugin-react-swc'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    //Permite cualquier dominio temporal de Cloudflare Tunnel
+    allowedHosts: ['.trycloudflare.com'],
+  },
 })
