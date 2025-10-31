@@ -84,8 +84,8 @@ function ReviewCard({review, profile}: Props) {
             sx={{
                 '& .MuiDialog-paper': {
                   margin: { xs: 0, sm: '32px' }, // Sin margen en móvil, 32px en desktop
-                  maxHeight: { xs: '100vh', sm: '95vh' }, // Altura completa en móvil
-                  width: { xs: '100%', sm: 'auto' }, // Ancho completo en móvil
+                  maxHeight: { xs: '100dvh', sm: '95vh' }, // Altura completa en móvil
+                  width: { xs: '100%' }, // Ancho completo
                   borderRadius: { xs: 0, sm: '4px' }, // Sin bordes redondeados en móvil
                   overflowY: 'auto'
                 }

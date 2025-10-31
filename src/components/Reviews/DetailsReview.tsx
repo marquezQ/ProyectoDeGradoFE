@@ -45,7 +45,8 @@ function DetailsReview({ review }: Props) {
     <div className="bg-white">
       <div className="relative w-full" style={{ backgroundColor: '#f5f5f5' }}>
         <div style={{
-          height: isMobile ? '300px' : '400px',
+          // height: isMobile ? '300px' : '400px',
+          height: "500px",
           position: 'relative',
           overflow: 'hidden'
         }}>
