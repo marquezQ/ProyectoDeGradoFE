@@ -9,6 +9,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { isWorker } from "../services/workerApi";
 import image from "../assets/imageLogin.jpeg";
+import { Worker } from "../Interfaces/WorkerInterface";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -32,11 +33,13 @@ function LoginPage() {
         if (response && response.user) {
           localStorage.setItem("token", response.token);
           setUser(response.user);
-          const dataCarpenter = await isWorker(response.user.id);
+          const dataCarpenter: Worker = await isWorker(response.user.id);
           if(dataCarpenter){
             setWorker(dataCarpenter);
+            navigate(`/workers/workerProfile/${dataCarpenter.id}`);
+          }else{
+            navigate("/workers");
           }
-          navigate("/workers");
         } else {
           Swal.fire({
             position: "center",
