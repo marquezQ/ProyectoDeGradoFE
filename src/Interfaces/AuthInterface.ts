@@ -7,4 +7,5 @@ export interface AuthInterface {
     LogOut: () => void;
     worker: Worker | undefined;
     setWorker: React.Dispatch<React.SetStateAction<Worker | undefined>>;
+    loading: boolean;
 }

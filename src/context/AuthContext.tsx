@@ -12,37 +12,50 @@ export const AuthContext = createContext<AuthInterface | undefined>(undefined);
 interface PropsContextProvider {
     children: ReactNode
   }
-export const AuthContextProvider = ( {children}: PropsContextProvider ) => {
-    const [user, setUser] = useState<User>()
-    const [worker, setWorker] = useState<Worker>()
+export const AuthContextProvider = ({ children }: PropsContextProvider) => {
+  const [user, setUser] = useState<User>();
+  const [worker, setWorker] = useState<Worker>();
+  const [loading, setLoading] = useState(true);
 
-    const LogOut = () => {
-        setUser(undefined);
-        setWorker(undefined);
-        localStorage.removeItem("token");
-        window.location.reload();
-    }
+  const LogOut = () => {
+    setUser(undefined);
+    setWorker(undefined);
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
 
-    useEffect(()=>{
-        const token = localStorage.getItem("token");
-        if(token){
-          const fetchData = async () => {
-            const data = await getUserData();
-            setUser(data);
-            if (data) {
-              const dataCarpenter = await isWorker(data.id);
-              setWorker(dataCarpenter);
-            }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const fetchData = async () => {
+      if (token) {
+        try {
+          const data = await getUserData();
+          setUser(data);
+
+          if (data) {
+            const dataCarpenter = await isWorker(data.id);
+            setWorker(dataCarpenter);
           }
-          fetchData();
+        } catch (e) {
+          console.error(e);
+          LogOut();
         }
-    }, []);
+      }
+      setLoading(false); // <<< evita el flicker
+    };
 
-    //console.log("Estado del AuthContext: ", user);
+    fetchData();
+  }, []);
 
-    return (
-      <AuthContext.Provider value={{ user, setUser, LogOut, worker, setWorker }}>
-        {children}
-      </AuthContext.Provider>
-    );
-}
+  // Mientras carga, no renderices toda la app (evita el flicker)
+  if (loading) {
+    return <div></div>;
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, LogOut, worker, setWorker, loading }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
