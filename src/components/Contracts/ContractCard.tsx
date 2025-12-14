@@ -97,6 +97,13 @@ const ContractCard = ({ contract, reload }: Props) => {
             >
               {contract.status}
             </Typography>
+            {contract.status.toLowerCase() === "rechazado" && (
+              <div className="mt-1">
+                <Typography variant="body2" className="text-sm text-red-600 font-semibold">
+                  Razón de rechazo: {contract.reason_rejected || "No especificada"}
+                </Typography>
+              </div>
+            )}
         </div>
       </div>
 
