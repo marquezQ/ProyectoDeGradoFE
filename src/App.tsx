@@ -13,6 +13,14 @@ import UserProfile from "./Pages/UserProfile";
 import PrivateRoute from "./GuardRouter/PrivateRoute";
 import RegisterRoute from "./GuardRouter/RegisterRoute";
 import ScrollToTop from "./components/scroll";
+import AdminRoute from "./GuardRouter/AdminRoute";
+import AdminPage from "./Pages/AdminPage";
+import AdminDashboard from "./Pages/AdminDashboard";
+import AdminUsers from "./Pages/AdminUsers";
+import AdminCarpinteros from "./Pages/AdminCarpinteros";
+import AdminProductos from "./Pages/AdminProducts";
+import AdminReseñas from "./Pages/AdminResenias";
+import AdminContratos from "./Pages/AdminContratos";
 
 function App() {
 
@@ -37,6 +45,17 @@ function App() {
             <Route path="/registerCarp" element={<RegisterCarpenterPage/>}/>
             {/* <Route path="/example" element={<MapWithLocation/>}/> */}
             
+          </Route>
+          {/* Rutas de Administración */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminPage />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="carpinteros" element={<AdminCarpinteros />} />
+              <Route path="productos" element={<AdminProductos />} />
+              <Route path="resenias" element={<AdminReseñas />} />
+              <Route path="contratos" element={<AdminContratos />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
