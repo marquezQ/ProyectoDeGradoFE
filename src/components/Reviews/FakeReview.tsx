@@ -40,6 +40,7 @@ const exampleReview: Review = {
     end_date: "2025-04-01 18:00:00",
     details: "{\"aqui\":\"los detalees\"}",
     created_at: "2025-10-01T00:00:00Z",
+    reason_rejected: "",
     user: {
       id: 12,
       name: "Melvi",
