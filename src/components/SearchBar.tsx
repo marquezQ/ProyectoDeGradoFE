@@ -129,10 +129,10 @@ function SearchBar({
                   <span>o más</span>
                 </Box>
               </MenuItem>
-              <MenuItem value={4.5}>
+              <MenuItem value={5}>
                 <Box className="flex items-center gap-2">
-                  <Rating value={4.5} readOnly size="small" />
-                  <span>o más</span>
+                  <Rating value={5} readOnly size="small" />
+                  <span></span>
                 </Box>
               </MenuItem>
             </Select>
