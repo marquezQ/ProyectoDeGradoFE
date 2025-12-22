@@ -76,17 +76,20 @@ export const useWorkerSearch = ({
         const fullName = normalizeText(`${worker.user.name} ${worker.user.lastname}`);
         const workshop = normalizeText(worker.workshop);
         const address = normalizeText(worker.address);
+        const description = normalizeText(worker.description);
         const phoneNumber = worker.user.phone_number; // Los números no necesitan normalización
         
         // Buscar coincidencias en:
         // 1. Nombre completo del carpintero
         // 2. Nombre del taller
         // 3. Dirección
-        // 4. Número de teléfono
+        // 4. Descripción
+        // 5. Número de teléfono
         return (
           fullName.includes(searchNormalized) ||
           workshop.includes(searchNormalized) ||
           address.includes(searchNormalized) ||
+          description.includes(searchNormalized) ||
           phoneNumber.includes(activeSearchTerm) // Búsqueda exacta para números
         );
       });

@@ -9,6 +9,7 @@ export interface Contract {
     start_date: string,
     end_date: string,
     details: string,
+    reason_rejected: string,
     created_at: string
 } 
 
